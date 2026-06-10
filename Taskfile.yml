@@ -1,0 +1,225 @@
+version: '3'
+
+tasks:
+
+  # ── Dev ──────────────────────────────────────────────────────────────────────
+
+  serve:
+    desc: "Запустить редактор анимации  (name=example по умолчанию)"
+    summary: |
+      Открывает motion-canvas редактор в браузере на http://localhost:9000
+
+      Примеры:
+        task serve
+        task serve name=video-02
+    vars:
+      NAME: '{{.NAME | default "example"}}'
+    preconditions:
+      - sh: '[ -d "{{.NAME}}" ]'
+        msg: "Папка '{{.NAME}}' не найдена. Создай её: task new name={{.NAME}}"
+    cmds:
+      - PATH=/opt/homebrew/bin:$PATH node_modules/.bin/vite {{.NAME}}
+
+  build:
+    desc: "Собрать анимацию в продакшн  (name=example по умолчанию)"
+    vars:
+      NAME: '{{.NAME | default "example"}}'
+    preconditions:
+      - sh: '[ -d "{{.NAME}}" ]'
+        msg: "Папка '{{.NAME}}' не найдена."
+    cmds:
+      - PATH=/opt/homebrew/bin:$PATH node_modules/.bin/vite build {{.NAME}}
+
+  install:
+    desc: "Установить зависимости npm"
+    cmds:
+      - PATH=/opt/homebrew/bin:$PATH npm install
+
+  # ── Scaffold ─────────────────────────────────────────────────────────────────
+
+  new:
+    desc: "Создать новую анимацию  →  task new name=video-02"
+    summary: |
+      Создаёт папку с полным набором файлов:
+        vite.config.ts, tsconfig.json,
+        src/project.ts, src/env.d.ts, src/project.meta,
+        src/scenes/intro.tsx  (стартовая сцена-заглушка)
+
+      И добавляет скрипты serve:<name> / build:<name> в package.json.
+
+      Пример:
+        task new name=video-02
+    vars:
+      NAME: '{{.NAME}}'
+    preconditions:
+      - sh: '[ -n "{{.NAME}}" ]'
+        msg: "Укажи имя папки: task new name=video-02"
+      - sh: '[ ! -d "{{.NAME}}" ]'
+        msg: "Папка '{{.NAME}}' уже существует"
+    cmds:
+      # ── Структура папок ──────────────────────────────────────────────────────
+      - mkdir -p {{.NAME}}/src/scenes
+
+      # ── vite.config.ts ───────────────────────────────────────────────────────
+      - |
+        cat > {{.NAME}}/vite.config.ts << 'EOF'
+        import {defineConfig} from 'vite';
+        import {createRequire} from 'module';
+        import {dirname} from 'path';
+        import {fileURLToPath} from 'url';
+
+        const require = createRequire(import.meta.url);
+        const motionCanvas = require('@motion-canvas/vite-plugin').default as any;
+
+        const dir = dirname(fileURLToPath(import.meta.url));
+
+        export default defineConfig({
+          root: dir,
+          plugins: [
+            motionCanvas({project: `${dir}/src/project.ts`}),
+          ],
+        });
+        EOF
+
+      # ── tsconfig.json ────────────────────────────────────────────────────────
+      - |
+        cat > {{.NAME}}/tsconfig.json << 'EOF'
+        {
+          "extends": "../tsconfig.base.json",
+          "compilerOptions": {
+            "paths": {
+              "@motion-canvas/2d/jsx-runtime": [
+                "../node_modules/@motion-canvas/2d/lib/jsx-runtime"
+              ]
+            }
+          },
+          "include": ["src"]
+        }
+        EOF
+
+      # ── src/project.meta ─────────────────────────────────────────────────────
+      - |
+        cat > {{.NAME}}/src/project.meta << 'EOF'
+        {
+          "version": 0,
+          "shared": {
+            "background": null,
+            "range": [0, null],
+            "size": {"x": 1920, "y": 1080},
+            "audioOffset": 0
+          },
+          "preview": {
+            "fps": 60,
+            "resolutionScale": 2
+          },
+          "rendering": {
+            "fps": 60,
+            "resolutionScale": 1,
+            "colorSpace": "srgb",
+            "exporter": {
+              "name": "@motion-canvas/core/image-sequence",
+              "options": {
+                "fileType": "image/png",
+                "quality": 100,
+                "groupByScene": false
+              }
+            }
+          },
+          "name": "{{.NAME}}"
+        }
+        EOF
+
+      # ── src/env.d.ts ─────────────────────────────────────────────────────────
+      - |
+        cat > {{.NAME}}/src/env.d.ts << 'EOF'
+        /// <reference types="@motion-canvas/core/types" />
+
+        declare module '*?scene' {
+          import type {FullSceneDescription} from '@motion-canvas/core';
+          const scene: FullSceneDescription;
+          export default scene;
+        }
+        EOF
+
+      # ── src/project.ts ───────────────────────────────────────────────────────
+      - |
+        cat > {{.NAME}}/src/project.ts << 'EOF'
+        import {makeProject} from '@motion-canvas/core';
+        import intro from './scenes/intro?scene';
+
+        export default makeProject({
+          scenes: [intro],
+        });
+        EOF
+
+      # ── src/scenes/intro.tsx (стартовая заглушка) ────────────────────────────
+      - |
+        cat > {{.NAME}}/src/scenes/intro.tsx << 'EOF'
+        import {makeScene2D, Rect, Txt} from '@motion-canvas/2d';
+        import {
+          all,
+          createRef,
+          easeOutElastic,
+          easeInOutCubic,
+          waitFor,
+        } from '@motion-canvas/core';
+
+        const C = {
+          bg:   '#0f1117',
+          main: '#3d5afe',
+          text: '#e8eaf6',
+        };
+
+        export default makeScene2D(function* (view) {
+          view.fill(C.bg);
+
+          const box  = createRef<Rect>();
+          const label = createRef<Txt>();
+
+          view.add(
+            <Rect
+              ref={box}
+              width={320}
+              height={120}
+              radius={16}
+              fill={C.main}
+              shadowColor={C.main}
+              shadowBlur={30}
+              scale={0}
+            >
+              <Txt
+                ref={label}
+                text={'Hello, world'}
+                fontSize={28}
+                fontFamily={'JetBrains Mono, monospace'}
+                fill={C.text}
+                opacity={0}
+              />
+            </Rect>,
+          );
+
+          yield* box().scale(1, 0.6, easeOutElastic);
+          yield* label().opacity(1, 0.3, easeInOutCubic);
+          yield* waitFor(1.5);
+          yield* all(
+            box().scale(0, 0.4, easeInOutCubic),
+            label().opacity(0, 0.3, easeInOutCubic),
+          );
+        });
+        EOF
+
+      # ── Добавить скрипты в package.json ─────────────────────────────────────
+      - |
+        PATH=/opt/homebrew/bin:$PATH node -e "
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          pkg.scripts['serve:{{.NAME}}'] = 'vite {{.NAME}}';
+          pkg.scripts['build:{{.NAME}}'] = 'vite build {{.NAME}}';
+          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+        "
+
+      - |
+        echo ""
+        echo "✓  Анимация '{{.NAME}}' создана!"
+        echo "   Запуск: task serve name={{.NAME}}"
+        echo ""
