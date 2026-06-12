@@ -29,6 +29,11 @@ const DOT_RADIUS = 20;
 const BOX = {width: 150, height: 60};
 const NODE_X = {dot: {a: -40, b: 150}, box: {a: -70, b: 190}} as const;
 
+// Reveal timings — deliberately slow (~2× the card reveals) so each tier registers.
+const REVEAL_NODES = 1.2;
+const REVEAL_LINK = 0.8;
+const REVEAL_VALUE = 1.0;
+
 function latencyNode(kind: NodeKind, x: number, label: string, accent: string) {
   const ref = createRef<Node>();
   const glow = {shadowColor: withAlpha(accent, 0.33), shadowBlur: 12};
@@ -86,15 +91,15 @@ function latencyBand(options: LatencyBandOptions): LatencyBand {
 
   function* reveal(): ThreadGenerator {
     yield* all(
-      scopeRef().opacity(1, 0.6, easeOutCubic),
-      a.ref().opacity(1, 0.6, easeOutCubic),
-      a.ref().scale(1, 0.6, easeOutCubic),
-      b.ref().opacity(1, 0.6, easeOutCubic),
-      b.ref().scale(1, 0.6, easeOutCubic),
+      scopeRef().opacity(1, REVEAL_NODES, easeOutCubic),
+      a.ref().opacity(1, REVEAL_NODES, easeOutCubic),
+      a.ref().scale(1, REVEAL_NODES, easeOutCubic),
+      b.ref().opacity(1, REVEAL_NODES, easeOutCubic),
+      b.ref().scale(1, REVEAL_NODES, easeOutCubic),
     );
     yield* all(
-      linkRef().end(1, 0.4, easeInOutCubic),
-      latencyRef().opacity(1, 0.5, easeOutCubic),
+      linkRef().end(1, REVEAL_LINK, easeInOutCubic),
+      latencyRef().opacity(1, REVEAL_VALUE, easeOutCubic),
     );
   }
 
@@ -135,7 +140,7 @@ export default makeScene2D(function* (view) {
   // ── Phase A: bandwidth (cards without a price) ──────────────────────────────
   const standard = specCard({
     name: 'Standard instance', tag: 'EC2', spec: 'Внутри датацентра',
-    accent: colors.blue, y: -200,
+    accent: colors.blue, y: -200, pace: 1.5,
     meter: {label: 'Пропускная способность', fill: 0.25, value: 25, format: v => `${formatThousands(v)} Gbps`},
   });
   stage.add(standard.node);
@@ -144,7 +149,7 @@ export default makeScene2D(function* (view) {
 
   const highPerf = specCard({
     name: 'High-performance', tag: 'EFA / Enhanced', spec: '50–100 Gbps и выше',
-    accent: colors.green, y: 30,
+    accent: colors.green, y: 30, pace: 1.5,
     meter: {label: 'Пропускная способность', fill: 1.0, value: 100, format: v => `${formatThousands(v)} Gbps`},
   });
   stage.add(highPerf.node);
@@ -193,5 +198,5 @@ export default makeScene2D(function* (view) {
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitFor(2.5);
+  yield* waitFor(8.5); // long hold on the final frame for narration
 });

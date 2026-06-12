@@ -57,6 +57,8 @@ export interface SpecCardOptions {
   meter: SpecCardMeter;
   /** Omit to hide the price block entirely (e.g. bandwidth cards). */
   cost?: SpecCardCost;
+  /** Multiplier on the reveal durations; `1.5` makes `appear()` 1.5× slower. */
+  pace?: number;
 }
 
 /**
@@ -64,7 +66,7 @@ export interface SpecCardOptions {
  * name + tag, a spec line, an optional counting price, and a labelled meter bar.
  */
 export function specCard(options: SpecCardOptions): Widget {
-  const {name, tag, spec, accent, y, meter, cost} = options;
+  const {name, tag, spec, accent, y, meter, cost, pace = 1} = options;
 
   const card = createRef<Rect>();
   const fill = createSignal(0);
@@ -129,15 +131,15 @@ export function specCard(options: SpecCardOptions): Widget {
 
   function* appear(): ThreadGenerator {
     yield* all(
-      card().opacity(1, FADE_IN, easeOutCubic),
-      card().y(y, SLIDE_IN, easeOutCubic),
+      card().opacity(1, FADE_IN * pace, easeOutCubic),
+      card().y(y, SLIDE_IN * pace, easeOutCubic),
     );
 
     const counts: ThreadGenerator[] = [
-      fill(meter.fill, COUNT_UP, easeOutCubic),
-      meterValue.count(COUNT_UP),
+      fill(meter.fill, COUNT_UP * pace, easeOutCubic),
+      meterValue.count(COUNT_UP * pace),
     ];
-    if (costValue) counts.push(costValue.count(COUNT_UP));
+    if (costValue) counts.push(costValue.count(COUNT_UP * pace));
     yield* all(...counts);
   }
 
