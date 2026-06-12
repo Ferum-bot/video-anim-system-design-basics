@@ -1,8 +1,12 @@
 # System Design Animations
 
-Анимации для YouTube-серии по system design. Каждое видео — отдельная папка,
-общие зависимости в корне проекта.
+Анимации для YouTube-серии по system design на [Motion Canvas](https://motioncanvas.io/).
+Каждое видео — отдельный Vite-проект (папка), а общая библиотека анимаций `lib/`
+(импортируется как `@lib`) задаёт **единый визуальный язык** для всех видео.
 
+> **Формат сцен.** Контент рендерится в центрированную колонку шириной **960px**
+> (полный кадр 1920×1080). Вторую половину кадра занимает рассказчик/talking-head —
+> композиция собирается на монтаже. Поэтому сцены центрированы, а не на всю ширину.
 
 ---
 
@@ -45,22 +49,64 @@ task install
 
 ```
 video-anim-system-design-basics/
-├── Taskfile.yml          ← все команды запуска
-├── package.json          ← зависимости + npm-скрипты (авто-обновляются)
-├── tsconfig.base.json    ← общий TypeScript конфиг
+├── Taskfile.yml              ← все команды запуска
+├── package.json              ← зависимости + npm-скрипты (авто-обновляются)
+├── tsconfig.base.json        ← общий TypeScript конфиг
 ├── node_modules/
 │
-├── example/              ← пример: HTTP-запросы к серверу
-│   ├── vite.config.ts
-│   ├── tsconfig.json
-│   └── src/
-│       ├── project.ts    ← регистрирует сцены видео
-│       └── scenes/
-│           └── httpRequests.tsx
+├── lib/                      ← общая библиотека анимаций (импорт как @lib)
+│   ├── theme.ts              ← colors, fonts, withAlpha()
+│   ├── stage.tsx             ← createStage(view), STAGE, CARD_WIDTH
+│   ├── counter.ts            ← counter() — анимированное число / статика
+│   ├── format.ts             ← formatThousands()
+│   ├── widget.ts             ← interface Widget { node, appear() }
+│   ├── components/           ← SceneTitle, SpecCard, Banner
+│   ├── index.ts              ← barrel-экспорт
+│   └── README.md             ← документация API библиотеки
 │
-└── video-02/             ← следующее видео (та же структура)
-    └── ...
+├── example/                  ← пример: HTTP-запросы к серверу
+│   └── src/scenes/httpRequests.tsx
+│
+└── [01]you-not-need-sharding/    ← первое видео
+    ├── vite.config.ts        ← root + alias @lib + esbuild JSX
+    ├── tsconfig.json
+    └── src/
+        ├── project.ts        ← регистрирует сцены (импорт с суффиксом ?scene)
+        └── scenes/[01]hardware/
+            ├── compute.tsx   ← вычислительные инстансы EC2
+            ├── storage.tsx   ← SSD / HDD / S3
+            └── network.tsx   ← пропускная способность + топология задержек
 ```
+
+> Имена папок видео содержат скобки (`[01]…`) — **в шелле такие пути нужно
+> заключать в кавычки**: `vite '[01]you-not-need-sharding'`.
+
+---
+
+## Общая библиотека `@lib`
+
+Чтобы все видео выглядели в одном стиле, переиспользуемые компоненты и утилиты
+вынесены в `lib/` и импортируются из `@lib`. Полная документация — в
+[`lib/README.md`](lib/README.md).
+
+| Экспорт | Назначение |
+|---|---|
+| `colors`, `fonts`, `withAlpha` | Палитра (GitHub-dark), шрифт и помощник для прозрачности. |
+| `createStage(view)`, `STAGE`, `CARD_WIDTH` | Заливает фон и возвращает центрированную панель 960px. |
+| `counter(target, format?)` | Число, считающееся от 0 (или статичная строка вроде `'∞'`). |
+| `formatThousands(n)` | `1234567` → `"1,234,567"`. |
+| `Widget` | `{ node, appear() }` — контракт любого анимируемого блока. |
+| `sceneTitle(...)` | Заголовок + подзаголовок + акцентная линия. |
+| `specCard(...)` | Карточка: иконка, имя/тег, спека, опц. цена со счётчиком, бар. |
+| `banner(...)` | Финальная строка-вывод во всю ширину. |
+
+**Контракт `Widget`.** Анимируемые блоки возвращают `{ node, appear() }`: сцена
+монтирует `node` через `stage.add(...)`, затем `yield* widget.appear()` запускает
+появление.
+
+Подключение к видео (alias `@lib` в `vite.config.ts` и `tsconfig.json`, плюс глобальный
+esbuild JSX-runtime для файлов вне root проекта) настраивается автоматически командой
+`task new`.
 
 ---
 
@@ -74,6 +120,9 @@ video-anim-system-design-basics/
 | `task build NAME=video-02` | Собрать продакшн-бандл |
 | `task new NAME=video-02` | Создать новую анимацию с нуля |
 | `task --list` | Показать все команды |
+
+Для первого видео есть готовые ярлыки: `task serve:sharding` и `task build:sharding`
+(эквивалент `task serve NAME='[01]you-not-need-sharding'`).
 
 ---
 
@@ -103,8 +152,9 @@ task serve NAME=video-02 # открывает video-02
 task new NAME=video-02
 ```
 
-Создаётся папка `video-02/` со всеми боilerplate-файлами и стартовой сценой-заглушкой.
-Скрипты `serve:video-02` и `build:video-02` добавляются в `package.json` автоматически.
+Создаётся папка `video-02/` со всеми boilerplate-файлами, уже подключённой `@lib`
+и стартовой сценой-заглушкой. Скрипты `serve:video-02` и `build:video-02`
+добавляются в `package.json` автоматически.
 
 ### Что дальше
 
@@ -127,25 +177,41 @@ export default makeProject({
 });
 ```
 
-**3. Анатомия сцены** — минимальный шаблон:
+**3. Анатомия сцены** — типичный шаблон на `@lib`:
 
 ```tsx
-import {makeScene2D, Rect} from '@motion-canvas/2d';
-import {createRef, waitFor} from '@motion-canvas/core';
+import {makeScene2D} from '@motion-canvas/2d';
+import {waitFor} from '@motion-canvas/core';
+import {banner, colors, createStage, sceneTitle, specCard} from '@lib';
 
 export default makeScene2D(function* (view) {
-  view.fill('#0f1117');          // фон
+  const stage = createStage(view);          // фон + центрированная панель 960px
 
-  const box = createRef<Rect>(); // ссылка на элемент
+  const title = sceneTitle({
+    title: 'Заголовок', subtitle: 'Подзаголовок', accent: colors.blue,
+  });
+  stage.add(title.node);
+  yield* title.appear();                     // Widget: mount node → appear()
 
-  view.add(
-    <Rect ref={box} width={200} height={200} fill={'#3d5afe'} radius={12} />,
-  );
+  const card = specCard({
+    name: 'm6i.32xlarge', tag: 'General Purpose', spec: '128 vCPU',
+    accent: colors.blue, y: -200,
+    meter: {label: 'Память', fill: 0.32, value: 512, format: v => `${v} GiB`},
+    cost: {value: 6144, prefix: '$'},        // опционально — счётчик цены
+  });
+  stage.add(card.node);
+  yield* card.appear();
+  yield* waitFor(0.5);
 
-  yield* box().scale(0, 1);      // анимировать свойство за 1 сек
-  yield* waitFor(0.5);           // пауза
+  const outro = banner({text: 'Вывод сцены', accent: colors.blue, y: 320});
+  stage.add(outro.node);
+  yield* outro.appear();
 });
 ```
+
+> Низкоуровневый Motion Canvas (`Rect`, `Circle`, `Line`, `createRef`, `yield* …`)
+> по-прежнему доступен — `@lib` лишь даёт готовые блоки поверх него. Пример сцены
+> с нуля без библиотеки см. в `example/src/scenes/httpRequests.tsx`.
 
 ---
 

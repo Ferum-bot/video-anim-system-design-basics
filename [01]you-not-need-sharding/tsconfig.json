@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@motion-canvas/2d/jsx-runtime": [
+        "../node_modules/@motion-canvas/2d/lib/jsx-runtime"
+      ],
+      "@lib": ["../lib/index.ts"],
+      "@lib/*": ["../lib/*"]
+    }
+  },
+  "include": ["src", "../lib"]
+}

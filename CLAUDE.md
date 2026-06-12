@@ -1,135 +1,111 @@
-# video-anim-system-design-basics
+# CLAUDE.md
 
-Motion-canvas animations for a YouTube system design series.
-Each video gets its own subfolder. Shared `node_modules` and `package.json` at the root.
+Guidance for working in this repo. Keep it accurate — update it when conventions change.
 
-## Environment
+## What this is
 
-Node.js is installed via Homebrew but **not in the default shell PATH**.
-Always prefix npm/npx commands with:
-```bash
-export PATH="/opt/homebrew/bin:$PATH"
-```
+A **Motion Canvas** animation series for system-design YouTube videos. Each video is
+its own Vite project folder. A shared toolkit at `lib/` (imported as `@lib`) gives
+every video one visual language.
 
-## Project structure
+## Repository layout
 
-```
-video-anim-system-design-basics/
-  package.json          ← shared deps + per-video scripts
-  tsconfig.base.json    ← shared TS config, extended by each video
-  node_modules/
-  example/              ← video folder (HTTP connections demo)
-    vite.config.ts
-    tsconfig.json       ← extends ../tsconfig.base.json
-    src/
-      project.ts        ← registers scenes for this video
-      env.d.ts          ← type decl for ?scene virtual imports
-      project.meta      ← must have "name" field (used as chunk name)
-      scenes/
-        httpRequests.tsx
-  video-02/             ← future video (same structure as example/)
-    ...
-```
+- `lib/` — shared `@lib` toolkit (theme, stage, animated components). Reused by all
+  videos. Full API in `lib/README.md`.
+- `[NN]<slug>/` — one Vite project per video (e.g. `[01]you-not-need-sharding/`).
+  Folder names contain brackets → **quote paths in the shell**: `vite '[01]…'`.
+  - `src/project.ts` — registers scenes via the `?scene` import suffix.
+  - `src/scenes/[NN]<topic>/*.tsx` — the scenes.
+- `example/` — reference scene (an HTTP-request topology; good Line/Circle/packet example).
+- `Taskfile.yml` — task runner. `task new name=…` scaffolds a new video already wired to `@lib`.
+- `tsconfig.base.json` — shared strict TS config (`jsxImportSource: @motion-canvas/2d`).
 
-## Dev workflow
+## Video `[01]you-not-need-sharding`
 
-```bash
-task serve                  # редактор для example
-task serve NAME=video-02    # редактор для video-02
-task build NAME=video-02    # продакшн сборка
-task new NAME=video-02      # создать новую анимацию
-task install                # npm install
-```
+Argues a single modern machine is usually enough. Scenes (play in order) under
+`src/scenes/[01]hardware/`:
+- `compute.tsx` — EC2 instances (m6i / x1e / u-24tb) + "8 small servers = 1 big, same price".
+- `storage.tsx` — SSD / HDD / S3 capacity.
+- `network.tsx` — bandwidth cards + a latency topology where pulses travel at a speed ∝ latency.
 
-Adding a new video:
-```bash
-task new NAME=video-02
-```
-Автоматически создаёт все файлы и добавляет скрипты в `package.json`.
+## Conventions
 
-## vite.config.ts template (copy into each new video folder)
+- **Centered column.** Scenes render into a centred **960-wide** panel (full canvas is
+  1920×1080). The host composites narration / talking-head in the other half during video
+  editing, so keep content centred — `createStage(view)` sets this up.
+- **Widget pattern.** Animated pieces are `{ node, appear() }`. Mount `node` with
+  `stage.add(...)`, then `yield* widget.appear()` when it should animate in.
+- **Theme.** GitHub-dark palette via `colors`, monospace via `fonts.mono`, alpha via
+  `withAlpha(hex, a)` (don't hand-write hex suffixes). One accent colour per concept.
+- **Pacing.** Reveals are deliberately slow (cards ~1.6s slide + ~2.8s counters) so they
+  read over narration. Match that feel.
+- **Endless motion.** Fork a background generator with `yield gen()` (note: `yield`, not
+  `yield*`) — e.g. the pulsing latency links. It auto-cancels when the scene ends, so it
+  doesn't affect scene duration.
 
-```ts
-import {defineConfig} from 'vite';
-import {createRequire} from 'module';
-import {dirname} from 'path';
-import {fileURLToPath} from 'url';
+## Code patterns
 
-const require = createRequire(import.meta.url);
-const motionCanvas = require('@motion-canvas/vite-plugin').default as any;
+Goal: every scene reads top-to-bottom like a storyboard, and the mechanics live behind
+small, well-named factories. Keep new code in this shape.
 
-const dir = dirname(fileURLToPath(import.meta.url));
+- **Animated piece = factory returning a `Widget`.** A factory (`specCard`, `sceneTitle`,
+  `banner`, or a local one like `latencyBand`) builds the JSX tree **once**, captures its
+  refs/signals in the closure, and exposes only `{ node, appear() }` (or `{ node, reveal(),
+  pulse() }` when motion has phases). Refs/signals never leak to the caller. Reference:
+  `lib/components/SpecCard.tsx`.
+- **Separate structure from motion.** JSX declares the *static, hidden* initial state
+  (`opacity={0}`, start offset / `scale`). The generator (`appear`) describes the transition
+  to the visible state. Don't build nodes imperatively or compute layout inside the animation.
+- **Options objects, never positional args.** Public factories take one typed options object;
+  related fields are grouped (`meter`, `cost`) and optional groups are **omitted** to switch a
+  feature off — no boolean flags. E.g. a card without `cost` simply hides the price block.
+- **Reactive text, not manual updates.** Bind `<Txt text={() => …}/>` to a signal; for
+  counting numbers use `counter(target, format)`, which resolves number-vs-static once in one
+  place instead of branching at every call site.
+- **Name every magic number.** Durations, sizes, offsets, Y-positions are `const`s at the top
+  of the file, grouped with a one-line comment (see the `FADE_IN / SLIDE_IN / COUNT_UP` block
+  in `SpecCard.tsx`). Tweaks then happen in one obvious spot.
+- **Small private sub-components** for repeated visuals (`DeviceIcon`). Leave them un-exported
+  when used in a single file.
+- **Scenes stay thin.** A scene only orchestrates: `const w = widget({…}); stage.add(w.node);
+  yield* w.appear(); yield* waitFor(…)`. No layout math, no animation internals — push those
+  into a factory.
+- **Promote vs keep local.** Reused across videos/scenes → move to `@lib`. Topic-specific
+  (e.g. `latencyBand` in `network.tsx`) → keep next to its scene. Don't pre-generalize a
+  one-off helper.
+- **Theme tokens only.** No literal hex or font strings in scenes/components — use `colors`,
+  `fonts`, `withAlpha`. One accent colour per concept.
+- **TypeScript.** `interface` for public option/return shapes; `type`-only imports for types;
+  `as const` for token tables; model "either A or B" as `number | string` resolved by a helper
+  (like `counter`) rather than overloads; no `any`.
+- **Comments explain *why*, names explain *what*.** Lean on naming for intent; reserve comments
+  for the non-obvious ("stays at the top for the whole scene", "fork: keeps bouncing in the
+  background").
 
-export default defineConfig({
-  root: dir,
-  plugins: [
-    motionCanvas({project: `${dir}/src/project.ts`}),
-  ],
-});
-```
+## `@lib` API (import from `@lib`)
 
-## tsconfig.json template (copy into each new video folder)
+`createStage(view)`, `STAGE`, `CARD_WIDTH`; `colors`, `fonts`, `withAlpha`;
+`counter(target, format?)` (number → counts up from 0; string → static like `'∞'`);
+`formatThousands`; the `Widget` interface; and components `sceneTitle()`, `specCard()`,
+`banner()`. See `lib/README.md`.
 
-```json
-{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "paths": {
-      "@motion-canvas/2d/jsx-runtime": [
-        "../node_modules/@motion-canvas/2d/lib/jsx-runtime"
-      ]
-    }
-  },
-  "include": ["src"]
-}
-```
+## Cross-root JSX wiring (don't break this)
 
-## Known quirks & workarounds
+`lib/` lives **outside** each project's Vite `root`, so each project's `vite.config.ts`
+must keep: `esbuild: { jsx: 'automatic', jsxImportSource: '@motion-canvas/2d' }`,
+`resolve.alias['@lib']`, and `server.fs.allow: [repoRoot]`. Its `tsconfig.json` must keep
+the `@lib` paths and `include: ["src", "../lib"]`. Without these, JSX inside `@lib` won't
+transform. `task new` writes all of this for new videos.
 
-### `vite.config.ts` — три обязательных хака
-1. **CJS plugin** — `@motion-canvas/vite-plugin` — CommonJS-only, импортировать через `createRequire`.
-2. **root: dir** — без явного `root` vite берёт `process.cwd()` (корень проекта), и rollup не находит `./src/project.ts` внутри подпапки.
-3. **Абсолютный путь в `project:`** — плагин по умолчанию передаёт `'./src/project.ts'` rollup'у как относительный путь; нужно передать абсолютный через `import.meta.url`.
+## Working & verifying
 
-### `project.meta` — обязательное поле `"name"`
-Без `"name"` плагин использует абсолютный путь файла как имя rollup-чанка → ошибка сборки.
-Всегда ставить `"name": "<папка-видео>"`.
-
-### `tsconfig.json` — paths для JSX runtime
-`@motion-canvas/2d` не экспортирует `jsx-runtime` из корня пакета.
-Путь указан в `tsconfig.base.json`, в подпапках переопределяется с `../node_modules/...`.
-
-### `env.d.ts` — тип для `?scene`
-Vite virtual imports (`?scene`) требуют ручного объявления типа.
-Использовать `FullSceneDescription` (не `Scene`) из `@motion-canvas/core`.
-
-### `@motion-canvas/ui` — обязательный peer dep
-Нужен даже без прямого импорта — vite-plugin подгружает его при инициализации.
-
-## Installed packages (devDependencies)
-
-| Package | Version |
-|---|---|
-| `@motion-canvas/core` | ^3.17.2 |
-| `@motion-canvas/2d` | ^3.17.2 |
-| `@motion-canvas/vite-plugin` | ^3.17.2 |
-| `@motion-canvas/ui` | ^3.17.2 |
-| `vite` | ^5.4.21 |
-| `typescript` | ^5.5.3 |
-
-## Taskfile quirks
-
-- Переменные в task — **uppercase**: `task new NAME=video-02`, не `name=video-02`
-- Любая строка в `cmds:` содержащая `": "` (двоеточие + пробел) — YAML парсит как mapping.
-  Такие команды **всегда** оборачивать в блок `|`.
-- Аналогично для строк с `{` в начале значения — тоже `|`-блок.
-
-## Animation conventions
-
-- Background: `#0f1117`
-- Font: `JetBrains Mono, monospace`
-- Цветовая палитра — константа `const C = {...}` в начале каждого файла сцены
-- Вход элементов: `easeOutElastic`, движение: `easeInOutCubic`
-- Packet-dots: `Circle` size 18, `shadowColor` + `shadowBlur: 12`
-- Временные объекты (пакеты) добавляются как дочерние `Node`, удаляются после анимации
-- Параллелизм: `all()`, последовательность: `chain()`, stagger: `sequence()`
+- **Dev editor:** `task serve:sharding` (or `task serve NAME='[01]you-not-need-sharding'`)
+  → http://localhost:9000. **Restart it after editing `vite.config.ts`** (alias/esbuild
+  changes aren't hot-reloaded).
+- **Typecheck:** `npx tsc --noEmit -p '[01]you-not-need-sharding/tsconfig.json'` (also
+  covers `../lib`).
+- **Build = best headless check.** `npm run build:01` follows imports across the repo root,
+  so it catches `@lib` resolution / cross-root JSX errors without a browser. Use it to
+  verify when the preview/browser tools aren't available.
+- **Scene names** in the editor come from the **filename**. To rename a scene, `git mv` the
+  `.tsx` and delete the orphaned `.meta` file.
