@@ -1,5 +1,26 @@
 {
   "version": 0,
-  "timeEvents": [],
+  "timeEvents": [
+    {
+      "name": "ssd",
+      "targetTime": 8.3840859898862
+    },
+    {
+      "name": "hdd",
+      "targetTime": 21.172560521758747
+    },
+    {
+      "name": "object-storage",
+      "targetTime": 35.025116012831944
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 39.42511601283194
+    },
+    {
+      "name": "end",
+      "targetTime": 47.75312831057296
+    }
+  ],
   "seed": 2375862288
 }

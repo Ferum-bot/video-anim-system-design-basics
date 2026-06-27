@@ -1,8 +1,8 @@
 import {makeScene2D, Layout, Rect, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeOutCubic, sequence, waitFor} from '@motion-canvas/core';
+import {all, createRef, easeOutCubic, sequence, waitFor, waitUntil} from '@motion-canvas/core';
 import {
   banner, colors, counter, createStage, fonts,
-  formatThousands, sceneTitle, specCard, withAlpha,
+  formatThousands, specCard, withAlpha,
 } from '@lib';
 
 // Comparison grid: eight small servers that add up to one big one.
@@ -11,19 +11,12 @@ const MINI_H = 104;
 const MINI_GAP = 16;
 const MINI_COUNT = 8;
 
+// Sync markers — drag these on the editor timeline to match the narration.
 export default makeScene2D(function* (view) {
   const stage = createStage(view);
 
-  const title = sceneTitle({
-    title: 'Современное железо',
-    subtitle: 'AWS EC2 — On-Demand цены',
-    accent: colors.blue,
-  });
-  stage.add(title.node);
-  yield* title.appear();
-  yield* waitFor(0.4);
-
   // ── The big server (stays at the top for the whole scene) ───────────────────
+  yield* waitUntil('big-server');
   const big = specCard({
     name: 'm6i.32xlarge', tag: 'General Purpose', spec: '128 vCPU',
     accent: colors.blue, y: -320,
@@ -32,9 +25,9 @@ export default makeScene2D(function* (view) {
   });
   stage.add(big.node);
   yield* big.appear();
-  yield* waitFor(0.8);
 
   // ── Comparison: 8 × m6i.4xlarge add up to the same specs and the same price ──
+  yield* waitUntil('comparison');
   const prompt = createRef<Txt>();
   stage.add(
     <Txt ref={prompt} text="А что если взять 8 серверов поменьше?"
@@ -66,9 +59,9 @@ export default makeScene2D(function* (view) {
   yield* sequence(0.12, ...cells.map(ref =>
     all(ref().opacity(1, 0.5, easeOutCubic), ref().scale(1, 0.5, easeOutCubic)),
   ));
-  yield* waitFor(0.5);
 
   // Badge: the total counts up to exactly the price of the big server.
+  yield* waitUntil('same-price');
   const total = counter(6144, v => `$${formatThousands(v)} / мес`);
   const badge = createRef<Rect>();
   stage.add(
@@ -87,8 +80,9 @@ export default makeScene2D(function* (view) {
     badge().scale(1, 0.6, easeOutCubic),
   );
   yield* total.count(1.2);
-  yield* waitFor(1.6);
 
+  // ── Memory-optimized and high-memory instances ──────────────────────────────
+  yield* waitUntil('memory-optimized');
   // Clear the comparison, keep the big server.
   yield* all(
     prompt().opacity(0, 0.5),
@@ -100,7 +94,6 @@ export default makeScene2D(function* (view) {
   badge().remove();
   yield* waitFor(0.3);
 
-  // ── Memory-optimized and high-memory instances ──────────────────────────────
   const memoryOptimized = specCard({
     name: 'x1e.32xlarge', tag: 'Memory Optimized', spec: '128 vCPU',
     accent: colors.purple, y: -90,
@@ -109,8 +102,8 @@ export default makeScene2D(function* (view) {
   });
   stage.add(memoryOptimized.node);
   yield* memoryOptimized.appear();
-  yield* waitFor(0.8);
 
+  yield* waitUntil('high-memory');
   const highMemory = specCard({
     name: 'u-24tb1.metal', tag: 'High Memory', spec: '448 vCPU',
     accent: colors.orange, y: 140,
@@ -119,13 +112,13 @@ export default makeScene2D(function* (view) {
   });
   stage.add(highMemory.node);
   yield* highMemory.appear();
-  yield* waitFor(0.8);
 
+  yield* waitUntil('takeaway');
   const outro = banner({
     text: 'Многие задачи решаются на одной машине',
     accent: colors.blue, y: 320,
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitFor(2.5);
+  yield* waitUntil('end'); // drag this anchor to set how long the scene holds before the switch
 });

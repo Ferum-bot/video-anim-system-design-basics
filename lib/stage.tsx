@@ -13,15 +13,26 @@ export const STAGE = {width: 960, height: 1080} as const;
 export const CARD_WIDTH = 800;
 
 /**
+ * Render with a **transparent** background instead of the dark fill.
+ *
+ * Flip to `true` before exporting frames for an overlay (composited over footage in
+ * CapCut etc.) — the PNG sequence then carries an alpha channel. Flip back to `false`
+ * for comfortable work, so the editor shows the usual dark backdrop. Rendering runs
+ * from the dev editor, so this is a manual switch rather than a build-time flag.
+ */
+export const TRANSPARENT = true;
+
+/**
  * Fill the view with the background and return a clipped, centred panel to mount
  * scene content into. Every scene starts with `const stage = createStage(view)`.
  */
 export function createStage(view: View2D): Rect {
-  view.fill(colors.background);
+  if (!TRANSPARENT) view.fill(colors.background);
 
   const panel = createRef<Rect>();
   view.add(
-    <Rect ref={panel} width={STAGE.width} height={STAGE.height} fill={colors.background} clip/>,
+    <Rect ref={panel} width={STAGE.width} height={STAGE.height}
+      fill={TRANSPARENT ? null : colors.background} clip/>,
   );
   return panel();
 }

@@ -43,6 +43,38 @@ Argues a single modern machine is usually enough. Scenes (play in order) under
   `yield*`) — e.g. the pulsing latency links. It auto-cancels when the scene ends, so it
   doesn't affect scene duration.
 
+## Timing & sync (time events)
+
+Scenes are synced to the recorded narration with **Motion Canvas time events**, not fixed
+pauses. Between beats use `yield* waitUntil('marker')` (from `@motion-canvas/core`); each
+marker appears on the editor timeline and is **dragged** to line up with the voiceover —
+offsets are saved in the scene's `.meta`, so re-timing needs no code changes. Keep only tiny
+sub-beat spacing and the final hold as `waitFor(...)`.
+
+Existing markers:
+- `compute` — `big-server`, `comparison`, `same-price`, `memory-optimized`, `high-memory`, `takeaway`.
+- `storage` — `ssd`, `hdd`, `object-storage`, `takeaway`.
+- `network` — `bandwidth`, `high-perf`, `az-bandwidth`, `latency`, `lat-within-az`,
+  `lat-across-az`, `lat-cross-region`, `takeaway`.
+
+The full-video narration is wired as the project `audio` in `src/project.ts`
+(`audio/0626.m4a`, converted from the source WAV with `afconvert -f m4af -d aac`, git-ignored),
+so the editor shows its waveform for dragging markers. New markers default to offset 0 (no
+wait) until dragged. The track spans the whole ~22 min video while only the hardware scenes
+exist; scenes play from `t=0`, so use `audioOffset` in `project.meta` (or add the remaining
+parts' scenes) to line current scenes up with their slice of the track.
+
+## Export (transparent overlay)
+
+Final animations are composited over the talking-head footage in CapCut as a **transparent
+overlay**. Before rendering, set `TRANSPARENT = true` in `lib/stage.tsx` (revert to `false`
+for comfortable editing — the editor backdrop goes dark again). Render the PNG sequence from
+the editor (it carries alpha), then `task mov SRC=<frames-dir> OUT=scene.mov` encodes ProRes
+with alpha for CapCut — `task mov` defaults to **HEVC + alpha** (`hevc_videotoolbox`,
+`-pix_fmt bgra -alpha_quality`), ~60-90× smaller than ProRes (74 MB vs 4.8 GB for ~3.7 min).
+`task mov:prores` is the lossless ProRes 4444 fallback if CapCut won't read HEVC alpha. The
+narration track for marker-sync is wired as the project `audio` (see "Timing & sync").
+
 ## Code patterns
 
 Goal: every scene reads top-to-bottom like a storyboard, and the mechanics live behind

@@ -1,5 +1,34 @@
 {
   "version": 0,
-  "timeEvents": [],
+  "timeEvents": [
+    {
+      "name": "big-server",
+      "targetTime": 1.4
+    },
+    {
+      "name": "comparison",
+      "targetTime": 25.170978706155815
+    },
+    {
+      "name": "same-price",
+      "targetTime": 38.35784937280563
+    },
+    {
+      "name": "memory-optimized",
+      "targetTime": 60.87328191508931
+    },
+    {
+      "name": "high-memory",
+      "targetTime": 68.46809627152622
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 79.30820514897141
+    },
+    {
+      "name": "end",
+      "targetTime": 96.01632771106534
+    }
+  ],
   "seed": 2325438809
 }

@@ -1,9 +1,9 @@
 import {Circle, Line, makeScene2D, Node, Rect, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, easeOutCubic, waitFor} from '@motion-canvas/core';
+import {all, createRef, easeInOutCubic, easeOutCubic, waitUntil} from '@motion-canvas/core';
 import type {ThreadGenerator} from '@motion-canvas/core';
 import {
   banner, colors, createStage, fonts, formatThousands,
-  sceneTitle, specCard, withAlpha,
+  specCard, withAlpha,
 } from '@lib';
 
 // ─── Latency band ──────────────────────────────────────────────────────────────
@@ -23,6 +23,8 @@ interface LatencyBandOptions {
   /** Pulse travel time in seconds — longer means higher latency. */
   travel: number;
   y: number;
+  /** Timeline marker fired before this band reveals. */
+  cue: string;
 }
 
 const DOT_RADIUS = 20;
@@ -55,6 +57,8 @@ function latencyNode(kind: NodeKind, x: number, label: string, accent: string) {
 
 interface LatencyBand {
   node: Node;
+  /** Timeline marker fired before this band reveals. */
+  cue: string;
   /** Fade in the nodes, draw the link, show the latency value. */
   reveal(): ThreadGenerator;
   /** Endless ping-pong pulse — run as a background thread (`yield band.pulse()`). */
@@ -62,7 +66,7 @@ interface LatencyBand {
 }
 
 function latencyBand(options: LatencyBandOptions): LatencyBand {
-  const {scope, kind, from, to, latency, accent, travel, y} = options;
+  const {scope, kind, from, to, latency, accent, travel, y, cue} = options;
   const ax = NODE_X[kind].a;
   const bx = NODE_X[kind].b;
   const edge = kind === 'dot' ? DOT_RADIUS + 4 : BOX.width / 2 + 4;
@@ -113,31 +117,24 @@ function latencyBand(options: LatencyBandOptions): LatencyBand {
     }
   }
 
-  return {node, reveal, pulse};
+  return {node, cue, reveal, pulse};
 }
 
 // ─── Scene ────────────────────────────────────────────────────────────────────
 export default makeScene2D(function* (view) {
   const stage = createStage(view);
 
-  const title = sceneTitle({
-    title: 'Сеть',
-    subtitle: 'Современные сетевые возможности',
-    accent: colors.blue,
-  });
-  stage.add(title.node);
-  yield* title.appear();
-
-  // Section label, reused across the two phases.
+  // Section label, reused across the two phases (hidden until the bandwidth cue).
   const phase = createRef<Txt>();
   stage.add(
     <Txt ref={phase} text="Пропускная способность" fill={colors.textMuted}
       fontSize={26} fontWeight={600} fontFamily={fonts.mono} y={-330} opacity={0}/>,
   );
-  yield* phase().opacity(1, 0.5, easeOutCubic);
-  yield* waitFor(0.3);
 
   // ── Phase A: bandwidth (cards without a price) ──────────────────────────────
+  yield* waitUntil('bandwidth');
+  yield* phase().opacity(1, 0.5, easeOutCubic);
+
   const standard = specCard({
     name: 'Standard instance', tag: 'EC2', spec: 'Внутри датацентра',
     accent: colors.blue, y: -200, pace: 1.5,
@@ -145,8 +142,8 @@ export default makeScene2D(function* (view) {
   });
   stage.add(standard.node);
   yield* standard.appear();
-  yield* waitFor(0.6);
 
+  yield* waitUntil('high-perf');
   const highPerf = specCard({
     name: 'High-performance', tag: 'EFA / Enhanced', spec: '50–100 Gbps и выше',
     accent: colors.green, y: 30, pace: 1.5,
@@ -154,17 +151,17 @@ export default makeScene2D(function* (view) {
   });
   stage.add(highPerf.node);
   yield* highPerf.appear();
-  yield* waitFor(0.4);
 
+  yield* waitUntil('az-bandwidth');
   const note = createRef<Txt>();
   stage.add(
     <Txt ref={note} text="Между AZ в регионе — ограничено только сетью инстанса"
       fill={colors.textMuted} fontSize={21} fontFamily={fonts.mono} y={210} opacity={0}/>,
   );
   yield* note().opacity(1, 0.7, easeOutCubic);
-  yield* waitFor(1.6);
 
   // ── Transition to latency ───────────────────────────────────────────────────
+  yield* waitUntil('latency');
   yield* all(
     standard.node.opacity(0, 0.6),
     highPerf.node.opacity(0, 0.6),
@@ -174,29 +171,29 @@ export default makeScene2D(function* (view) {
   highPerf.node.remove();
   note().remove();
   yield* phase().text('Задержки предсказуемы', 0.4);
-  yield* waitFor(0.3);
 
-  // ── Phase B: latency topology ───────────────────────────────────────────────
+  // ── Phase B: latency topology (one cue per tier) ────────────────────────────
   const bands = [
     latencyBand({scope: 'Внутри AZ', kind: 'dot', from: 'node', to: 'node',
-      latency: '< 1 ms', accent: colors.green, travel: 0.4, y: -170}),
+      latency: '< 1 ms', accent: colors.green, travel: 0.4, y: -170, cue: 'lat-within-az'}),
     latencyBand({scope: 'Между AZ', kind: 'box', from: 'AZ-a', to: 'AZ-b',
-      latency: '1–2 ms', accent: colors.cyan, travel: 0.7, y: 40}),
+      latency: '1–2 ms', accent: colors.cyan, travel: 0.7, y: 40, cue: 'lat-across-az'}),
     latencyBand({scope: 'Между регионами', kind: 'box', from: 'us-east-1', to: 'eu-west-1',
-      latency: '50–150 ms', accent: colors.orange, travel: 1.5, y: 250}),
+      latency: '50–150 ms', accent: colors.orange, travel: 1.5, y: 250, cue: 'lat-cross-region'}),
   ];
   for (const band of bands) stage.add(band.node);
   for (const band of bands) {
+    yield* waitUntil(band.cue);
     yield* band.reveal();
     yield band.pulse(); // fork: keeps bouncing in the background
-    yield* waitFor(0.5);
   }
 
+  yield* waitUntil('takeaway');
   const outro = banner({
     text: 'Предсказуемая сеть → надёжные распределённые системы',
     accent: colors.blue, y: 410,
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitFor(8.5); // long hold on the final frame for narration
+  yield* waitUntil('end'); // drag this anchor to set how long the scene holds before the switch
 });

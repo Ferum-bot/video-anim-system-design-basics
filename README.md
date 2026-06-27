@@ -256,6 +256,35 @@ ffmpeg -framerate 30 -i example/output/example/%07d.png \
 
 > **`-crf`**: качество от 0 (лучшее) до 51 (худшее). 16–18 — практически без потерь для YouTube.
 
+### Прозрачный оверлей для CapCut (рекомендуемый пайплайн)
+
+Анимации монтируются как **прозрачный слой поверх видео** — фон не перекрывает кадр.
+
+1. В `lib/stage.tsx` выставь `export const TRANSPARENT = true;` перед рендером
+   (после — верни `false`, чтобы в редакторе снова был тёмный фон для работы).
+2. Отрендери кадры в редакторе (кнопка **Render**) — PNG с альфа-каналом.
+3. Собери компактный `.mov` с прозрачностью одной командой (HEVC + альфа,
+   видеотулбокс — файл в ~60-90× меньше ProRes):
+   ```bash
+   task mov SRC='output/project' OUT=anim.mov
+   # FPS по умолчанию 60; для 30: task mov SRC=… OUT=… FPS=30
+   # качество альфы: task mov SRC=… OUT=… ALPHAQ=0.7
+   ```
+   Под капотом:
+   ```bash
+   ffmpeg -framerate 60 -i '<кадры>/%06d.png' \
+     -c:v hevc_videotoolbox -alpha_quality 0.9 -pix_fmt bgra -tag:v hvc1 anim.mov
+   ```
+4. Перетащи `.mov` в CapCut поверх своего видео — фон прозрачный, позиционируй как нужно.
+
+> **Если CapCut не подхватит прозрачность из HEVC** — собери запасной ProRes 4444
+> (lossless, но ~4-5 ГБ): `task mov:prores SRC='output/project' OUT=anim.mov`.
+
+> **Синхронизация под озвучку.** Сцены тайминятся маркерами (time events): между битами
+> стоят `waitUntil('…')`, которые на таймлайне редактора перетаскиваются под голос.
+> Чтобы видеть волну озвучки, подключи аудио в `makeProject({ scenes, audio })`
+> (экспортни дорожку из CapCut и вытащи `ffmpeg -i export.mp4 -vn narration.wav`).
+
 ### Альтернатива: ProRes для монтажа
 
 Если анимация будет монтироваться в Final Cut или Premiere:

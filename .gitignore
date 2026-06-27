@@ -9,3 +9,10 @@ yarn-error.log*
 .pnp.js
 
 .vscode/*
+
+# local media — large narration / source tracks, kept out of git
+output
+audio/
+*.wav
+*.m4a
+*.mp3

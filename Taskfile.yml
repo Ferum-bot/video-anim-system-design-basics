@@ -35,6 +35,48 @@ tasks:
     cmds:
       - PATH=/opt/homebrew/bin:$PATH npm install
 
+  # ── Export ───────────────────────────────────────────────────────────────────
+
+  mov:
+    desc: "PNG-кадры → HEVC .mov с альфа-каналом (компактный прозрачный оверлей для CapCut)"
+    summary: |
+      Кодирует отрендеренную в редакторе последовательность кадров в HEVC .mov с
+      прозрачностью (videotoolbox, аппаратно). Файл в ~60-90× меньше ProRes при той же
+      прозрачности. Перед рендером выстави TRANSPARENT = true в lib/stage.tsx.
+
+      Примеры:
+        task mov SRC='output/project' OUT=anim.mov
+        task mov SRC=… OUT=… FPS=30        # 30 кадров/с — ещё вдвое меньше
+        task mov SRC=… OUT=… ALPHAQ=0.7    # ниже качество альфы → меньше размер
+    vars:
+      FPS: '{{.FPS | default "60"}}'
+      ALPHAQ: '{{.ALPHAQ | default "0.9"}}'
+    preconditions:
+      - sh: '[ -n "{{.SRC}}" ] && [ -n "{{.OUT}}" ]'
+        msg: "Укажи SRC=папка_с_кадрами и OUT=файл.mov"
+      - sh: '[ -d "{{.SRC}}" ]'
+        msg: "Папка с кадрами '{{.SRC}}' не найдена"
+    cmds:
+      - PATH=/opt/homebrew/bin:$PATH ffmpeg -framerate {{.FPS}} -i '{{.SRC}}/%06d.png' -c:v hevc_videotoolbox -alpha_quality {{.ALPHAQ}} -pix_fmt bgra -tag:v hvc1 -y '{{.OUT}}'
+
+  mov:prores:
+    desc: "PNG-кадры → ProRes 4444 .mov с альфой (большой, максимальная совместимость)"
+    summary: |
+      Запасной вариант, если CapCut не подхватит прозрачность из HEVC. Lossless,
+      но файл огромный (~4-5 ГБ за 3-4 мин).
+
+      Пример:
+        task mov:prores SRC='output/project' OUT=anim.mov
+    vars:
+      FPS: '{{.FPS | default "60"}}'
+    preconditions:
+      - sh: '[ -n "{{.SRC}}" ] && [ -n "{{.OUT}}" ]'
+        msg: "Укажи SRC=папка_с_кадрами и OUT=файл.mov"
+      - sh: '[ -d "{{.SRC}}" ]'
+        msg: "Папка с кадрами '{{.SRC}}' не найдена"
+    cmds:
+      - PATH=/opt/homebrew/bin:$PATH ffmpeg -framerate {{.FPS}} -i '{{.SRC}}/%06d.png' -c:v prores_ks -profile:v 4444 -pix_fmt yuva444p10le -y '{{.OUT}}'
+
   # ── [01] You don't need sharding ─────────────────────────────────────────────
 
   serve:sharding:
@@ -171,6 +213,11 @@ tasks:
           const scene: FullSceneDescription;
           export default scene;
         }
+
+        // Audio assets (resolved to a URL by Vite) — used as the project narration track.
+        declare module '*.m4a' { const src: string; export default src; }
+        declare module '*.mp3' { const src: string; export default src; }
+        declare module '*.wav' { const src: string; export default src; }
         EOF
 
       # ── src/project.ts ───────────────────────────────────────────────────────

@@ -1,5 +1,42 @@
 {
   "version": 0,
-  "timeEvents": [],
+  "timeEvents": [
+    {
+      "name": "bandwidth",
+      "targetTime": 7.879263194203773
+    },
+    {
+      "name": "high-perf",
+      "targetTime": 25.429662951220052
+    },
+    {
+      "name": "az-bandwidth",
+      "targetTime": 35.97857304511606
+    },
+    {
+      "name": "latency",
+      "targetTime": 50.21068604227578
+    },
+    {
+      "name": "lat-within-az",
+      "targetTime": 54.32179156907577
+    },
+    {
+      "name": "lat-across-az",
+      "targetTime": 61.92550361565725
+    },
+    {
+      "name": "lat-cross-region",
+      "targetTime": 67.66610434857017
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 75.49360760325254
+    },
+    {
+      "name": "end",
+      "targetTime": 79.89714698506783
+    }
+  ],
   "seed": 1678570718
 }
