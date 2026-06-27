@@ -67,19 +67,26 @@ video-anim-system-design-basics/
 ├── example/                  ← пример: HTTP-запросы к серверу
 │   └── src/scenes/httpRequests.tsx
 │
-└── [01]you-not-need-sharding/    ← первое видео
-    ├── vite.config.ts        ← root + alias @lib + esbuild JSX
-    ├── tsconfig.json
-    └── src/
-        ├── project.ts        ← регистрирует сцены (импорт с суффиксом ?scene)
-        └── scenes/[01]hardware/
-            ├── compute.tsx   ← вычислительные инстансы EC2
-            ├── storage.tsx   ← SSD / HDD / S3
-            └── network.tsx   ← пропускная способность + топология задержек
+├── [01]you-not-need-sharding/    ← часть 1: железо (отдельный проект/рендер)
+│   ├── vite.config.ts        ← root + alias @lib + esbuild JSX
+│   ├── tsconfig.json
+│   ├── audio/0626.m4a        ← дорожка озвучки (git-ignored)
+│   └── src/
+│       ├── project.ts        ← регистрирует сцены + audio
+│       └── scenes/[01]hardware/
+│           ├── compute.tsx   ← вычислительные инстансы EC2
+│           ├── storage.tsx   ← SSD / HDD / S3
+│           └── network.tsx   ← пропускная способность + топология задержек
+│
+└── [02]cache/                ← часть 2: кэш (отдельный проект/рендер)
+    └── src/scenes/
+        ├── numbers.tsx       ← числа: память, throughput, задержки
+        └── scaling.tsx       ← когда пора масштабироваться
 ```
 
-> Имена папок видео содержат скобки (`[01]…`) — **в шелле такие пути нужно
-> заключать в кавычки**: `vite '[01]you-not-need-sharding'`.
+> Каждая **часть видео — отдельный Vite-проект**: редактируется и рендерится независимо
+> (свой редактор, свои маркеры, свой оверлей-клип для CapCut). Имена папок содержат
+> скобки (`[NN]…`) — **в шелле такие пути заключай в кавычки**: `vite '[02]cache'`.
 
 ---
 
@@ -121,8 +128,8 @@ esbuild JSX-runtime для файлов вне root проекта) настра
 | `task new NAME=video-02` | Создать новую анимацию с нуля |
 | `task --list` | Показать все команды |
 
-Для первого видео есть готовые ярлыки: `task serve:sharding` и `task build:sharding`
-(эквивалент `task serve NAME='[01]you-not-need-sharding'`).
+Готовые ярлыки по частям: `task serve:sharding` / `build:sharding` (часть 1, железо) и
+`task serve:cache` / `build:cache` (часть 2, кэш).
 
 ---
 
@@ -263,22 +270,24 @@ ffmpeg -framerate 30 -i example/output/example/%07d.png \
 1. В `lib/stage.tsx` выставь `export const TRANSPARENT = true;` перед рендером
    (после — верни `false`, чтобы в редакторе снова был тёмный фон для работы).
 2. Отрендери кадры в редакторе (кнопка **Render**) — PNG с альфа-каналом.
-3. Собери компактный `.mov` с прозрачностью одной командой (HEVC + альфа,
-   видеотулбокс — файл в ~60-90× меньше ProRes):
+3. Собери `.mov` с прозрачностью одной командой (lossless qtrle — чёткий, без
+   «ряби», ~340 МБ, CapCut читает надёжно):
    ```bash
    task mov SRC='output/project' OUT=anim.mov
-   # FPS по умолчанию 60; для 30: task mov SRC=… OUT=… FPS=30
-   # качество альфы: task mov SRC=… OUT=… ALPHAQ=0.7
+   # FPS по умолчанию 30 (под рендер); переопределить: task mov SRC=… OUT=… FPS=60
    ```
    Под капотом:
    ```bash
-   ffmpeg -framerate 60 -i '<кадры>/%06d.png' \
-     -c:v hevc_videotoolbox -alpha_quality 0.9 -pix_fmt bgra -tag:v hvc1 anim.mov
+   ffmpeg -framerate 30 -i '<кадры>/%06d.png' -c:v qtrle -pix_fmt argb anim.mov
    ```
 4. Перетащи `.mov` в CapCut поверх своего видео — фон прозрачный, позиционируй как нужно.
 
-> **Если CapCut не подхватит прозрачность из HEVC** — собери запасной ProRes 4444
-> (lossless, но ~4-5 ГБ): `task mov:prores SRC='output/project' OUT=anim.mov`.
+> **Нужен файл поменьше** (~100 МБ) — `task mov:small` (HEVC 4:4:4 + альфа, чёткость
+> близка к lossless). Совместимость зависит от версии CapCut; если прозрачность не
+> подхватится — вернись к обычному `task mov` (qtrle).
+>
+> ⚠️ Не используй HEVC 4:2:0 / низкий битрейт для этой графики — резкий текст и линии
+> начинают «рябить». Чёткость даёт либо lossless (qtrle), либо 4:4:4.
 
 > **Синхронизация под озвучку.** Сцены тайминятся маркерами (time events): между битами
 > стоят `waitUntil('…')`, которые на таймлайне редактора перетаскиваются под голос.

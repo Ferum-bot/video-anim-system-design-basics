@@ -1,13 +1,17 @@
 import {makeScene2D} from '@motion-canvas/2d';
-import {waitUntil} from '@motion-canvas/core';
-import {banner, colors, createStage, formatThousands, specCard} from '@lib';
+import {easeInOutCubic, waitUntil} from '@motion-canvas/core';
+import {backdrop, banner, colors, createStage, formatThousands, specCard} from '@lib';
 
 // Sync markers — drag these on the editor timeline to match the narration.
 export default makeScene2D(function* (view) {
   const stage = createStage(view);
 
+  const bg = backdrop();
+  stage.add(bg.node); // behind everything, hidden until the first component appears
+
   // ── Local NVMe SSD ──────────────────────────────────────────────────────────
   yield* waitUntil('ssd');
+  yield bg.appear(); // fork: dark backing fades in together with the first card
   const ssd = specCard({
     name: 'i3en.24xlarge', tag: 'Local SSD', spec: 'NVMe SSD · 8 × 7.5 TB',
     accent: colors.cyan, y: -260,
@@ -46,5 +50,6 @@ export default makeScene2D(function* (view) {
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitUntil('end'); // drag this anchor to set how long the scene holds before the switch
+  yield* waitUntil('end'); // drag this anchor to set where the scene ends
+  yield* stage.opacity(0, 0.8, easeInOutCubic); // smooth fade-out of everything
 });

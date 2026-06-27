@@ -26,6 +26,8 @@ export default makeScene2D(function* (view) {
 | `sceneTitle(...)` | Title + subtitle + accent rule. |
 | `specCard(...)` | Headline card: icon, name/tag, spec, optional counting price, meter bar. |
 | `banner(...)` | Full-width takeaway line that closes a scene. |
+| `backdrop()` | Solid dark panel that fades in behind content (export-only; readability over light footage). |
+| `latencyBand(...)` | Two nodes joined by a link with an endless pulse whose travel time conveys the latency. |
 
 ## Conventions
 

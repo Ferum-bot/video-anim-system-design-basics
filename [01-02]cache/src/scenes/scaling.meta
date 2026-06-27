@@ -1,0 +1,26 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "dataset",
+      "targetTime": 0
+    },
+    {
+      "name": "throughput",
+      "targetTime": 4.9
+    },
+    {
+      "name": "read-latency",
+      "targetTime": 9.3
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 13.7
+    },
+    {
+      "name": "end",
+      "targetTime": 14.399999999999999
+    }
+  ],
+  "seed": 19524467
+}

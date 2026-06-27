@@ -12,21 +12,33 @@ every video one visual language.
 
 - `lib/` — shared `@lib` toolkit (theme, stage, animated components). Reused by all
   videos. Full API in `lib/README.md`.
-- `[NN]<slug>/` — one Vite project per video (e.g. `[01]you-not-need-sharding/`).
-  Folder names contain brackets → **quote paths in the shell**: `vite '[01]…'`.
-  - `src/project.ts` — registers scenes via the `?scene` import suffix.
-  - `src/scenes/[NN]<topic>/*.tsx` — the scenes.
+- `[NN]<slug>/` — one Vite project per **part** of the video. Each part is edited and
+  rendered independently (own editor, own `.meta` markers, own render → own overlay clip
+  composited separately in CapCut). Folder names contain brackets → **quote paths in the
+  shell**: `vite '[01]…'`.
+  - `src/project.ts` — registers scenes via the `?scene` import suffix + the project `audio`.
+  - `src/scenes/**/*.tsx` — the scenes.
+  - `audio/0626.m4a` — that part's copy of the narration track (git-ignored); each part
+    uses its own `audioOffset` in `project.meta` to line up with its slice of the voiceover.
 - `example/` — reference scene (an HTTP-request topology; good Line/Circle/packet example).
-- `Taskfile.yml` — task runner. `task new name=…` scaffolds a new video already wired to `@lib`.
+- `Taskfile.yml` — task runner. `task new name=…` scaffolds a new part already wired to `@lib`.
 - `tsconfig.base.json` — shared strict TS config (`jsxImportSource: @motion-canvas/2d`).
 
-## Video `[01]you-not-need-sharding`
+## Video "you don't need sharding" — parts
 
-Argues a single modern machine is usually enough. Scenes (play in order) under
-`src/scenes/[01]hardware/`:
+The video is split into separate Vite projects, one per part, so each can be re-rendered
+without touching the others.
+
+Part `[01-01]hardware-limits/` — hardware (`src/scenes/[01]hardware/`):
 - `compute.tsx` — EC2 instances (m6i / x1e / u-24tb) + "8 small servers = 1 big, same price".
 - `storage.tsx` — SSD / HDD / S3 capacity.
 - `network.tsx` — bandwidth cards + a latency topology where pulses travel at a speed ∝ latency.
+
+Part `[01-02]cache/` — caching (`src/scenes/`):
+- `numbers.tsx` — "numbers to know": memory + throughput cards, then read/write latency bands.
+- `scaling.tsx` — "when to scale": three threshold cards (warning accents, near-full meters).
+
+Run a part with `task serve:sharding` / `task serve:cache` (or `npm run serve:01` / `serve:cache`).
 
 ## Conventions
 
@@ -49,13 +61,17 @@ Scenes are synced to the recorded narration with **Motion Canvas time events**, 
 pauses. Between beats use `yield* waitUntil('marker')` (from `@motion-canvas/core`); each
 marker appears on the editor timeline and is **dragged** to line up with the voiceover —
 offsets are saved in the scene's `.meta`, so re-timing needs no code changes. Keep only tiny
-sub-beat spacing and the final hold as `waitFor(...)`.
+sub-beat spacing as `waitFor(...)`. Every scene ends with a `waitUntil('end')` anchor (drag to
+set where it ends) followed by a 0.8s `stage.opacity(0)` fade-out.
 
-Existing markers:
+Existing markers (every scene also has `end`):
 - `compute` — `big-server`, `comparison`, `same-price`, `memory-optimized`, `high-memory`, `takeaway`.
 - `storage` — `ssd`, `hdd`, `object-storage`, `takeaway`.
 - `network` — `bandwidth`, `high-perf`, `az-bandwidth`, `latency`, `lat-within-az`,
   `lat-across-az`, `lat-cross-region`, `takeaway`.
+- `cache/numbers` — `memory`, `throughput`, `latency`, `lat-read`, `lat-write-az`,
+  `lat-write-cross`, `takeaway`.
+- `cache/scaling` — `dataset`, `throughput`, `read-latency`, `takeaway`.
 
 The full-video narration is wired as the project `audio` in `src/project.ts`
 (`audio/0626.m4a`, converted from the source WAV with `afconvert -f m4af -d aac`, git-ignored),
@@ -70,10 +86,13 @@ Final animations are composited over the talking-head footage in CapCut as a **t
 overlay**. Before rendering, set `TRANSPARENT = true` in `lib/stage.tsx` (revert to `false`
 for comfortable editing — the editor backdrop goes dark again). Render the PNG sequence from
 the editor (it carries alpha), then `task mov SRC=<frames-dir> OUT=scene.mov` encodes ProRes
-with alpha for CapCut — `task mov` defaults to **HEVC + alpha** (`hevc_videotoolbox`,
-`-pix_fmt bgra -alpha_quality`), ~60-90× smaller than ProRes (74 MB vs 4.8 GB for ~3.7 min).
-`task mov:prores` is the lossless ProRes 4444 fallback if CapCut won't read HEVC alpha. The
-narration track for marker-sync is wired as the project `audio` (see "Timing & sync").
+with alpha for CapCut — `task mov` defaults to **lossless qtrle** (`-c:v qtrle -pix_fmt
+argb`): crisp RGB + alpha, no compression shimmer on text/lines, ~340 MB for ~3.7 min (14×
+smaller than ProRes 4444, encodes in seconds). `task mov:small` is HEVC 4:4:4 (`ayuv`) at
+~100 MB if a smaller file is needed and CapCut accepts it. **Avoid HEVC 4:2:0** (`bgra`) for
+this graphics content — sharp text/lines shimmer regardless of bitrate (luma SSIM ~28 dB vs
+~43 dB for 4:4:4); crispness needs lossless or 4:4:4. The narration track for marker-sync is
+wired as the project `audio` (see "Timing & sync").
 
 ## Code patterns
 
@@ -116,10 +135,11 @@ small, well-named factories. Keep new code in this shape.
 
 ## `@lib` API (import from `@lib`)
 
-`createStage(view)`, `STAGE`, `CARD_WIDTH`; `colors`, `fonts`, `withAlpha`;
+`createStage(view)`, `STAGE`, `CARD_WIDTH`, `TRANSPARENT`; `colors`, `fonts`, `withAlpha`;
 `counter(target, format?)` (number → counts up from 0; string → static like `'∞'`);
 `formatThousands`; the `Widget` interface; and components `sceneTitle()`, `specCard()`,
-`banner()`. See `lib/README.md`.
+`banner()`, `backdrop()` (dark scrim, export-only), `latencyBand()` (A↔B with a pulse whose
+travel time = latency). See `lib/README.md`.
 
 ## Cross-root JSX wiring (don't break this)
 

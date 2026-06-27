@@ -88,8 +88,8 @@ export function specCard(options: SpecCardOptions): Widget {
       fill={colors.surface}
       stroke={accent}
       lineWidth={2}
-      shadowColor={withAlpha(accent, 0.33)}
-      shadowBlur={22}
+      shadowColor={withAlpha(accent, 0.28)}
+      shadowBlur={8}
       y={y + SLIDE_OFFSET}
       opacity={0}
     >
@@ -122,8 +122,7 @@ export function specCard(options: SpecCardOptions): Widget {
         <Rect layout direction="row" alignItems="center"
           width={CONTENT_WIDTH} height={14} radius={7} fill={colors.track}>
           <Rect height={14} radius={7} fill={accent}
-            width={() => fill() * CONTENT_WIDTH}
-            shadowColor={accent} shadowBlur={10}/>
+            width={() => fill() * CONTENT_WIDTH}/>
         </Rect>
       </Layout>
     </Rect>

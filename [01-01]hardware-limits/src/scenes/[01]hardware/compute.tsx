@@ -1,7 +1,7 @@
 import {makeScene2D, Layout, Rect, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeOutCubic, sequence, waitFor, waitUntil} from '@motion-canvas/core';
+import {all, createRef, easeInOutCubic, easeOutCubic, sequence, waitFor, waitUntil} from '@motion-canvas/core';
 import {
-  banner, colors, counter, createStage, fonts,
+  backdrop, banner, colors, counter, createStage, fonts,
   formatThousands, specCard, withAlpha,
 } from '@lib';
 
@@ -15,8 +15,12 @@ const MINI_COUNT = 8;
 export default makeScene2D(function* (view) {
   const stage = createStage(view);
 
+  const bg = backdrop();
+  stage.add(bg.node); // behind everything, hidden until the first component appears
+
   // ── The big server (stays at the top for the whole scene) ───────────────────
   yield* waitUntil('big-server');
+  yield bg.appear(); // fork: dark backing fades in together with the first card
   const big = specCard({
     name: 'm6i.32xlarge', tag: 'General Purpose', spec: '128 vCPU',
     accent: colors.blue, y: -320,
@@ -46,7 +50,7 @@ export default makeScene2D(function* (view) {
           alignItems="center" justifyContent="center"
           width={MINI_W} height={MINI_H} radius={8}
           fill={colors.surface} stroke={colors.red} lineWidth={1.5}
-          shadowColor={withAlpha(colors.red, 0.2)} shadowBlur={10}
+          shadowColor={withAlpha(colors.red, 0.25)} shadowBlur={4}
           opacity={0} scale={0.85}>
           <Txt text="m6i.4xlarge" fill={colors.textDim} fontSize={15} fontWeight={600} fontFamily={fonts.mono}/>
           <Txt text="64 GiB" fill={colors.red} fontSize={19} fontWeight={700} fontFamily={fonts.mono}/>
@@ -120,5 +124,6 @@ export default makeScene2D(function* (view) {
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitUntil('end'); // drag this anchor to set how long the scene holds before the switch
+  yield* waitUntil('end'); // drag this anchor to set where the scene ends
+  yield* stage.opacity(0, 0.8, easeInOutCubic); // smooth fade-out of everything
 });

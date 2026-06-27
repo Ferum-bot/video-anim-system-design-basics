@@ -10,6 +10,7 @@ export const colors = {
   surface: '#161b22',
   border: '#30363d',
   track: '#21262d',
+  backdrop: '#06080c', // soft dark scrim behind content (overlay readability)
 
   // text
   text: '#e6edf3',

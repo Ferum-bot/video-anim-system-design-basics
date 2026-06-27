@@ -1,0 +1,38 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "memory",
+      "targetTime": 0
+    },
+    {
+      "name": "throughput",
+      "targetTime": 4.9
+    },
+    {
+      "name": "latency",
+      "targetTime": 9.3
+    },
+    {
+      "name": "lat-read",
+      "targetTime": 10.3
+    },
+    {
+      "name": "lat-write-az",
+      "targetTime": 12.5
+    },
+    {
+      "name": "lat-write-cross",
+      "targetTime": 14.7
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 16.9
+    },
+    {
+      "name": "end",
+      "targetTime": 17.599999999999998
+    }
+  ],
+  "seed": 602510009
+}
