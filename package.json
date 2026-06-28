@@ -11,7 +11,13 @@
     "serve:sharding": "vite '[01_01]hardware-limits'",
     "build:sharding": "vite build '[01_01]hardware-limits'",
     "serve:cache": "vite '[01_02]cache'",
-    "build:cache": "vite build '[01_02]cache'"
+    "build:cache": "vite build '[01_02]cache'",
+    "serve:database": "vite '[01_03]database'",
+    "build:database": "vite build '[01_03]database'",
+    "serve:app": "vite '[01_04]app-servers'",
+    "build:app": "vite build '[01_04]app-servers'",
+    "serve:queue": "vite '[01_05]message-queue'",
+    "build:queue": "vite build '[01_05]message-queue'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

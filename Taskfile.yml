@@ -110,6 +110,54 @@ tasks:
         vars:
           NAME: '[01_02]cache'
 
+  # ── [03] Database ────────────────────────────────────────────────────────────
+
+  serve:database:
+    desc: "Запустить редактор для части [03] Database (отдельный рендер)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[01_03]database'
+
+  build:database:
+    desc: "Собрать анимацию для части [03] Database"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[01_03]database'
+
+  # ── [04] Application servers ─────────────────────────────────────────────────
+
+  serve:app:
+    desc: "Запустить редактор для части [04] Application servers"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[01_04]app-servers'
+
+  build:app:
+    desc: "Собрать анимацию для части [04] Application servers"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[01_04]app-servers'
+
+  # ── [05] Message queue ───────────────────────────────────────────────────────
+
+  serve:queue:
+    desc: "Запустить редактор для части [05] Message queue (Kafka)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[01_05]message-queue'
+
+  build:queue:
+    desc: "Собрать анимацию для части [05] Message queue"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[01_05]message-queue'
+
   # ── Scaffold ─────────────────────────────────────────────────────────────────
 
   new:

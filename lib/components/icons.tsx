@@ -1,6 +1,9 @@
 import {Img, Rect} from '@motion-canvas/2d';
 import {colors} from '../theme';
 import redisUrl from '../assets/icons/redis.svg';
+import postgresUrl from '../assets/icons/postgresql.svg';
+import kubernetesUrl from '../assets/icons/kubernetes.svg';
+import kafkaUrl from '../assets/icons/kafka.svg';
 
 // Tech logos shown in a SpecCard's icon slot. To add one: drop its SVG in
 // `lib/assets/icons/`, import it, and export a `<tech>Icon` factory below.
@@ -20,4 +23,7 @@ function techIcon(src: string) {
 }
 
 export const redisIcon = () => techIcon(redisUrl);
-// Future: postgresIcon, mysqlIcon, podIcon, kafkaIcon — add svg + a line here.
+export const postgresIcon = () => techIcon(postgresUrl);
+export const podIcon = () => techIcon(kubernetesUrl);
+export const kafkaIcon = () => techIcon(kafkaUrl);
+// Future: mysqlIcon — add svg + a line here.

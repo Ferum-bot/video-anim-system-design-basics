@@ -1,0 +1,46 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "storage",
+      "targetTime": 11.401622360682081
+    },
+    {
+      "name": "latency",
+      "targetTime": 20.374833741922323
+    },
+    {
+      "name": "lat-read-cache",
+      "targetTime": 23.79330299953372
+    },
+    {
+      "name": "lat-read-disk",
+      "targetTime": 31.721256504402817
+    },
+    {
+      "name": "lat-write",
+      "targetTime": 37.73989217431555
+    },
+    {
+      "name": "tput-reads",
+      "targetTime": 51.09879418750501
+    },
+    {
+      "name": "tput-writes",
+      "targetTime": 56.498794187505005
+    },
+    {
+      "name": "connections",
+      "targetTime": 81.19502509669192
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 85.59502509669191
+    },
+    {
+      "name": "end",
+      "targetTime": 87.0895983453171
+    }
+  ],
+  "seed": 2033646749
+}

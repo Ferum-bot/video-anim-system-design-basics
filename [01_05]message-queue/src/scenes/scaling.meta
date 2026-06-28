@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "throughput",
+      "targetTime": 5.236534209566035
+    },
+    {
+      "name": "partitions",
+      "targetTime": 18.64748126509926
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 23.04748126509926
+    },
+    {
+      "name": "end",
+      "targetTime": 29.139075755189566
+    }
+  ],
+  "seed": 839065278
+}

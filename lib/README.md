@@ -25,7 +25,7 @@ export default makeScene2D(function* (view) {
 | `Widget` | `{ node, appear() }` — every animated piece follows this shape. |
 | `sceneTitle(...)` | Title + subtitle + accent rule. |
 | `specCard(...)` | Headline card: icon, name/tag, spec, optional counting price, meter bar. Pass `icon` to override the default glyph (e.g. `redisIcon()`). |
-| `redisIcon()` | Redis logo tile for a card's icon slot (devicon SVG). More techs to come — see `components/icons.tsx`. |
+| `redisIcon()`, `postgresIcon()`, `podIcon()`, `kafkaIcon()` | Tech-logo tiles for a card's icon slot (devicon SVG: Redis, PostgreSQL, Kubernetes, Kafka). Add more in `components/icons.tsx`. |
 | `banner(...)` | Full-width takeaway line that closes a scene. |
 | `backdrop()` | Solid dark panel that fades in behind content (export-only; readability over light footage). |
 | `latencyBand(...)` | Two nodes joined by a link with an endless pulse whose travel time conveys the latency. |

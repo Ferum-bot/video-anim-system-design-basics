@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "cpu",
+      "targetTime": 14.973538475767766
+    },
+    {
+      "name": "scale-out",
+      "targetTime": 19.873538475767766
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 21.413348091674862
+    },
+    {
+      "name": "end",
+      "targetTime": 27.65647445910462
+    }
+  ],
+  "seed": 725179995
+}

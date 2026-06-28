@@ -1,0 +1,34 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "throughput",
+      "targetTime": 4.708321650980056
+    },
+    {
+      "name": "latency",
+      "targetTime": 13.918500809089101
+    },
+    {
+      "name": "msg-size",
+      "targetTime": 24.416854800107547
+    },
+    {
+      "name": "storage",
+      "targetTime": 38.50335340174443
+    },
+    {
+      "name": "retention",
+      "targetTime": 45.49053791582453
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 50.49053791582453
+    },
+    {
+      "name": "end",
+      "targetTime": 55.13524122128052
+    }
+  ],
+  "seed": 353695187
+}

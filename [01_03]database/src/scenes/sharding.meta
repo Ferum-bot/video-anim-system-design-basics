@@ -1,0 +1,30 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "dataset",
+      "targetTime": 6.287492663033988
+    },
+    {
+      "name": "write-throughput",
+      "targetTime": 18.545931878562776
+    },
+    {
+      "name": "read-latency",
+      "targetTime": 31.075329526548206
+    },
+    {
+      "name": "geo",
+      "targetTime": 40.58824507713733
+    },
+    {
+      "name": "takeaway",
+      "targetTime": 45.58824507713733
+    },
+    {
+      "name": "end",
+      "targetTime": 50.08965514668289
+    }
+  ],
+  "seed": 2440437383
+}

@@ -35,9 +35,21 @@ Part `[01_01]hardware-limits/` — hardware (`src/scenes/[01]hardware/`):
 - `storage.tsx` — SSD / HDD / S3 capacity.
 - `network.tsx` — bandwidth cards + a latency topology where pulses travel at a speed ∝ latency.
 
-Part `[01_02]cache/` — caching (`src/scenes/`):
-- `numbers.tsx` — "numbers to know": memory + throughput cards, then read/write latency bands.
+Part `[01_02]cache/` — caching (`src/scenes/`, Redis icons):
+- `numbers.tsx` — "numbers to know": memory card → latency bands → throughput card.
 - `scaling.tsx` — "when to scale": three threshold cards (warning accents, near-full meters).
+
+Part `[01_03]database/` — databases (`src/scenes/`, PostgreSQL icons):
+- `numbers.tsx` — storage card → latency bands (read mem/disk, write) → throughput & connections (3 cards).
+- `sharding.tsx` — "when to shard": 3 threshold cards, then a geo-distribution card.
+
+Part `[01_04]app-servers/` — application servers (`src/scenes/`, Kubernetes/pod icons):
+- `numbers.tsx` — CPU + memory cards, then network + connections cards.
+- `scaling.tsx` — CPU-utilization signal card, then a "scale out" row of pods appearing.
+
+Part `[01_05]message-queue/` — message queues (`src/scenes/`, Kafka icons):
+- `numbers.tsx` — five sequential beats: throughput → latency band → message-size → storage → retention.
+- `scaling.tsx` — two threshold cards (throughput, partition count).
 
 Run a part with `task serve:sharding` / `task serve:cache` (or `npm run serve:01` / `serve:cache`).
 
@@ -70,9 +82,16 @@ Existing markers (every scene also has `end`):
 - `storage` — `ssd`, `hdd`, `object-storage`, `takeaway`.
 - `network` — `bandwidth`, `high-perf`, `az-bandwidth`, `latency`, `lat-within-az`,
   `lat-across-az`, `lat-cross-region`, `takeaway`.
-- `cache/numbers` — `memory`, `throughput`, `latency`, `lat-read`, `lat-write-az`,
-  `lat-write-cross`, `takeaway`.
+- `cache/numbers` — `memory`, `latency`, `lat-read`, `lat-write-az`, `lat-write-cross`,
+  `throughput`, `takeaway`.
 - `cache/scaling` — `dataset`, `throughput`, `read-latency`, `takeaway`.
+- `database/numbers` — `storage`, `latency`, `lat-read-cache`, `lat-read-disk`, `lat-write`,
+  `tput-reads`, `tput-writes`, `connections`, `takeaway`.
+- `database/sharding` — `dataset`, `write-throughput`, `read-latency`, `geo`, `takeaway`.
+- `app-servers/numbers` — `cpu`, `memory`, `network`, `connections`, `takeaway`.
+- `app-servers/scaling` — `cpu`, `scale-out`, `takeaway`.
+- `queue/numbers` — `throughput`, `latency`, `msg-size`, `storage`, `retention`, `takeaway`.
+- `queue/scaling` — `throughput`, `partitions`, `takeaway`.
 
 The full-video narration is wired as the project `audio` in `src/project.ts`
 (`audio/0626.m4a`, converted from the source WAV with `afconvert -f m4af -d aac`, git-ignored),
@@ -140,8 +159,8 @@ small, well-named factories. Keep new code in this shape.
 `counter(target, format?)` (number → counts up from 0; string → static like `'∞'`);
 `formatThousands`; the `Widget` interface; and components `sceneTitle()`, `specCard()`
 (accepts an `icon` node), `banner()`, `backdrop()` (dark scrim, export-only), `latencyBand()`
-(A↔B with a pulse whose travel time = latency), and tech-logo icons `redisIcon()` (more to
-come). See `lib/README.md`.
+(A↔B with a pulse whose travel time = latency), and tech-logo icons `redisIcon()`,
+`postgresIcon()`, `podIcon()` (Kubernetes), `kafkaIcon()`. See `lib/README.md`.
 
 **Tech icons.** Logos live in `lib/assets/icons/*.svg` (official devicon SVGs, inlined by
 Vite) and are wrapped into card-sized tiles in `lib/components/icons.tsx`. To add one
