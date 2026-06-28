@@ -21,6 +21,13 @@ every video one visual language.
   - `src/scenes/**/*.tsx` — the scenes.
   - `audio/0626.m4a` — that part's copy of the narration track (git-ignored); each part
     uses its own `audioOffset` in `project.meta` to line up with its slice of the voiceover.
+- `common/` — reusable call-to-action / base overlays shared across **all** videos
+  (not part-specific), rendered standalone and dropped in wherever needed. No narration
+  track — each scene is self-timed with `waitFor`. Currently `subscribe.tsx` ("Подпишитесь
+  на канал": a cursor glides in and clicks a YouTube subscribe button that morphs to the
+  subscribed state). Its building blocks live in `common/src/components/`
+  (`subscribeButton.tsx`, `cursor.tsx` — promote to `@lib` if a video needs them directly).
+  Run with `task serve:common` / `task build:common`.
 - `example/` — reference scene (an HTTP-request topology; good Line/Circle/packet example).
 - `Taskfile.yml` — task runner. `task new name=…` scaffolds a new part already wired to `@lib`.
 - `tsconfig.base.json` — shared strict TS config (`jsxImportSource: @motion-canvas/2d`).

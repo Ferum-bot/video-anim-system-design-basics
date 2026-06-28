@@ -31,6 +31,9 @@ export const colors = {
 
 export const fonts = {
   mono: 'JetBrains Mono, monospace',
+  // Clean sans for brand/CTA overlays (YouTube-style) — falls back to system sans
+  // if Roboto isn't installed.
+  sans: 'Roboto, "Helvetica Neue", Arial, sans-serif',
 } as const;
 
 /**
