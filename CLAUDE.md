@@ -51,6 +51,18 @@ Part `[01_05]message-queue/` — message queues (`src/scenes/`, Kafka icons):
 - `numbers.tsx` — five sequential beats: throughput → latency band → message-size → storage → retention.
 - `scaling.tsx` — two threshold cards (throughput, partition count).
 
+Part `[01_06]takeaways/` — closing summary (`src/scenes/takeaways.tsx` orchestrates;
+the beats live in `src/scenes/takeaways/`):
+- Same `backdrop()` scrim as every part. Four bespoke metaphor animations, each inside a
+  compact transparent-fill accent-bordered frame (DB table+SQL, cache ignites + instant ping,
+  client→server→Kafka→consumer round-trip, pod local memory), play one at a time; then they
+  collapse into a 2×2 recap grid.
+- The scene is a thin orchestrator; each beat is its own factory file (`dbBeat.tsx`,
+  `cacheBeat.tsx`, `queueBeat.tsx`, `appBeat.tsx`, `recap.tsx`) returning a `Beat`
+  (`{node, play(), loop?()}`). The shared block shell + constants live in `takeaways/beat.tsx`
+  (`beatBlock()`, `showBlock()`). Helper files sit next to the scene but are **not** registered
+  in `project.ts`, so they aren't loaded as scenes.
+
 Run a part with `task serve:sharding` / `task serve:cache` (or `npm run serve:01` / `serve:cache`).
 
 ## Conventions
@@ -92,6 +104,7 @@ Existing markers (every scene also has `end`):
 - `app-servers/scaling` — `cpu`, `scale-out`, `takeaway`.
 - `queue/numbers` — `throughput`, `latency`, `msg-size`, `storage`, `retention`, `takeaway`.
 - `queue/scaling` — `throughput`, `partitions`, `takeaway`.
+- `takeaways` — `db`, `cache`, `queue`, `app`, `recap` (+ `end`; no `takeaway`).
 
 The full-video narration is wired as the project `audio` in `src/project.ts`
 (`audio/0626.m4a`, converted from the source WAV with `afconvert -f m4af -d aac`, git-ignored),
@@ -155,9 +168,11 @@ small, well-named factories. Keep new code in this shape.
 
 ## `@lib` API (import from `@lib`)
 
-`createStage(view)`, `STAGE`, `CARD_WIDTH`, `TRANSPARENT`; `colors`, `fonts`, `withAlpha`;
+`createStage(view)`, `endScene(stage)` (the shared `waitUntil('end')` + fade-out every
+scene closes with), `STAGE`, `CARD_WIDTH`, `TRANSPARENT`; `colors`, `fonts`, `withAlpha`;
 `counter(target, format?)` (number → counts up from 0; string → static like `'∞'`);
-`formatThousands`; the `Widget` interface; and components `sceneTitle()`, `specCard()`
+`formatThousands`; the `Widget` interface; and components `sceneTitle()`, `sectionLabel()`
+(the top muted caption — `appear()` once, then `retitle()` per beat), `specCard()`
 (accepts an `icon` node), `banner()`, `backdrop()` (dark scrim, export-only), `latencyBand()`
 (A↔B with a pulse whose travel time = latency), and tech-logo icons `redisIcon()`,
 `postgresIcon()`, `podIcon()` (Kubernetes), `kafkaIcon()`. See `lib/README.md`.
@@ -169,11 +184,14 @@ pass it via `specCard({ icon: <tech>Icon() })`.
 
 ## Cross-root JSX wiring (don't break this)
 
-`lib/` lives **outside** each project's Vite `root`, so each project's `vite.config.ts`
-must keep: `esbuild: { jsx: 'automatic', jsxImportSource: '@motion-canvas/2d' }`,
-`resolve.alias['@lib']`, and `server.fs.allow: [repoRoot]`. Its `tsconfig.json` must keep
-the `@lib` paths and `include: ["src", "../lib"]`. Without these, JSX inside `@lib` won't
-transform. `task new` writes all of this for new videos.
+`lib/` lives **outside** each project's Vite `root`, so the config must set
+`esbuild: { jsx: 'automatic', jsxImportSource: '@motion-canvas/2d' }`,
+`resolve.alias['@lib']`, and `server.fs.allow: [repoRoot]`. This shared wiring lives **once**
+in `lib/vite.ts` (`defineVideoProject(import.meta.url)`); every `vite.config.ts` is just two
+lines that call it. Each `tsconfig.json` must keep the `@lib` paths, `include: ["src",
+"../lib"]`, and `exclude: ["../lib/vite.ts"]` (that file is build tooling — it uses node
+builtins, so it stays out of the scene typecheck). Without the JSX wiring, JSX inside `@lib`
+won't transform. `task new` writes all of this for new videos.
 
 ## Working & verifying
 

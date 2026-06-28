@@ -6,6 +6,13 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "serve:01"],
       "port": 9000
+    },
+    {
+      "name": "takeaways",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:takeaways"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

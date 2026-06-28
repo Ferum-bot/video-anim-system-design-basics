@@ -1,8 +1,8 @@
 import {makeScene2D, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, easeOutCubic, waitUntil} from '@motion-canvas/core';
+import {all, createRef, easeOutCubic, waitUntil} from '@motion-canvas/core';
 import {
-  backdrop, banner, colors, createStage, fonts, formatThousands,
-  latencyBand, specCard,
+  backdrop, banner, colors, createStage, endScene, fonts, formatThousands,
+  latencyBand, sectionLabel, specCard,
 } from '@lib';
 
 export default makeScene2D(function* (view) {
@@ -12,16 +12,13 @@ export default makeScene2D(function* (view) {
   stage.add(bg.node); // behind everything, hidden until the first component appears
 
   // Section label, reused across the two phases (hidden until the bandwidth cue).
-  const phase = createRef<Txt>();
-  stage.add(
-    <Txt ref={phase} text="Пропускная способность" fill={colors.textMuted}
-      fontSize={26} fontWeight={600} fontFamily={fonts.mono} y={-330} opacity={0}/>,
-  );
+  const phase = sectionLabel('Пропускная способность');
+  stage.add(phase.node);
 
   // ── Phase A: bandwidth (cards without a price) ──────────────────────────────
   yield* waitUntil('bandwidth');
   yield bg.appear(); // fork: dark backing fades in together with the first content
-  yield* phase().opacity(1, 0.5, easeOutCubic);
+  yield* phase.appear();
 
   const standard = specCard({
     name: 'Standard instance', tag: 'EC2', spec: 'Внутри датацентра',
@@ -58,7 +55,7 @@ export default makeScene2D(function* (view) {
   standard.node.remove();
   highPerf.node.remove();
   note().remove();
-  yield* phase().text('Задержки предсказуемы', 0.4);
+  yield* phase.retitle('Задержки предсказуемы');
 
   // ── Phase B: latency topology (one cue per tier) ────────────────────────────
   const bands = [
@@ -83,6 +80,5 @@ export default makeScene2D(function* (view) {
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitUntil('end'); // drag this anchor to set where the scene ends
-  yield* stage.opacity(0, 0.8, easeInOutCubic); // smooth fade-out of everything
+  yield* endScene(stage);
 });

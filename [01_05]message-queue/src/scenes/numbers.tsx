@@ -1,8 +1,8 @@
-import {makeScene2D, Txt} from '@motion-canvas/2d';
-import {createRef, easeInOutCubic, easeOutCubic, waitUntil} from '@motion-canvas/core';
+import {makeScene2D} from '@motion-canvas/2d';
+import {waitUntil} from '@motion-canvas/core';
 import {
-  backdrop, banner, colors, createStage, fonts, formatThousands,
-  kafkaIcon, latencyBand, specCard,
+  backdrop, banner, colors, createStage, endScene, formatThousands,
+  kafkaIcon, latencyBand, sectionLabel, specCard,
 } from '@lib';
 
 export default makeScene2D(function* (view) {
@@ -11,16 +11,13 @@ export default makeScene2D(function* (view) {
   const bg = backdrop();
   stage.add(bg.node); // behind everything, hidden until the first component appears
 
-  const label = createRef<Txt>();
-  stage.add(
-    <Txt ref={label} text="Числа, которые нужно знать" fill={colors.textMuted}
-      fontSize={26} fontWeight={600} fontFamily={fonts.mono} y={-330} opacity={0}/>,
-  );
+  const label = sectionLabel('Числа, которые нужно знать');
+  stage.add(label.node);
 
   // ── 1. Throughput ─────────────────────────────────────────────────────────────
   yield* waitUntil('throughput');
   yield bg.appear(); // fork: dark backing fades in together with the first content
-  yield* label().opacity(1, 0.5, easeOutCubic);
+  yield* label.appear();
 
   const throughput = specCard({
     name: 'Throughput', tag: 'на брокер', spec: 'современные конфигурации',
@@ -89,6 +86,5 @@ export default makeScene2D(function* (view) {
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitUntil('end'); // drag this anchor to set where the scene ends
-  yield* stage.opacity(0, 0.8, easeInOutCubic); // smooth fade-out of everything
+  yield* endScene(stage);
 });

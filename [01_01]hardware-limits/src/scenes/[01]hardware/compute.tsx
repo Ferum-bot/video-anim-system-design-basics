@@ -1,7 +1,7 @@
 import {makeScene2D, Layout, Rect, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, easeOutCubic, sequence, waitFor, waitUntil} from '@motion-canvas/core';
+import {all, createRef, easeOutCubic, sequence, waitFor, waitUntil} from '@motion-canvas/core';
 import {
-  backdrop, banner, colors, counter, createStage, fonts,
+  backdrop, banner, colors, counter, createStage, endScene, fonts,
   formatThousands, specCard, withAlpha,
 } from '@lib';
 
@@ -124,6 +124,5 @@ export default makeScene2D(function* (view) {
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitUntil('end'); // drag this anchor to set where the scene ends
-  yield* stage.opacity(0, 0.8, easeInOutCubic); // smooth fade-out of everything
+  yield* endScene(stage);
 });

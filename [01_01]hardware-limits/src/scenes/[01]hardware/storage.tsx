@@ -1,6 +1,6 @@
 import {makeScene2D} from '@motion-canvas/2d';
-import {easeInOutCubic, waitUntil} from '@motion-canvas/core';
-import {backdrop, banner, colors, createStage, formatThousands, specCard} from '@lib';
+import {waitUntil} from '@motion-canvas/core';
+import {backdrop, banner, colors, createStage, endScene, formatThousands, specCard} from '@lib';
 
 // Sync markers — drag these on the editor timeline to match the narration.
 export default makeScene2D(function* (view) {
@@ -50,6 +50,5 @@ export default makeScene2D(function* (view) {
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitUntil('end'); // drag this anchor to set where the scene ends
-  yield* stage.opacity(0, 0.8, easeInOutCubic); // smooth fade-out of everything
+  yield* endScene(stage);
 });

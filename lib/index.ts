@@ -8,6 +8,7 @@ export * from './format';
 export * from './counter';
 export * from './widget';
 export * from './components/SceneTitle';
+export * from './components/SectionLabel';
 export * from './components/SpecCard';
 export * from './components/Banner';
 export * from './components/Backdrop';

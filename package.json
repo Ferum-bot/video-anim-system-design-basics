@@ -17,7 +17,11 @@
     "serve:app": "vite '[01_04]app-servers'",
     "build:app": "vite build '[01_04]app-servers'",
     "serve:queue": "vite '[01_05]message-queue'",
-    "build:queue": "vite build '[01_05]message-queue'"
+    "build:queue": "vite build '[01_05]message-queue'",
+    "serve:takeaways": "vite '[01_06]takeaways'",
+    "build:takeaways": "vite build '[01_06]takeaways'",
+    "serve:common": "vite common",
+    "build:common": "vite build common"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

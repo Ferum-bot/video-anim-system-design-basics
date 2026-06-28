@@ -24,6 +24,9 @@ export const colors = {
   orange: '#ffa657',
   cyan: '#56d4dd',
   red: '#f85149',
+
+  // brand (exact brand colours for call-to-action overlays — outside the palette)
+  youtube: '#ff0033',
 } as const;
 
 export const fonts = {

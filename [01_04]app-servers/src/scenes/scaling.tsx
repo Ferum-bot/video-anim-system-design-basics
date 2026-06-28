@@ -1,8 +1,8 @@
-import {Layout, makeScene2D, Txt} from '@motion-canvas/2d';
+import {Layout, makeScene2D} from '@motion-canvas/2d';
+import {all, easeOutBack, easeOutCubic, sequence, waitUntil} from '@motion-canvas/core';
 import {
-  all, createRef, easeInOutCubic, easeOutBack, easeOutCubic, sequence, waitUntil,
-} from '@motion-canvas/core';
-import {backdrop, banner, colors, createStage, fonts, podIcon, specCard} from '@lib';
+  backdrop, banner, colors, createStage, endScene, podIcon, sectionLabel, specCard,
+} from '@lib';
 
 export default makeScene2D(function* (view) {
   const stage = createStage(view);
@@ -10,16 +10,13 @@ export default makeScene2D(function* (view) {
   const bg = backdrop();
   stage.add(bg.node); // behind everything, hidden until the first component appears
 
-  const label = createRef<Txt>();
-  stage.add(
-    <Txt ref={label} text="Когда масштабироваться горизонтально" fill={colors.textMuted}
-      fontSize={26} fontWeight={600} fontFamily={fonts.mono} y={-330} opacity={0}/>,
-  );
+  const label = sectionLabel('Когда масштабироваться горизонтально');
+  stage.add(label.node);
 
   // ── The signal: CPU utilization stays high ──────────────────────────────────
   yield* waitUntil('cpu');
   yield bg.appear(); // fork: dark backing fades in together with the first content
-  yield* label().opacity(1, 0.5, easeOutCubic);
+  yield* label.appear();
 
   const cpu = specCard({
     name: 'Загрузка CPU', tag: 'сигнал', spec: 'устойчиво выше 70–80%',
@@ -48,6 +45,5 @@ export default makeScene2D(function* (view) {
   });
   stage.add(outro.node);
   yield* outro.appear();
-  yield* waitUntil('end'); // drag this anchor to set where the scene ends
-  yield* stage.opacity(0, 0.8, easeInOutCubic); // smooth fade-out of everything
+  yield* endScene(stage);
 });

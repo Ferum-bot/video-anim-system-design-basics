@@ -13,6 +13,9 @@ const GLYPH = 42;
 
 /** A rounded surface tile holding a logo, sized to match the card's icon slot. */
 function techIcon(src: string) {
+  // Explicit flex-centre so the logo is centred whether the tile sits in a layout
+  // parent (recap grid) or a plain Node (beat). Without `layout`, a layout parent
+  // makes the tile inherit flex and shove the Img to the top-left (offset ~11px).
   return (
     <Rect layout justifyContent="center" alignItems="center"
       width={TILE} height={TILE} radius={12}

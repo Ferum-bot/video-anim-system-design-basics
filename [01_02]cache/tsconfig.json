@@ -9,5 +9,6 @@
       "@lib/*": ["../lib/*"]
     }
   },
-  "include": ["src", "../lib"]
+  "include": ["src", "../lib"],
+  "exclude": ["../lib/vite.ts"]
 }

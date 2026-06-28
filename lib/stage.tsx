@@ -1,6 +1,7 @@
 import {Rect} from '@motion-canvas/2d';
 import type {View2D} from '@motion-canvas/2d';
-import {createRef} from '@motion-canvas/core';
+import {createRef, easeInOutCubic, waitUntil} from '@motion-canvas/core';
+import type {ThreadGenerator} from '@motion-canvas/core';
 import {colors} from './theme';
 
 /**
@@ -35,4 +36,16 @@ export function createStage(view: View2D): Rect {
       fill={TRANSPARENT ? null : colors.background} clip/>,
   );
   return panel();
+}
+
+/** Seconds for the closing fade every scene shares. */
+const FADE_OUT = 0.8;
+
+/**
+ * The shared scene ending: wait on the draggable `end` timeline anchor, then fade
+ * the whole panel out. Every scene finishes with `yield* endScene(stage)`.
+ */
+export function* endScene(stage: Rect): ThreadGenerator {
+  yield* waitUntil('end'); // drag this anchor to set where the scene ends
+  yield* stage.opacity(0, FADE_OUT, easeInOutCubic); // smooth fade-out of everything
 }
