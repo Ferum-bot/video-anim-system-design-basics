@@ -19,3 +19,13 @@ declare module '*.wav' {
   const src: string;
   export default src;
 }
+
+// Image assets (resolved to a URL by Vite) — tech logos etc.
+declare module '*.svg' {
+  const src: string;
+  export default src;
+}
+declare module '*.png' {
+  const src: string;
+  export default src;
+}

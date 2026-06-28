@@ -3,23 +3,23 @@
   "timeEvents": [
     {
       "name": "dataset",
-      "targetTime": 0
+      "targetTime": 7.038898555260413
     },
     {
       "name": "throughput",
-      "targetTime": 4.9
+      "targetTime": 19.78177259872503
     },
     {
       "name": "read-latency",
-      "targetTime": 9.3
+      "targetTime": 34.3457852909155
     },
     {
       "name": "takeaway",
-      "targetTime": 13.7
+      "targetTime": 42.68331306339789
     },
     {
       "name": "end",
-      "targetTime": 14.399999999999999
+      "targetTime": 51.866604605738004
     }
   ],
   "seed": 19524467

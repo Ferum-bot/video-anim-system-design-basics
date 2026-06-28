@@ -1,7 +1,7 @@
 import {makeScene2D, Txt} from '@motion-canvas/2d';
 import {createRef, easeInOutCubic, easeOutCubic, waitUntil} from '@motion-canvas/core';
 import {
-  backdrop, banner, colors, createStage, fonts, formatThousands, specCard,
+  backdrop, banner, colors, createStage, fonts, formatThousands, redisIcon, specCard,
 } from '@lib';
 
 // Each card is a "you've hit a limit" signal — warning accents + near-full meters.
@@ -24,7 +24,7 @@ export default makeScene2D(function* (view) {
 
   const dataset = specCard({
     name: 'Объём данных', tag: 'порог', spec: 'приближается к 1 TB',
-    accent: colors.orange, y: -220,
+    accent: colors.orange, y: -220, icon: redisIcon(),
     meter: {label: 'Заполнение', fill: 0.92, value: '~1 TB'},
   });
   stage.add(dataset.node);
@@ -34,7 +34,7 @@ export default makeScene2D(function* (view) {
   yield* waitUntil('throughput');
   const throughput = specCard({
     name: 'Throughput', tag: 'порог', spec: 'устойчиво 100k+ ops/s',
-    accent: colors.orange, y: 10,
+    accent: colors.orange, y: 10, icon: redisIcon(),
     meter: {label: 'Операций/с', fill: 0.9, value: 100, format: v => `${formatThousands(v)}k+ ops/s`},
   });
   stage.add(throughput.node);
@@ -44,7 +44,7 @@ export default makeScene2D(function* (view) {
   yield* waitUntil('read-latency');
   const latency = specCard({
     name: 'Задержка чтения', tag: 'порог', spec: 'нужно стабильно < 0.5 ms',
-    accent: colors.red, y: 240,
+    accent: colors.red, y: 240, icon: redisIcon(),
     meter: {label: 'Цель', fill: 0.95, value: '< 0.5 ms'},
   });
   stage.add(latency.node);

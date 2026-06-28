@@ -85,14 +85,14 @@ tasks:
     cmds:
       - task: serve
         vars:
-          NAME: '[01-01]hardware-limits'
+          NAME: '[01_01]hardware-limits'
 
   build:sharding:
     desc: "Собрать анимацию для видео [01] You don't need sharding"
     cmds:
       - task: build
         vars:
-          NAME: '[01-01]hardware-limits'
+          NAME: '[01_01]hardware-limits'
 
   # ── [02] Cache ───────────────────────────────────────────────────────────────
 
@@ -101,14 +101,14 @@ tasks:
     cmds:
       - task: serve
         vars:
-          NAME: '[01-02]cache'
+          NAME: '[01_02]cache'
 
   build:cache:
     desc: "Собрать анимацию для части [02] Cache"
     cmds:
       - task: build
         vars:
-          NAME: '[01-02]cache'
+          NAME: '[01_02]cache'
 
   # ── Scaffold ─────────────────────────────────────────────────────────────────
 
@@ -235,6 +235,10 @@ tasks:
         declare module '*.m4a' { const src: string; export default src; }
         declare module '*.mp3' { const src: string; export default src; }
         declare module '*.wav' { const src: string; export default src; }
+
+        // Image assets (resolved to a URL by Vite) — tech logos etc.
+        declare module '*.svg' { const src: string; export default src; }
+        declare module '*.png' { const src: string; export default src; }
         EOF
 
       # ── src/project.ts ───────────────────────────────────────────────────────

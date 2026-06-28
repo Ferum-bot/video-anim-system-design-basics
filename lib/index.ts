@@ -12,3 +12,4 @@ export * from './components/SpecCard';
 export * from './components/Banner';
 export * from './components/Backdrop';
 export * from './components/LatencyBand';
+export * from './components/icons';

@@ -1,4 +1,5 @@
 import {Circle, Layout, Rect, Txt} from '@motion-canvas/2d';
+import type {Node} from '@motion-canvas/2d';
 import {all, createRef, createSignal, easeOutCubic} from '@motion-canvas/core';
 import type {ThreadGenerator} from '@motion-canvas/core';
 import {colors, fonts, withAlpha} from '../theme';
@@ -57,6 +58,8 @@ export interface SpecCardOptions {
   meter: SpecCardMeter;
   /** Omit to hide the price block entirely (e.g. bandwidth cards). */
   cost?: SpecCardCost;
+  /** Custom icon node (e.g. `redisIcon()`); defaults to the generic device glyph. */
+  icon?: Node;
   /** Multiplier on the reveal durations; `1.5` makes `appear()` 1.5× slower. */
   pace?: number;
 }
@@ -66,7 +69,7 @@ export interface SpecCardOptions {
  * name + tag, a spec line, an optional counting price, and a labelled meter bar.
  */
 export function specCard(options: SpecCardOptions): Widget {
-  const {name, tag, spec, accent, y, meter, cost, pace = 1} = options;
+  const {name, tag, spec, accent, y, meter, cost, icon, pace = 1} = options;
 
   const card = createRef<Rect>();
   const fill = createSignal(0);
@@ -95,7 +98,7 @@ export function specCard(options: SpecCardOptions): Widget {
     >
       {/* Header: icon + name/tag/spec … optional price */}
       <Layout direction="row" gap={20} alignItems="center" width="100%">
-        <DeviceIcon color={accent}/>
+        {icon ?? <DeviceIcon color={accent}/>}
         <Layout direction="column" gap={7} grow={1}>
           <Layout direction="row" gap={14} alignItems="center">
             <Txt text={name} fill={colors.text} fontSize={30} fontWeight={700} fontFamily={fonts.mono}/>

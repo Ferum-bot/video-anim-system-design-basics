@@ -6,12 +6,12 @@
   "scripts": {
     "serve:example": "vite example",
     "build:example": "vite build example",
-    "serve:01": "vite '[01-01]hardware-limits'",
-    "build:01": "vite build '[01-01]hardware-limits'",
-    "serve:sharding": "vite '[01-01]hardware-limits'",
-    "build:sharding": "vite build '[01-01]hardware-limits'",
-    "serve:cache": "vite '[01-02]cache'",
-    "build:cache": "vite build '[01-02]cache'"
+    "serve:01": "vite '[01_01]hardware-limits'",
+    "build:01": "vite build '[01_01]hardware-limits'",
+    "serve:sharding": "vite '[01_01]hardware-limits'",
+    "build:sharding": "vite build '[01_01]hardware-limits'",
+    "serve:cache": "vite '[01_02]cache'",
+    "build:cache": "vite build '[01_02]cache'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

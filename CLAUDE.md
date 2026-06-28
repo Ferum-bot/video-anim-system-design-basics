@@ -12,10 +12,11 @@ every video one visual language.
 
 - `lib/` — shared `@lib` toolkit (theme, stage, animated components). Reused by all
   videos. Full API in `lib/README.md`.
-- `[NN]<slug>/` — one Vite project per **part** of the video. Each part is edited and
+- `[VV-PP]<slug>/` — one Vite project per **part** of a video (`VV` = video number, `PP`
+  = part within it; e.g. `[01_01]hardware-limits`, `[01_02]cache`). Each part is edited and
   rendered independently (own editor, own `.meta` markers, own render → own overlay clip
   composited separately in CapCut). Folder names contain brackets → **quote paths in the
-  shell**: `vite '[01]…'`.
+  shell**: `vite '[01_02]cache'`.
   - `src/project.ts` — registers scenes via the `?scene` import suffix + the project `audio`.
   - `src/scenes/**/*.tsx` — the scenes.
   - `audio/0626.m4a` — that part's copy of the narration track (git-ignored); each part
@@ -29,12 +30,12 @@ every video one visual language.
 The video is split into separate Vite projects, one per part, so each can be re-rendered
 without touching the others.
 
-Part `[01-01]hardware-limits/` — hardware (`src/scenes/[01]hardware/`):
+Part `[01_01]hardware-limits/` — hardware (`src/scenes/[01]hardware/`):
 - `compute.tsx` — EC2 instances (m6i / x1e / u-24tb) + "8 small servers = 1 big, same price".
 - `storage.tsx` — SSD / HDD / S3 capacity.
 - `network.tsx` — bandwidth cards + a latency topology where pulses travel at a speed ∝ latency.
 
-Part `[01-02]cache/` — caching (`src/scenes/`):
+Part `[01_02]cache/` — caching (`src/scenes/`):
 - `numbers.tsx` — "numbers to know": memory + throughput cards, then read/write latency bands.
 - `scaling.tsx` — "when to scale": three threshold cards (warning accents, near-full meters).
 
@@ -137,9 +138,15 @@ small, well-named factories. Keep new code in this shape.
 
 `createStage(view)`, `STAGE`, `CARD_WIDTH`, `TRANSPARENT`; `colors`, `fonts`, `withAlpha`;
 `counter(target, format?)` (number → counts up from 0; string → static like `'∞'`);
-`formatThousands`; the `Widget` interface; and components `sceneTitle()`, `specCard()`,
-`banner()`, `backdrop()` (dark scrim, export-only), `latencyBand()` (A↔B with a pulse whose
-travel time = latency). See `lib/README.md`.
+`formatThousands`; the `Widget` interface; and components `sceneTitle()`, `specCard()`
+(accepts an `icon` node), `banner()`, `backdrop()` (dark scrim, export-only), `latencyBand()`
+(A↔B with a pulse whose travel time = latency), and tech-logo icons `redisIcon()` (more to
+come). See `lib/README.md`.
+
+**Tech icons.** Logos live in `lib/assets/icons/*.svg` (official devicon SVGs, inlined by
+Vite) and are wrapped into card-sized tiles in `lib/components/icons.tsx`. To add one
+(Postgres / MySQL / pod / Kafka): download its SVG there, add a `<tech>Icon` factory, then
+pass it via `specCard({ icon: <tech>Icon() })`.
 
 ## Cross-root JSX wiring (don't break this)
 
@@ -151,13 +158,13 @@ transform. `task new` writes all of this for new videos.
 
 ## Working & verifying
 
-- **Dev editor:** `task serve:sharding` (or `task serve NAME='[01]you-not-need-sharding'`)
-  → http://localhost:9000. **Restart it after editing `vite.config.ts`** (alias/esbuild
-  changes aren't hot-reloaded).
-- **Typecheck:** `npx tsc --noEmit -p '[01]you-not-need-sharding/tsconfig.json'` (also
-  covers `../lib`).
-- **Build = best headless check.** `npm run build:01` follows imports across the repo root,
-  so it catches `@lib` resolution / cross-root JSX errors without a browser. Use it to
-  verify when the preview/browser tools aren't available.
+- **Dev editor:** `task serve:sharding` (part 1) / `task serve:cache` (part 2) → http://localhost:9000
+  (a second editor opens on :9001 if one is already running). **Restart it after editing
+  `vite.config.ts`** (alias/esbuild changes aren't hot-reloaded).
+- **Typecheck:** `npx tsc --noEmit -p '[01_01]hardware-limits/tsconfig.json'` (and
+  `'[01_02]cache/tsconfig.json'`); each also covers `../lib`.
+- **Build = best headless check.** `npm run build:01` / `npm run build:cache` follows imports
+  across the repo root, so it catches `@lib` resolution / cross-root JSX errors without a
+  browser. Use it to verify when the preview/browser tools aren't available.
 - **Scene names** in the editor come from the **filename**. To rename a scene, `git mv` the
   `.tsx` and delete the orphaned `.meta` file.
