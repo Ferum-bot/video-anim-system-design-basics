@@ -1,3 +1,4 @@
+import './theme'; // applies this part's theme — must precede scene imports
 import {makeProject} from '@motion-canvas/core';
 
 import audio from '../audio/0626.m4a';

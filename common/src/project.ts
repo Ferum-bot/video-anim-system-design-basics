@@ -1,3 +1,4 @@
+import './theme'; // applies a theme (GitHub-dark) — must precede scene imports
 import {makeProject} from '@motion-canvas/core';
 import subscribe from './scenes/subscribe?scene';
 

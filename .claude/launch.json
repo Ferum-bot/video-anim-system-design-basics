@@ -13,6 +13,13 @@
       "runtimeArgs": ["run", "serve:takeaways"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "net-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:net"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

@@ -299,9 +299,22 @@ tasks:
         declare module '*.png' { const src: string; export default src; }
         EOF
 
+      # ── src/theme.ts ─────────────────────────────────────────────────────────
+      # Applies a theme preset. Imported FIRST in project.ts so the theme is active
+      # before scenes read palette tokens. Swap `githubDark` for another preset (or a
+      # new one in lib/themes/) to give this video its own style — see CLAUDE.md "Theming".
+      - |
+        cat > {{.NAME}}/src/theme.ts << 'EOF'
+        import {applyTheme} from '@lib';
+        import {githubDark} from '@lib/themes/githubDark';
+
+        applyTheme(githubDark);
+        EOF
+
       # ── src/project.ts ───────────────────────────────────────────────────────
       - |
         cat > {{.NAME}}/src/project.ts << 'EOF'
+        import './theme'; // applies this video's theme — must precede scene imports
         import {makeProject} from '@motion-canvas/core';
         import intro from './scenes/intro?scene';
 

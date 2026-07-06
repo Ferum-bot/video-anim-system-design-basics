@@ -1,8 +1,8 @@
 import {Rect} from '@motion-canvas/2d';
 import {createRef, easeOutCubic} from '@motion-canvas/core';
 import type {ThreadGenerator} from '@motion-canvas/core';
-import {colors} from '../theme';
-import {STAGE, TRANSPARENT} from '../stage';
+import {activeTheme, colors} from '../theme';
+import {STAGE} from '../stage';
 import type {Widget} from '../widget';
 
 // Solid dark panel that fades in behind the content so it stays readable when the
@@ -18,11 +18,11 @@ const Y_OFFSET = 24; // content sits slightly below centre
 
 export function backdrop(): Widget {
   const ref = createRef<Rect>();
-  const target = TRANSPARENT ? OPACITY : 0;
+  const target = activeTheme().stage.transparent ? OPACITY : 0;
 
   const node = (
     <Rect ref={ref} width={STAGE.width - 20} height={HEIGHT} radius={24} y={Y_OFFSET}
-      fill={colors.backdrop} opacity={0}/>
+      fill={colors.scrim} opacity={0}/>
   );
 
   function* appear(): ThreadGenerator {

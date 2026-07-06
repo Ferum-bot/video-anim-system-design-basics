@@ -3,6 +3,9 @@ import {all, createRef, easeOutBack, easeOutCubic} from '@motion-canvas/core';
 import type {PossibleVector2, ThreadGenerator} from '@motion-canvas/core';
 import {colors, fonts, withAlpha} from '@lib';
 
+// Exact YouTube brand red — a fixed brand colour, deliberately outside the theme palette.
+const YT_RED = '#ff0033';
+
 // ── Button geometry ───────────────────────────────────────────────────────────
 const W = 420;
 const H = 92;
@@ -38,15 +41,15 @@ export function subscribeButton(): SubscribeButton {
   const node = (
     <Node ref={group} scale={0.6} opacity={0}>
       <Rect ref={pill} width={W} height={H} radius={RADIUS} clip
-        fill={colors.youtube} stroke={withAlpha(colors.youtube, 0)} lineWidth={2}>
+        fill={YT_RED} stroke={withAlpha(YT_RED, 0)} lineWidth={2}>
         <Circle ref={ripple} width={W * 1.4} height={W * 1.4}
           fill={colors.text} opacity={0} scale={0}/>
         <Txt ref={unsub} text="ПОДПИСАТЬСЯ" fill={colors.text}
-          fontSize={30} fontWeight={800} fontFamily={fonts.sans}/>
+          fontSize={30} fontWeight={800} fontFamily={fonts.display}/>
         <Layout ref={sub} layout gap={14} alignItems="center" opacity={0}>
-          <Txt ref={bell} text="🔔" fontSize={32} fontFamily={fonts.sans}/>
+          <Txt ref={bell} text="🔔" fontSize={32} fontFamily={fonts.display}/>
           <Txt text="ВЫ ПОДПИСАНЫ" fill={colors.textMuted}
-            fontSize={28} fontWeight={700} fontFamily={fonts.sans}/>
+            fontSize={28} fontWeight={700} fontFamily={fonts.display}/>
         </Layout>
       </Rect>
     </Node>

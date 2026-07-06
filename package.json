@@ -21,7 +21,9 @@
     "serve:takeaways": "vite '[01_06]takeaways'",
     "build:takeaways": "vite build '[01_06]takeaways'",
     "serve:common": "vite common",
-    "build:common": "vite build common"
+    "build:common": "vite build common",
+    "serve:net": "vite '[02_00]preview'",
+    "build:net": "vite build '[02_00]preview'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",
