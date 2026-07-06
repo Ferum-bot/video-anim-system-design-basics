@@ -1,0 +1,18 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "nodes",
+      "targetTime": 0.9
+    },
+    {
+      "name": "exchange",
+      "targetTime": 1.6
+    },
+    {
+      "name": "end",
+      "targetTime": 7.700000000000001
+    }
+  ],
+  "seed": 3688900086
+}

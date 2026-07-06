@@ -5,19 +5,28 @@ Guidance for working in this repo. Keep it accurate — update it when conventio
 ## What this is
 
 A **Motion Canvas** animation series for system-design YouTube videos. Each video is
-its own Vite project folder. A shared toolkit at `lib/` (imported as `@lib`) gives
-every video one visual language.
+its own Vite project folder. A shared **framework** at `lib/` (imported as `@lib`) gives
+every video the same components and scaffolding; each video applies its own **theme preset**
+from `lib/themes/`, so the visual *style* can differ per video while the mechanics stay
+shared. See "Theming" below.
 
 ## Repository layout
 
-- `lib/` — shared `@lib` toolkit (theme, stage, animated components). Reused by all
-  videos. Full API in `lib/README.md`.
+- `lib/` — shared `@lib` **framework**: the theme *system* (`Theme`, `applyTheme`,
+  `activeTheme`, the live `colors`/`fonts` proxies), the theme-driven stage, utilities,
+  and the animated components. Carries **no palette of its own**. Full API in `lib/README.md`.
+- `lib/themes/` — concrete **theme presets**, imported via `@lib/themes/<name>`: this is
+  where the actual colours, fonts, and background treatment live. `githubDark.ts` (video 01),
+  `blueprint.ts` (video 02).
 - `[VV-PP]<slug>/` — one Vite project per **part** of a video (`VV` = video number, `PP`
   = part within it; e.g. `[01_01]hardware-limits`, `[01_02]cache`). Each part is edited and
   rendered independently (own editor, own `.meta` markers, own render → own overlay clip
   composited separately in CapCut). Folder names contain brackets → **quote paths in the
   shell**: `vite '[01_02]cache'`.
-  - `src/project.ts` — registers scenes via the `?scene` import suffix + the project `audio`.
+  - `src/theme.ts` — applies this video's theme preset (`applyTheme(...)`). **Imported first**
+    in `project.ts` so the theme is active before scenes read palette tokens (see "Theming").
+  - `src/project.ts` — `import './theme'` first, then registers scenes via the `?scene` import
+    suffix + the project `audio`.
   - `src/scenes/**/*.tsx` — the scenes.
   - `audio/0626.m4a` — that part's copy of the narration track (git-ignored); each part
     uses its own `audioOffset` in `project.meta` to line up with its slice of the voiceover.
@@ -72,6 +81,36 @@ the beats live in `src/scenes/takeaways/`):
 
 Run a part with `task serve:sharding` / `task serve:cache` (or `npm run serve:01` / `serve:cache`).
 
+## Video "Всё про сети" (video 02) — style preview
+
+`[02_00]preview/` — a **design preview** for the networking video (OSI / TCP-IP /
+application protocols), in the `blueprint` theme (deep-navy schematic, translucent scrim +
+grid, SF Pro + SF Mono). It's a style demo, not the final part layout. Its topic components
+live in `[02_00]preview/src/net/` (`sceneHeading`, `osiStack`, `handshake`, `protocolCard`) —
+they build on the `@lib` framework and read the active theme, so all colour/font/background
+comes from the applied `blueprint` preset. Scenes: `osi`, `handshake`, `protocols`. Run with
+`npm run serve:net`.
+
+## Theming
+
+`@lib` is a **framework with no palette**; the style comes from a **theme preset**.
+
+- **A theme** (`Theme` in `lib/theme.ts`) is `{ palette, fonts, stage }`: a `ThemePalette`
+  (surfaces, text, a `primary`, and a shared accent vocabulary `blue/cyan/green/red/purple/
+  orange`), `ThemeFonts` (`display` for prose, `mono` for technical tokens), and a `StageStyle`
+  (backdrop `fill`, `scrimAlpha`, `transparent`, optional `grid` + `footageSim`).
+- **Presets** live in `lib/themes/` and are applied per project: each video's `src/theme.ts`
+  calls `applyTheme(preset)`, and `project.ts` imports `./theme` **first** — the ordering
+  matters because scenes read palette tokens at module top level (in `const` arrays).
+- **Components read the active theme through proxies.** `colors` and `fonts` (from `@lib`)
+  are live proxies over the applied theme, so the same component renders in whatever style is
+  active. Never read them at module top level in *library* code (no theme applied yet); scenes
+  can, because their video's `./theme` runs first.
+- **The stage is theme-driven.** `createStage(view)` paints per `theme.stage`: a solid backdrop
+  (`scrimAlpha: 1`, video 01) or a translucent scrim + grid (`scrimAlpha < 1`, video 02).
+- **To add a video's style:** write `lib/themes/<name>.ts` (fill the `ThemePalette` /
+  `ThemeFonts` / `StageStyle`), then `applyTheme(<name>)` from the video's `src/theme.ts`.
+
 ## Conventions
 
 - **Centered column.** Scenes render into a centred **960-wide** panel (full canvas is
@@ -79,8 +118,9 @@ Run a part with `task serve:sharding` / `task serve:cache` (or `npm run serve:01
   editing, so keep content centred — `createStage(view)` sets this up.
 - **Widget pattern.** Animated pieces are `{ node, appear() }`. Mount `node` with
   `stage.add(...)`, then `yield* widget.appear()` when it should animate in.
-- **Theme.** GitHub-dark palette via `colors`, monospace via `fonts.mono`, alpha via
-  `withAlpha(hex, a)` (don't hand-write hex suffixes). One accent colour per concept.
+- **Theme.** Colours via the `colors` proxy, fonts via `fonts` (`fonts.mono` / `fonts.display`),
+  alpha via `withAlpha(hex, a)` (don't hand-write hex suffixes) — all resolve to the video's
+  applied theme preset. One accent colour per concept. See "Theming".
 - **Pacing.** Reveals are deliberately slow (cards ~1.6s slide + ~2.8s counters) so they
   read over narration. Match that feel.
 - **Endless motion.** Fork a background generator with `yield gen()` (note: `yield`, not
@@ -123,8 +163,9 @@ parts' scenes) to line current scenes up with their slice of the track.
 ## Export (transparent overlay)
 
 Final animations are composited over the talking-head footage in CapCut as a **transparent
-overlay**. Before rendering, set `TRANSPARENT = true` in `lib/stage.tsx` (revert to `false`
-for comfortable editing — the editor backdrop goes dark again). Render the PNG sequence from
+overlay**. Before rendering, set `stage.transparent = true` in the video's theme preset
+(`lib/themes/<name>.ts`) — revert to `false` for comfortable editing (the editor shows the
+theme's backdrop / footage stand-in again). Render the PNG sequence from
 the editor (it carries alpha), then `task mov SRC=<frames-dir> OUT=scene.mov` encodes ProRes
 with alpha for CapCut — `task mov` defaults to **lossless qtrle** (`-c:v qtrle -pix_fmt
 argb`): crisp RGB + alpha, no compression shimmer on text/lines, ~340 MB for ~3.7 min (14×
@@ -175,8 +216,13 @@ small, well-named factories. Keep new code in this shape.
 
 ## `@lib` API (import from `@lib`)
 
-`createStage(view)`, `endScene(stage)` (the shared `waitUntil('end')` + fade-out every
-scene closes with), `STAGE`, `CARD_WIDTH`, `TRANSPARENT`; `colors`, `fonts`, `withAlpha`;
+**Theme system:** `applyTheme(preset)`, `activeTheme()`, `defineTheme()`, the `Theme` /
+`ThemePalette` / `ThemeFonts` / `StageStyle` types, and the live `colors` / `fonts` proxies +
+`withAlpha` (see "Theming"). Presets: `@lib/themes/githubDark`, `@lib/themes/blueprint`.
+
+**Framework:** `createStage(view)` (theme-driven backdrop/scrim + centred panel),
+`endScene(stage)` (the shared `waitUntil('end')` + fade-out every scene closes with), `STAGE`,
+`CARD_WIDTH`;
 `counter(target, format?)` (number → counts up from 0; string → static like `'∞'`);
 `formatThousands`; the `Widget` interface; and components `sceneTitle()`, `sectionLabel()`
 (the top muted caption — `appear()` once, then `retitle()` per beat), `specCard()`
@@ -198,7 +244,8 @@ in `lib/vite.ts` (`defineVideoProject(import.meta.url)`); every `vite.config.ts`
 lines that call it. Each `tsconfig.json` must keep the `@lib` paths, `include: ["src",
 "../lib"]`, and `exclude: ["../lib/vite.ts"]` (that file is build tooling — it uses node
 builtins, so it stays out of the scene typecheck). Without the JSX wiring, JSX inside `@lib`
-won't transform. `task new` writes all of this for new videos.
+won't transform. `task new` writes all of this for new videos. Theme presets are imported as
+`@lib/themes/<name>`, which resolves through the existing `@lib/*` path/alias — no extra wiring.
 
 ## Working & verifying
 
@@ -207,8 +254,10 @@ won't transform. `task new` writes all of this for new videos.
   `vite.config.ts`** (alias/esbuild changes aren't hot-reloaded).
 - **Typecheck:** `npx tsc --noEmit -p '[01_01]hardware-limits/tsconfig.json'` (and
   `'[01_02]cache/tsconfig.json'`); each also covers `../lib`.
-- **Build = best headless check.** `npm run build:01` / `npm run build:cache` follows imports
-  across the repo root, so it catches `@lib` resolution / cross-root JSX errors without a
-  browser. Use it to verify when the preview/browser tools aren't available.
+- **Build = best headless check.** `npm run build:01` / `npm run build:cache` / `build:net`
+  follows imports across the repo root, so it catches `@lib` resolution / cross-root JSX errors
+  without a browser. Use it to verify when the preview/browser tools aren't available. Note the
+  build does **not** run scene code, so it won't catch a missing `applyTheme` — the editor will
+  (a clear "No theme applied" throw); load a part in the editor after theme changes.
 - **Scene names** in the editor come from the **filename**. To rename a scene, `git mv` the
   `.tsx` and delete the orphaned `.meta` file.
