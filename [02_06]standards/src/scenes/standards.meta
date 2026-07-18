@@ -1,0 +1,42 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "whatis",
+      "targetTime": 5.7
+    },
+    {
+      "name": "impls",
+      "targetTime": 16.3
+    },
+    {
+      "name": "twokinds",
+      "targetTime": 28.4
+    },
+    {
+      "name": "defacto",
+      "targetTime": 32.4
+    },
+    {
+      "name": "http",
+      "targetTime": 47.5
+    },
+    {
+      "name": "dfacto",
+      "targetTime": 69.1
+    },
+    {
+      "name": "dejure",
+      "targetTime": 73.8
+    },
+    {
+      "name": "dejure2",
+      "targetTime": 84.2
+    },
+    {
+      "name": "end",
+      "targetTime": 88.5
+    }
+  ],
+  "seed": 720512
+}

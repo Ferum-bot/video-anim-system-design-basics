@@ -34,6 +34,20 @@
       "runtimeArgs": ["run", "serve:osi"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "layers",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:layers"],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "standards",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:standards"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

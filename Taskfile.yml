@@ -204,6 +204,34 @@ tasks:
         vars:
           NAME: '[02_04]osi'
 
+  serve:layers:
+    desc: "Запустить редактор для анимации [02_05] Слои = код"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_05]layers-code'
+
+  build:layers:
+    desc: "Собрать анимацию [02_05] Слои = код"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_05]layers-code'
+
+  serve:standards:
+    desc: "Запустить редактор для анимации [02_06] Стандарты (de-facto / de-jure)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_06]standards'
+
+  build:standards:
+    desc: "Собрать анимацию [02_06] Стандарты"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_06]standards'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:
