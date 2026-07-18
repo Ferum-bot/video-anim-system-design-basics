@@ -41,14 +41,20 @@ export function createStage(view: View2D): Rect {
     ? (editing ? stage.fill : null)
     : withAlpha(stage.fill, stage.scrimAlpha);
 
+  // Optional explicit frame: inset the panel from the column edges, round it, and stroke it.
+  const frame = stage.frame;
+  const width = STAGE.width - (frame ? frame.inset * 2 : 0);
+  const height = STAGE.height - (frame ? frame.inset * 2 : 0);
+
   const panel = createRef<Rect>();
   view.add(
-    <Rect ref={panel} width={STAGE.width} height={STAGE.height} fill={panelFill} clip>
+    <Rect ref={panel} width={width} height={height} fill={panelFill} clip
+      radius={frame?.radius ?? 0} stroke={frame?.stroke} lineWidth={frame?.lineWidth ?? 0}>
       {stage.grid && (
         <>
-          <Grid width={STAGE.width} height={STAGE.height}
+          <Grid width={width} height={height}
             spacing={stage.grid.pitch} stroke={stage.grid.minor} lineWidth={1}/>
-          <Grid width={STAGE.width} height={STAGE.height}
+          <Grid width={width} height={height}
             spacing={stage.grid.pitch * GRID_MAJOR} stroke={stage.grid.major} lineWidth={1.5}/>
         </>
       )}

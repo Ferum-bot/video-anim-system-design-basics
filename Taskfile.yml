@@ -174,6 +174,22 @@ tasks:
         vars:
           NAME: '[01_06]takeaways'
 
+  # ── [02] Всё про сети ────────────────────────────────────────────────────────
+
+  serve:journey:
+    desc: "Запустить редактор для части [02_03] Сеть из сетей (путь запроса)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_03]network-of-networks'
+
+  build:journey:
+    desc: "Собрать анимацию для части [02_03] Сеть из сетей"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_03]network-of-networks'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

@@ -38,12 +38,15 @@ const fonts: ThemeFonts = {
 
 const stage: StageStyle = {
   fill: palette.background,
-  scrimAlpha: 0.62, // translucent — footage shows through, darkened (tune 0.5…0.85)
-  // `false` = editing: a grey footage stand-in sits behind the scrim so its translucency
-  // reads. Flip to `true` to render a transparent overlay for CapCut.
-  transparent: false,
+  // 0.9 dark backing — matches video 01's plate opacity; footage stays faintly visible.
+  scrimAlpha: 0.9,
+  // Transparent overlay for compositing over footage in CapCut. Flip to `false` for
+  // comfortable editing (a grey footage stand-in shows behind the scrim).
+  transparent: true,
   footageSim: '#4a5058',
   grid: {pitch: 40, minor: withAlpha(palette.cyan, 0.05), major: withAlpha(palette.cyan, 0.1)},
+  // Explicit framed card around the content.
+  frame: {inset: 16, radius: 22, stroke: withAlpha(palette.cyan, 0.55), lineWidth: 2.5},
 };
 
 export const blueprint = defineTheme({palette, fonts, stage});

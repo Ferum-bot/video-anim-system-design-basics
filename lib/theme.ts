@@ -58,6 +58,11 @@ export interface StageStyle {
   footageSim?: string;
   /** Optional blueprint grid drawn inside the panel. */
   grid?: {pitch: number; minor: string; major: string};
+  /**
+   * Optional explicit frame around the content: insets the panel from the column edges and
+   * gives it rounded corners + a visible border, so the overlay reads as a contained card.
+   */
+  frame?: {inset: number; radius: number; stroke: string; lineWidth: number};
 }
 
 export interface Theme {

@@ -20,6 +20,13 @@
       "runtimeArgs": ["run", "serve:net"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "journey",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:journey"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

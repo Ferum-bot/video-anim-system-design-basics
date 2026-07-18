@@ -1,0 +1,46 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "tower",
+      "targetTime": 9.1
+    },
+    {
+      "name": "fiber",
+      "targetTime": 13.4
+    },
+    {
+      "name": "routing",
+      "targetTime": 23.5
+    },
+    {
+      "name": "continent",
+      "targetTime": 31
+    },
+    {
+      "name": "undersea",
+      "targetTime": 33.7
+    },
+    {
+      "name": "ocean-fix",
+      "targetTime": 36.6
+    },
+    {
+      "name": "foreign",
+      "targetTime": 42.8
+    },
+    {
+      "name": "cheapest",
+      "targetTime": 64.2
+    },
+    {
+      "name": "nocontrol",
+      "targetTime": 70.5
+    },
+    {
+      "name": "end",
+      "targetTime": 75
+    }
+  ],
+  "seed": 828401
+}
