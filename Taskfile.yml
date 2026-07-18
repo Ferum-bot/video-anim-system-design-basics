@@ -246,6 +246,20 @@ tasks:
         vars:
           NAME: '[02_07]committees'
 
+  serve:elephants:
+    desc: "Запустить редактор для анимации [02_08] Два слона (кривая Танненбаума)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_08]two-elephants'
+
+  build:elephants:
+    desc: "Собрать анимацию [02_08] Два слона"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_08]two-elephants'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

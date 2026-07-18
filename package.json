@@ -33,7 +33,9 @@
     "serve:standards": "vite '[02_06]standards'",
     "build:standards": "vite build '[02_06]standards'",
     "serve:committees": "vite '[02_07]committees'",
-    "build:committees": "vite build '[02_07]committees'"
+    "build:committees": "vite build '[02_07]committees'",
+    "serve:elephants": "vite '[02_08]two-elephants'",
+    "build:elephants": "vite build '[02_08]two-elephants'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

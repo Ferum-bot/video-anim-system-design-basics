@@ -1,0 +1,42 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "title",
+      "targetTime": 2.6
+    },
+    {
+      "name": "research",
+      "targetTime": 12.2
+    },
+    {
+      "name": "investment",
+      "targetTime": 23
+    },
+    {
+      "name": "window",
+      "targetTime": 30.7
+    },
+    {
+      "name": "early",
+      "targetTime": 44.1
+    },
+    {
+      "name": "late",
+      "targetTime": 50.5
+    },
+    {
+      "name": "verdict",
+      "targetTime": 61.8
+    },
+    {
+      "name": "osi",
+      "targetTime": 71.9
+    },
+    {
+      "name": "end",
+      "targetTime": 76
+    }
+  ],
+  "seed": 936214
+}

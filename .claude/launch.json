@@ -55,6 +55,13 @@
       "runtimeArgs": ["run", "serve:committees"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "elephants",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:elephants"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }
