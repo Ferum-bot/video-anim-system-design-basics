@@ -48,6 +48,13 @@
       "runtimeArgs": ["run", "serve:standards"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "committees",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:committees"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

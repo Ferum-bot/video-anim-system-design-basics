@@ -232,6 +232,20 @@ tasks:
         vars:
           NAME: '[02_06]standards'
 
+  serve:committees:
+    desc: "Запустить редактор для анимации [02_07] Комитеты (ITU/ISO/IEEE/IETF)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_07]committees'
+
+  build:committees:
+    desc: "Собрать анимацию [02_07] Комитеты"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_07]committees'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

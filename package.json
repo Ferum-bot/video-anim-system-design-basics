@@ -31,7 +31,9 @@
     "serve:layers": "vite '[02_05]layers-code'",
     "build:layers": "vite build '[02_05]layers-code'",
     "serve:standards": "vite '[02_06]standards'",
-    "build:standards": "vite build '[02_06]standards'"
+    "build:standards": "vite build '[02_06]standards'",
+    "serve:committees": "vite '[02_07]committees'",
+    "build:committees": "vite build '[02_07]committees'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

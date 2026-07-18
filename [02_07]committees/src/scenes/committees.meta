@@ -1,0 +1,38 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "intro",
+      "targetTime": 1.2
+    },
+    {
+      "name": "itu",
+      "targetTime": 6.2
+    },
+    {
+      "name": "iso",
+      "targetTime": 18.2
+    },
+    {
+      "name": "ieee",
+      "targetTime": 23.6
+    },
+    {
+      "name": "ietf",
+      "targetTime": 37.3
+    },
+    {
+      "name": "suits",
+      "targetTime": 53.5
+    },
+    {
+      "name": "rule",
+      "targetTime": 67.3
+    },
+    {
+      "name": "end",
+      "targetTime": 82
+    }
+  ],
+  "seed": 810713
+}
