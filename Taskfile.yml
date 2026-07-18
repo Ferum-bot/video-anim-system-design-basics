@@ -190,6 +190,20 @@ tasks:
         vars:
           NAME: '[02_03]network-of-networks'
 
+  serve:osi:
+    desc: "Запустить редактор для части [02_04] Модель OSI"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_04]osi'
+
+  build:osi:
+    desc: "Собрать анимацию для части [02_04] Модель OSI"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_04]osi'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

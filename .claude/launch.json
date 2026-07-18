@@ -27,6 +27,13 @@
       "runtimeArgs": ["run", "serve:journey"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "osi",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:osi"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }
