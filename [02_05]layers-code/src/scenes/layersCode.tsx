@@ -1,7 +1,6 @@
-import {makeScene2D, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, easeOutCubic, waitUntil} from '@motion-canvas/core';
-import type {ThreadGenerator} from '@motion-canvas/core';
-import {colors, createStage, endScene, fonts, withAlpha} from '@lib';
+import {makeScene2D} from '@motion-canvas/2d';
+import {all, waitUntil} from '@motion-canvas/core';
+import {createStage, endScene, revealStage, sceneCaption} from '@lib';
 import {codeMap} from '../layers';
 
 export default makeScene2D(function* (view) {
@@ -9,28 +8,18 @@ export default makeScene2D(function* (view) {
   stage.opacity(0); // stays hidden until the "каждый уровень — это код" beat
 
   const map = codeMap({y: 20});
-  const caption = createRef<Txt>();
+  const caption = sceneCaption({text: 'каждый уровень — это реальный код', y: -430, fontSize: 26});
 
   stage.add(map.node);
-  stage.add(
-    <Txt ref={caption} text="каждый уровень — это реальный код" y={-430}
-      fill={withAlpha(colors.cyan, 0.85)} fontSize={26} letterSpacing={1}
-      fontFamily={fonts.mono} opacity={0}/>,
-  );
-
-  function* say(text: string): ThreadGenerator {
-    yield* caption().opacity(0, 0.25);
-    caption().text(text);
-    yield* caption().opacity(1, 0.35, easeOutCubic);
-  }
+  stage.add(caption.node);
 
   // "По сути, каждый уровень существует в виде кода" — the scene eases in here.
   yield* waitUntil('code');
-  yield* all(stage.opacity(1, 1.0, easeInOutCubic), map.appear(), caption().opacity(1, 0.9));
+  yield* all(revealStage(stage), map.appear(), caption.appear());
 
   // "…написаны в разных частях системы, разными компаниями"
   yield* waitUntil('where');
-  yield* all(map.homes(), say('…в разных частях системы, у разных компаний'));
+  yield* all(map.homes(), caption.retitle('…в разных частях системы, у разных компаний'));
 
   // "канальный уровень — на C в сетевой карте / коммутаторе"
   yield* waitUntil('link');
@@ -46,11 +35,11 @@ export default makeScene2D(function* (view) {
 
   // "можно вклиниться на любом уровне и реализовать свой протокол"
   yield* waitUntil('inject');
-  yield* all(map.inject(), say('можно вклиниться на любом уровне'));
+  yield* all(map.inject(), caption.retitle('можно вклиниться на любом уровне'));
 
   // "реальные куски кода — их писали сотни людей за десятилетия, и они ошибаются"
   yield* waitUntil('humans');
-  yield* all(map.humans(), say('тысячи людей · десятилетия · и баги'));
+  yield* all(map.humans(), caption.retitle('тысячи людей · десятилетия · и баги'));
 
   yield* endScene(stage);
 });

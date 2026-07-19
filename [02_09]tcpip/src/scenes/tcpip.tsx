@@ -1,6 +1,6 @@
-import {makeScene2D, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, waitUntil} from '@motion-canvas/core';
-import {colors, createStage, endScene, fonts, withAlpha} from '@lib';
+import {makeScene2D} from '@motion-canvas/2d';
+import {all, waitUntil} from '@motion-canvas/core';
+import {createStage, endScene, revealStage, sceneCaption} from '@lib';
 import {tcpipStack} from '../tcp';
 
 export default makeScene2D(function* (view) {
@@ -8,18 +8,15 @@ export default makeScene2D(function* (view) {
   stage.opacity(0);
 
   const stack = tcpipStack({y: 20});
-  const title = createRef<Txt>();
+  const title = sceneCaption({text: 'Модель TCP/IP · снизу вверх', fontWeight: 600});
 
   stage.add(stack.node);
-  stage.add(
-    <Txt ref={title} y={-410} text="Модель TCP/IP · снизу вверх" fill={withAlpha(colors.cyan, 0.85)}
-      fontSize={30} fontWeight={600} letterSpacing={1} fontFamily={fonts.mono} opacity={0}/>,
-  );
+  stage.add(title.node);
 
   // "самый нижний — канальный": the whole scene (frame + title + first layer) eases in
   // together here — no empty card hanging beforehand.
   yield* waitUntil('link');
-  yield* all(stage.opacity(1, 1.0, easeInOutCubic), title().opacity(1, 0.9), stack.reveal(0));
+  yield* all(revealStage(stage), title.appear(), stack.reveal(0));
 
   // "…обычно реализуется в железе сетевой карты / коммутатора"
   yield* waitUntil('hw');

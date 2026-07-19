@@ -63,6 +63,19 @@ export function createStage(view: View2D): Rect {
   return panel();
 }
 
+/** Seconds for the opening fade every scene shares. */
+const FADE_IN = 1;
+
+/**
+ * The shared scene opening: fade the whole panel in. Scenes start hidden
+ * (`stage.opacity(0)`) and reveal here, usually composed with their first content so the
+ * frame appears together with it — `yield* all(revealStage(stage), heading.appear(), …)`.
+ * Returns the tween so it can sit inside an {@link all}.
+ */
+export function revealStage(stage: Rect, duration = FADE_IN): ThreadGenerator {
+  return stage.opacity(1, duration, easeInOutCubic);
+}
+
 /** Seconds for the closing fade every scene shares. */
 const FADE_OUT = 0.8;
 

@@ -44,11 +44,13 @@ export default makeScene2D(function* (view) {
 | `Theme`, `ThemePalette`, `ThemeFonts`, `StageStyle` | The theme token contract presets fill. |
 | `colors`, `fonts`, `withAlpha` | Live theme proxies (`colors.blue`, `fonts.mono`) + an alpha helper. |
 | `createStage(view)`, `STAGE`, `CARD_WIDTH` | Theme-driven backdrop/scrim + a centred, clipped panel to mount into. |
+| `revealStage(stage, dur?)` | The shared scene opening: fade the whole panel in. Compose it with the first content so the frame appears together with it — `yield* all(revealStage(stage), heading.appear(), …)`. Pairs with `endScene`. |
 | `endScene(stage)` | The shared scene ending: `yield* waitUntil('end')` then fade the panel out. Every scene closes with `yield* endScene(stage)`. |
 | `counter(target, format?)` | A number that counts up (or a fixed string like `'∞'`). |
 | `formatThousands(n)` | `1234567` → `"1,234,567"`. |
 | `Widget` | `{ node, appear() }` — every animated piece follows this shape. |
 | `sceneTitle(...)` | Title + subtitle + accent rule. |
+| `sceneCaption({text, y?, fill?, …})` | The mono top heading a scene keeps. `appear()` fades it in (compose into `revealStage`); `retitle(text)` cross-fades to new text per beat. Use instead of a hand-rolled `<Txt>` heading or a local `say()` helper. |
 | `sectionLabel(text)` | The muted top caption. `appear()` fades it in; `retitle(text)` cross-fades it per beat. |
 | `specCard(...)` | Headline card: icon, name/tag, spec, optional counting price, meter bar. Pass `icon` to override the default glyph (e.g. `redisIcon()`). |
 | `redisIcon()`, `postgresIcon()`, `podIcon()`, `kafkaIcon()` | Tech-logo tiles for a card's icon slot (devicon SVG: Redis, PostgreSQL, Kubernetes, Kafka). Add more in `components/icons.tsx`. |

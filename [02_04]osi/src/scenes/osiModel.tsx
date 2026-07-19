@@ -1,6 +1,6 @@
 import {makeScene2D, Node, Txt} from '@motion-canvas/2d';
 import {all, cancel, createRef, easeInOutCubic, easeOutCubic, waitUntil} from '@motion-canvas/core';
-import {colors, createStage, endScene, fonts, withAlpha} from '@lib';
+import {colors, createStage, endScene, fonts, revealStage, withAlpha} from '@lib';
 import {abstractionIntro, osiStack} from '../osi';
 import type {OsiLayer} from '../osi';
 
@@ -40,7 +40,7 @@ export default makeScene2D(function* (view) {
   // "Какая основная идея? — разделяем сеть на уровни абстракции": the scene eases in here,
   // not at the very start.
   yield* waitUntil('idea');
-  yield* all(stage.opacity(1, 1.0, easeInOutCubic), intro.appear());
+  yield* all(revealStage(stage), intro.appear());
 
   // "…каждый использует нижележащий уровень как набор API-инструментов"
   yield* waitUntil('api');
@@ -65,7 +65,7 @@ export default makeScene2D(function* (view) {
   // L7 — "седьмой прикладной": the frame + stack + first layer fade back in together, as the
   // narration actually starts on the layers.
   yield* waitUntil('l7');
-  yield* all(stage.opacity(1, 0.8, easeInOutCubic), stack.appear());
+  yield* all(revealStage(stage, 0.8), stack.appear());
   const pulseTask = yield stack.ridePulse(); // fork: ambient pulse down the spine
   yield* stack.reveal(0);
 

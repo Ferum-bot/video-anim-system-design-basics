@@ -221,10 +221,15 @@ small, well-named factories. Keep new code in this shape.
 `withAlpha` (see "Theming"). Presets: `@lib/themes/githubDark`, `@lib/themes/blueprint`.
 
 **Framework:** `createStage(view)` (theme-driven backdrop/scrim + centred panel),
+`revealStage(stage, dur?)` (the shared opening fade — compose it with the first content:
+`all(revealStage(stage), heading.appear(), …)` — pairs with `endScene`),
 `endScene(stage)` (the shared `waitUntil('end')` + fade-out every scene closes with), `STAGE`,
 `CARD_WIDTH`;
 `counter(target, format?)` (number → counts up from 0; string → static like `'∞'`);
-`formatThousands`; the `Widget` interface; and components `sceneTitle()`, `sectionLabel()`
+`formatThousands`; the `Widget` interface; and components `sceneTitle()`, `sceneCaption()`
+(the mono top heading a scene keeps — `appear()` once, then `retitle()` to cross-fade its text
+per beat; **use this instead of hand-rolling a `<Txt>` heading or a local `say()` helper**),
+`sectionLabel()`
 (the top muted caption — `appear()` once, then `retitle()` per beat), `specCard()`
 (accepts an `icon` node), `banner()`, `backdrop()` (dark scrim, export-only), `latencyBand()`
 (A↔B with a pulse whose travel time = latency), and tech-logo icons `redisIcon()`,

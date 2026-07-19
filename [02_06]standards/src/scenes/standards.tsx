@@ -1,7 +1,6 @@
 import {Layout, Line, makeScene2D, Node, Rect, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, easeOutBack, easeOutCubic, waitUntil} from '@motion-canvas/core';
-import type {ThreadGenerator} from '@motion-canvas/core';
-import {colors, createStage, endScene, fonts, withAlpha} from '@lib';
+import {all, createRef, easeOutBack, easeOutCubic, waitUntil} from '@motion-canvas/core';
+import {colors, createStage, endScene, fonts, revealStage, sceneCaption, withAlpha} from '@lib';
 import {standardsWays} from '../std';
 
 /** A small implementation box that plugs into the shared interface. */
@@ -30,7 +29,7 @@ export default makeScene2D(function* (view) {
   const implA = createRef<Node>();
   const implB = createRef<Node>();
   const implC = createRef<Node>();
-  const caption = createRef<Txt>();
+  const caption = sceneCaption({text: 'стандарт — это не «как сделать хорошо»', y: -380, fontSize: 27});
 
   stage.add(ways.node);
   stage.add(
@@ -46,33 +45,24 @@ export default makeScene2D(function* (view) {
       <Impl label="провайдер C" accent={colors.blue} x={250} implRef={implC}/>
     </Node>,
   );
-  stage.add(
-    <Txt ref={caption} y={-380} text="стандарт — это не «как сделать хорошо»"
-      fill={withAlpha(colors.cyan, 0.85)} fontSize={27} letterSpacing={1} fontFamily={fonts.mono} opacity={0}/>,
-  );
-
-  function* say(text: string): ThreadGenerator {
-    yield* caption().opacity(0, 0.25);
-    caption().text(text);
-    yield* caption().opacity(1, 0.35, easeOutCubic);
-  }
+  stage.add(caption.node);
 
   // "стандарт не описывает, как сделать хорошо — только что нужно для совместимости"
   yield* waitUntil('whatis');
   yield* all(
-    stage.opacity(1, 1.0, easeInOutCubic),
-    caption().opacity(1, 0.9),
+    revealStage(stage),
+    caption.appear(),
     iface().opacity(1, 0.6, easeOutCubic), iface().scale(1, 0.6, easeOutBack),
     implA().opacity(1, 0.6, easeOutCubic), implB().opacity(1, 0.6, easeOutCubic),
   );
 
   // "…как реализуешь — может отличаться от провайдера/компании"
   yield* waitUntil('impls');
-  yield* all(implC().opacity(1, 0.5, easeOutCubic), say('…а совместимость — реализации разные'));
+  yield* all(implC().opacity(1, 0.5, easeOutCubic), caption.retitle('…а совместимость — реализации разные'));
 
   // "глобально стандарты бывают двух видов"
   yield* waitUntil('twokinds');
-  yield* all(opener().opacity(0, 0.6, easeOutCubic), caption().opacity(0, 0.4), ways.appear());
+  yield* all(opener().opacity(0, 0.6, easeOutCubic), caption.node.opacity(0, 0.4), ways.appear());
 
   // de-facto — "возникли из ниоткуда, приняла индустрия"
   yield* waitUntil('defacto');

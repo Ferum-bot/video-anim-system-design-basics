@@ -1,7 +1,6 @@
-import {makeScene2D, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, easeOutCubic, waitUntil} from '@motion-canvas/core';
-import type {ThreadGenerator} from '@motion-canvas/core';
-import {colors, createStage, endScene, fonts, withAlpha} from '@lib';
+import {makeScene2D} from '@motion-canvas/2d';
+import {all, waitUntil} from '@motion-canvas/core';
+import {createStage, endScene, revealStage, sceneCaption} from '@lib';
 import {committeesRow} from '../std';
 
 export default makeScene2D(function* (view) {
@@ -9,24 +8,14 @@ export default makeScene2D(function* (view) {
   stage.opacity(0);
 
   const row = committeesRow({y: 20});
-  const caption = createRef<Txt>();
+  const caption = sceneCaption({text: 'стандарты держат несколько больших комитетов', y: -400, fontSize: 27});
 
   stage.add(row.node);
-  stage.add(
-    <Txt ref={caption} y={-400} text="стандарты держат несколько больших комитетов"
-      fill={withAlpha(colors.cyan, 0.85)} fontSize={27} letterSpacing={1}
-      fontFamily={fonts.mono} opacity={0}/>,
-  );
-
-  function* say(text: string): ThreadGenerator {
-    yield* caption().opacity(0, 0.25);
-    caption().text(text);
-    yield* caption().opacity(1, 0.35, easeOutCubic);
-  }
+  stage.add(caption.node);
 
   // "мир комитетов большой и запутанный — несколько больших комитетов"
   yield* waitUntil('intro');
-  yield* all(stage.opacity(1, 1.0, easeInOutCubic), caption().opacity(1, 0.9));
+  yield* all(revealStage(stage), caption.appear());
 
   // "первый — ITU: телеком, существует с 1865"
   yield* waitUntil('itu');
@@ -42,15 +31,15 @@ export default makeScene2D(function* (view) {
 
   // "IETF — отдельный мир интернет-стандартов, культурно другой"
   yield* waitUntil('ietf');
-  yield* all(row.reveal(3), say('…IETF — культурно совсем другой'));
+  yield* all(row.reveal(3), caption.retitle('…IETF — культурно совсем другой'));
 
   // "аналогия: ISO и ITU приходят в костюмах, а IETF — в джинсах"
   yield* waitUntil('suits');
-  yield* all(row.dress(), say('аналогия: костюмы vs джинсы'));
+  yield* all(row.dress(), caption.retitle('аналогия: костюмы vs джинсы'));
 
   // "но всем надо консенсус и рабочий код — минимум две независимые реализации"
   yield* waitUntil('rule');
-  yield* all(row.rule(), say('но правило для всех одно'));
+  yield* all(row.rule(), caption.retitle('но правило для всех одно'));
 
   yield* endScene(stage);
 });

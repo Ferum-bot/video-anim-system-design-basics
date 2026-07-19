@@ -1,6 +1,6 @@
 import {makeScene2D, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, easeOutCubic, waitUntil} from '@motion-canvas/core';
-import {colors, createStage, endScene, fonts, withAlpha} from '@lib';
+import {all, createRef, easeOutCubic, waitUntil} from '@motion-canvas/core';
+import {colors, createStage, endScene, fonts, revealStage, sceneCaption} from '@lib';
 import {elephantsCurve} from '../std';
 
 export default makeScene2D(function* (view) {
@@ -9,15 +9,12 @@ export default makeScene2D(function* (view) {
 
   const curve = elephantsCurve({y: -30});
 
-  const title = createRef<Txt>();
+  const title = sceneCaption({text: '«Апокалипсис двух слонов»', y: -415, fontWeight: 600});
   const verdict = createRef<Txt>();
   const osi = createRef<Txt>();
 
   stage.add(curve.node);
-  stage.add(
-    <Txt ref={title} y={-415} text="«Апокалипсис двух слонов»" fill={withAlpha(colors.cyan, 0.85)}
-      fontSize={30} fontWeight={600} letterSpacing={1} fontFamily={fonts.mono} opacity={0}/>,
-  );
+  stage.add(title.node);
   stage.add(
     <Txt ref={verdict} y={320} text="побеждает не красивый, а работающий стандарт"
       fill={colors.cyan} fontSize={25} fontWeight={600} fontFamily={fonts.mono} opacity={0}/>,
@@ -29,7 +26,7 @@ export default makeScene2D(function* (view) {
 
   // "красивая теория Тоненбаума — апокалипсис двух слонов"
   yield* waitUntil('title');
-  yield* all(stage.opacity(1, 1.0, easeInOutCubic), title().opacity(1, 0.9), curve.appear());
+  yield* all(revealStage(stage), title.appear(), curve.appear());
 
   // "…сначала всплеск исследований: статьи, конференции, споры"
   yield* waitUntil('research');

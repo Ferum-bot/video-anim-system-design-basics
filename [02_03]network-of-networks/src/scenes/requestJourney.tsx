@@ -1,6 +1,6 @@
 import {Line, makeScene2D, Node, Txt} from '@motion-canvas/2d';
-import {all, createRef, easeInOutCubic, easeOutBack, easeOutCubic, sequence, waitFor, waitUntil} from '@motion-canvas/core';
-import {colors, createStage, endScene, fonts, withAlpha} from '@lib';
+import {all, createRef, easeOutBack, easeOutCubic, sequence, waitFor, waitUntil} from '@motion-canvas/core';
+import {colors, createStage, endScene, fonts, revealStage, withAlpha} from '@lib';
 import {hopNode, journeyRoute, worldMap} from '../journey';
 import type {HopNodeOptions, RouteSegment} from '../journey';
 
@@ -66,7 +66,7 @@ export default makeScene2D(function* (view) {
 
   // t=0 — the whole scene eases in (no abrupt pop), the world appearing with it; then the
   // phone (the question: "что происходит, когда ты скроллишь ленту").
-  yield* all(stage.opacity(1, 1.2, easeInOutCubic), map.appear());
+  yield* all(revealStage(stage, 1.2), map.appear());
   yield* hops[0].appear();
 
   // "…через радиосигнал ближайшей вышки связи"
