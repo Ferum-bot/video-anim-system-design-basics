@@ -274,6 +274,34 @@ tasks:
         vars:
           NAME: '[02_09]tcpip'
 
+  serve:collapse:
+    desc: "Запустить редактор для анимации [02_10] OSI → TCP/IP (схлопывание слоёв)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_10]osi-tcpip'
+
+  build:collapse:
+    desc: "Собрать анимацию [02_10] OSI → TCP/IP (схлопывание слоёв)"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_10]osi-tcpip'
+
+  serve:recap:
+    desc: "Запустить редактор для анимации [02_11] Заключение (рекап-сетка)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_11]closing-recap'
+
+  build:recap:
+    desc: "Собрать анимацию [02_11] Заключение (рекап-сетка)"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_11]closing-recap'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

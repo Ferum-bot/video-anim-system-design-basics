@@ -69,6 +69,20 @@
       "runtimeArgs": ["run", "serve:tcpip"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "collapse",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:collapse"],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "recap",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:recap"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

@@ -37,7 +37,11 @@
     "serve:elephants": "vite '[02_08]two-elephants'",
     "build:elephants": "vite build '[02_08]two-elephants'",
     "serve:tcpip": "vite '[02_09]tcpip'",
-    "build:tcpip": "vite build '[02_09]tcpip'"
+    "build:tcpip": "vite build '[02_09]tcpip'",
+    "serve:collapse": "vite '[02_10]osi-tcpip'",
+    "build:collapse": "vite build '[02_10]osi-tcpip'",
+    "serve:recap": "vite '[02_11]closing-recap'",
+    "build:recap": "vite build '[02_11]closing-recap'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

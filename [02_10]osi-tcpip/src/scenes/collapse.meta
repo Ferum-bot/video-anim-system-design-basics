@@ -1,0 +1,26 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "osi",
+      "targetTime": 2
+    },
+    {
+      "name": "tcpip",
+      "targetTime": 8.6
+    },
+    {
+      "name": "collapse",
+      "targetTime": 14
+    },
+    {
+      "name": "verdict",
+      "targetTime": 30
+    },
+    {
+      "name": "end",
+      "targetTime": 45
+    }
+  ],
+  "seed": 204817
+}

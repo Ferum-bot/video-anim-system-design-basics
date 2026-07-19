@@ -1,0 +1,18 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "recap",
+      "targetTime": 2.4
+    },
+    {
+      "name": "thesis",
+      "targetTime": 58.8
+    },
+    {
+      "name": "end",
+      "targetTime": 70
+    }
+  ],
+  "seed": 318204
+}
