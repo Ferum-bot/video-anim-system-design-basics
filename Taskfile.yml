@@ -260,6 +260,20 @@ tasks:
         vars:
           NAME: '[02_08]two-elephants'
 
+  serve:tcpip:
+    desc: "Запустить редактор для анимации [02_09] Модель TCP/IP (стек снизу вверх)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[02_09]tcpip'
+
+  build:tcpip:
+    desc: "Собрать анимацию [02_09] Модель TCP/IP"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[02_09]tcpip'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

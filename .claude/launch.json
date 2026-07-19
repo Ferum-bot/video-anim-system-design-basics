@@ -62,6 +62,13 @@
       "runtimeArgs": ["run", "serve:elephants"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "tcpip",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:tcpip"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }
