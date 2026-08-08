@@ -83,6 +83,13 @@
       "runtimeArgs": ["run", "serve:recap"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "part1",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:part1"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

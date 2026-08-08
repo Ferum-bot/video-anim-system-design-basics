@@ -91,6 +91,22 @@ they build on the `@lib` framework and read the active theme, so all colour/font
 comes from the applied `blueprint` preset. Scenes: `osi`, `handshake`, `protocols`. Run with
 `npm run serve:net`.
 
+## Video "Транспортный уровень" (video 03) — parts
+
+Second part of the networking series (UDP / TCP / QUIC). Keeps video 02's `blueprint` theme.
+The narration is the **already-edited** mix `~/Movies/CapCut/0807.WAV` (49:48), so scene
+timecodes equal final-video timecodes and parts use `audioOffset` only when they don't start
+at t=0. Transcript + the pre-production animation plan reconciled against it live in `docs/`
+([video-03-transport.md](docs/video-03-transport.md),
+[video-03-animation-plan.md](docs/video-03-animation-plan.md)).
+
+Part `[03_01]part-one-preview/` — the intro callback to video 02 (`src/scenes/partOne.tsx`,
+components in `src/part1/`): part 1's YouTube thumbnail (`src/assets/part-one-thumbnail.jpg`)
+floats in as a blueprint card at `04:18`, breathes through the hold, gains a
+«СМОТРИ ПЕРВУЮ ЧАСТЬ ↗» chip at `16:00` (where the host places the YouTube card), and drifts
+out at `25:24`. `audioOffset: 0`. Markers: `card`, `hint`, `end`. Run `npm run serve:part1`
+(or `task serve:part1`).
+
 ## Theming
 
 `@lib` is a **framework with no palette**; the style comes from a **theme preset**.
@@ -152,6 +168,8 @@ Existing markers (every scene also has `end`):
 - `queue/numbers` — `throughput`, `latency`, `msg-size`, `storage`, `retention`, `takeaway`.
 - `queue/scaling` — `throughput`, `partitions`, `takeaway`.
 - `takeaways` — `db`, `cache`, `queue`, `app`, `recap` (+ `end`; no `takeaway`).
+- `part-one-preview/partOne` — `card`, `hint` (+ `end`; the `end` anchor also drives the exit,
+  which composes the card's drift with the panel fade instead of calling `endScene`).
 
 The full-video narration is wired as the project `audio` in `src/project.ts`
 (`audio/0626.m4a`, converted from the source WAV with `afconvert -f m4af -d aac`, git-ignored),

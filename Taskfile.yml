@@ -302,6 +302,22 @@ tasks:
         vars:
           NAME: '[02_11]closing-recap'
 
+  # ── Видео 03 «Транспортный уровень» ──────────────────────────────────────────
+
+  serve:part1:
+    desc: "Запустить редактор для анимации [03_01] Превью первой части"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[03_01]part-one-preview'
+
+  build:part1:
+    desc: "Собрать анимацию [03_01] Превью первой части"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[03_01]part-one-preview'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

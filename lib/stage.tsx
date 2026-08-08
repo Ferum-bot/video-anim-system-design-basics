@@ -16,6 +16,15 @@ export const CARD_WIDTH = 800;
 /** Grid multiple: a brighter major line every N minor cells. */
 const GRID_MAJOR = 4;
 
+export interface StageOptions {
+  /**
+   * Outer height of the centred column. Defaults to the full canvas height, where the panel
+   * runs edge to edge and its frame only reads down the sides. Pass a smaller value when the
+   * scene should read as a free-standing card, with air above and below it.
+   */
+  height?: number;
+}
+
 /**
  * Fill the view per the active theme's {@link StageStyle} and return a clipped, centred
  * panel to mount scene content into. Every scene starts with `const stage = createStage(view)`.
@@ -26,7 +35,7 @@ const GRID_MAJOR = 4;
  * - **Scrim** (`scrimAlpha < 1`) — a translucent dark panel (+ optional grid) that darkens
  *   footage rather than hiding it. Video 02.
  */
-export function createStage(view: View2D): Rect {
+export function createStage(view: View2D, options: StageOptions = {}): Rect {
   const {stage} = activeTheme();
   const editing = !stage.transparent;
   const solid = stage.scrimAlpha >= 1;
@@ -43,8 +52,9 @@ export function createStage(view: View2D): Rect {
 
   // Optional explicit frame: inset the panel from the column edges, round it, and stroke it.
   const frame = stage.frame;
-  const width = STAGE.width - (frame ? frame.inset * 2 : 0);
-  const height = STAGE.height - (frame ? frame.inset * 2 : 0);
+  const inset = frame ? frame.inset * 2 : 0;
+  const width = STAGE.width - inset;
+  const height = (options.height ?? STAGE.height) - inset;
 
   const panel = createRef<Rect>();
   view.add(
