@@ -104,8 +104,27 @@ Part `[03_01]part-one-preview/` — the intro callback to video 02 (`src/scenes/
 components in `src/part1/`): part 1's YouTube thumbnail (`src/assets/part-one-thumbnail.jpg`)
 floats in as a blueprint card at `04:18`, breathes through the hold, gains a
 «СМОТРИ ПЕРВУЮ ЧАСТЬ ↗» chip at `16:00` (where the host places the YouTube card), and drifts
-out at `25:24`. `audioOffset: 0`. Markers: `card`, `hint`, `end`. Run `npm run serve:part1`
-(or `task serve:part1`).
+out at `25:24`. Uses a **780-tall stage** (`createStage(view, {height})`) so the panel reads
+as a card rather than a full-height band. From the chip onward the card and the chip share one
+attention pulse — both fork endless loops on the same frame and on the same half-period
+(`src/part1/pulse.ts`), so they breathe in step; the card's quieter `idle()` breath is
+`cancel`ed first, since both loops drive the same properties. `audioOffset: 0`. Markers:
+`card`, `hint`, `end`. Run `npm run serve:part1` (or `task serve:part1`).
+
+Part `[03_03]mac-address/` — канальный уровень, MAC-адрес (`src/scenes/macAddress.tsx`,
+components in `src/mac/`), covers `03:19.4–04:21.9`, `audioOffset: -199.4`. One object holds
+the whole scene: `addressBytes` unfolds the address out of a frame-header cell, measures it
+(48 бит), cuts it between byte 3 and 4 into vendor id (cyan) + serial (amber), resolves the
+prefix to a real vendor (`A4:83:E7` Apple → `00:1B:21` Intel), then docks up so `segmentScope`
+can show the link between two neighbours and the segment edge frames keep dying on. Markers:
+`address`, `mac`, `bits`, `split`, `serial`, `vendor`, `brands`, `neighbour`, `segment`, `end`.
+Run `npm run serve:mac` (or `task serve:mac`). `[03_02]` is deliberately unused — that slot was
+a link-layer intro scene we scoped and dropped; part numbers follow the storyboard, not the
+build order.
+
+**Watch out:** `blueprint`'s `track` token already carries its own alpha (`#0920348c`), so
+`withAlpha(colors.track, …)` produces an 8-digit-plus-alpha string and Motion Canvas throws
+`unknown format`. Use `colors.track` as-is.
 
 ## Theming
 
@@ -170,6 +189,8 @@ Existing markers (every scene also has `end`):
 - `takeaways` — `db`, `cache`, `queue`, `app`, `recap` (+ `end`; no `takeaway`).
 - `part-one-preview/partOne` — `card`, `hint` (+ `end`; the `end` anchor also drives the exit,
   which composes the card's drift with the panel fade instead of calling `endScene`).
+- `mac-address/macAddress` — `address`, `mac`, `bits`, `split`, `serial`, `vendor`, `brands`,
+  `neighbour`, `segment` (+ `end`, which likewise drives the composed exit).
 
 The full-video narration is wired as the project `audio` in `src/project.ts`
 (`audio/0626.m4a`, converted from the source WAV with `afconvert -f m4af -d aac`, git-ignored),
@@ -238,7 +259,9 @@ small, well-named factories. Keep new code in this shape.
 `ThemePalette` / `ThemeFonts` / `StageStyle` types, and the live `colors` / `fonts` proxies +
 `withAlpha` (see "Theming"). Presets: `@lib/themes/githubDark`, `@lib/themes/blueprint`.
 
-**Framework:** `createStage(view)` (theme-driven backdrop/scrim + centred panel),
+**Framework:** `createStage(view, {height?})` (theme-driven backdrop/scrim + centred panel;
+pass a `height` below the canvas's 1080 when the scene should read as a free-standing card
+with air above and below, instead of a band running to the top and bottom of the frame),
 `revealStage(stage, dur?)` (the shared opening fade — compose it with the first content:
 `all(revealStage(stage), heading.appear(), …)` — pairs with `endScene`),
 `endScene(stage)` (the shared `waitUntil('end')` + fade-out every scene closes with), `STAGE`,

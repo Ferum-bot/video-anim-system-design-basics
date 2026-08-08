@@ -1,0 +1,46 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "address",
+      "targetTime": 0.2
+    },
+    {
+      "name": "mac",
+      "targetTime": 7.4
+    },
+    {
+      "name": "bits",
+      "targetTime": 12
+    },
+    {
+      "name": "split",
+      "targetTime": 21.9
+    },
+    {
+      "name": "serial",
+      "targetTime": 30.5
+    },
+    {
+      "name": "vendor",
+      "targetTime": 33.9
+    },
+    {
+      "name": "brands",
+      "targetTime": 41.7
+    },
+    {
+      "name": "neighbour",
+      "targetTime": 46.5
+    },
+    {
+      "name": "segment",
+      "targetTime": 55.4
+    },
+    {
+      "name": "end",
+      "targetTime": 62.5
+    }
+  ],
+  "seed": 726104
+}

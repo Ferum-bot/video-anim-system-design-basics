@@ -90,6 +90,20 @@
       "runtimeArgs": ["run", "serve:part1"],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "common",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:common"],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "mac",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "serve:mac"],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

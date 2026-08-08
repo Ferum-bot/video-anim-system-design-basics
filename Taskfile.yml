@@ -318,6 +318,20 @@ tasks:
         vars:
           NAME: '[03_01]part-one-preview'
 
+  serve:mac:
+    desc: "Запустить редактор для анимации [03_03] MAC-адрес"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[03_03]mac-address'
+
+  build:mac:
+    desc: "Собрать анимацию [03_03] MAC-адрес"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[03_03]mac-address'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:
