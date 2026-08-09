@@ -209,6 +209,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "stream",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:stream"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

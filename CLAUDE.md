@@ -201,8 +201,24 @@ the loss happens. Markers: `list`, `flow`, `cong`, `retry`, `order`, `whatflow`,
 `drop`, `mech`, `notnet`, `second`, `anyrate`, `queues`, `others`, `anchor`, `end` (97.2 s).
 Run `npm run serve:udpn`.
 
-Slots `[03_02]`, `[03_05]`, `[03_08]`–`[03_11]` and `[03_14]` are unused: part numbers follow
-the storyboard, not the build order, and those beats were scoped and left unanimated.
+Part `[03_20]byte-stream/` — TCP, поток байтов против потока сообщений
+(`src/scenes/byteStream.tsx`, components in `src/stream/`), covers `24:30.0–25:12.3`,
+`audioOffset: -1470.0`. One bar carries the whole argument: the writes notch it from the **top**
+(4 × 512 Б, fixed), the reads notch it from the **bottom** (signals, so «одним куском 2048» →
+«4 по 512» → «300 / 1150 / 598» is one continuous re-cut), and the band between the notches is
+never divided — that band *is* the stream. It opens as four «СООБЩЕНИЕ» compartments whose
+seams dissolve, and closes with the liquid flowing and the read cuts re-rolling on forked
+endless loops, so the tail never freezes. The UDP answer is shown as a green ghost row aligned
+exactly under the writes. Markers: `claim`, `nowhere`, `writes`, `four`, `pour`, `one`,
+`split4`, `any`, `never`, `noinfo`, `udp`, `tcp`, `poured`, `end` (42.3 s).
+Run `npm run serve:stream`.
+
+TCP part numbers continue the storyboard from `[03_18]`; the agreed set is `[03_20]`, `[03_21]`,
+`[03_24]`, `[03_25]`, `[03_26]`, `[03_27]`, `[03_28]`, `[03_32]`.
+
+Slots `[03_02]`, `[03_05]`, `[03_08]`–`[03_11]`, `[03_14]` and the unlisted TCP slots are
+unused: part numbers follow the storyboard, not the build order, and those beats were scoped
+and left unanimated.
 
 **Watch out:**
 - `blueprint`'s `track` token already carries its own alpha (`#0920348c`), so
