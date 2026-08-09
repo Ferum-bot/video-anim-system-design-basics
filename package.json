@@ -61,7 +61,9 @@
     "serve:stream": "vite '[03_20]byte-stream'",
     "build:stream": "vite build '[03_20]byte-stream'",
     "serve:hand": "vite '[03_21]handshake'",
-    "build:hand": "vite build '[03_21]handshake'"
+    "build:hand": "vite build '[03_21]handshake'",
+    "serve:hol": "vite '[03_24]head-of-line'",
+    "build:hol": "vite build '[03_24]head-of-line'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

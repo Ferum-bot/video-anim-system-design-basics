@@ -227,8 +227,20 @@ scene-level commentary line, kept outside the widgets because it outlives all th
 `three`, `why3`, `two`, `four`, `isn`, `guess`, `random`, `end` (76 s).
 Run `npm run serve:hand`.
 
+Part `[03_24]head-of-line/` — TCP, блокировка головой очереди и «ACK ≠ приложение получило»
+(`src/scenes/headOfLine.tsx`, components in `src/hol/`), covers `28:07.0–29:20.5`,
+`audioOffset: -1687.0`. One belt does both halves: `holBelt` runs segments 1–4 straight through
+`СЕТЬ → БУФЕР ОС → ПРИЛОЖЕНИЕ`, loses №5 on the way, then parks 6–10 behind its dashed red hole
+— left to right the queue reads 10 9 8 7 6 [5] because the head of the queue is the end nearest
+the door, which stays shut. The crates turn green («целые, уже здесь») while the door stays red,
+and the app keeps pulsing on a forked endless loop. The same picture then answers the caveat:
+an ACK token leaves the buffer back towards the network while the door never opens. Markers:
+`wait`, `lost5`, `arrived`, `none`, `buffer`, `ready`, `order`, `blocked`, `name`, `price`,
+`later`, `caveat`, `ack`, `notapp`, `depends`, `end` (73.5 s). Run `npm run serve:hol`.
+
 TCP part numbers continue the storyboard from `[03_18]`; the agreed set is `[03_20]`, `[03_21]`,
-`[03_24]`, `[03_25]`, `[03_26]`, `[03_27]`, `[03_28]`, `[03_32]`.
+`[03_24]`, `[03_25]`, `[03_26]`, `[03_27]`, `[03_28]`, `[03_32]`. `runningNote` (the
+scene-level commentary line) is copied per part alongside its widgets.
 
 **Watch out:** a nested `map` inside JSX (`rows.map(r => cols.map(c => <Rect/>))`) mounts
 nothing — Motion Canvas does not flatten nested child arrays. Use `flatMap`.
