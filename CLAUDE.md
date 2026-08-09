@@ -164,9 +164,53 @@ It runs in a **1400×970 panel** — the one scene that breaks the 960 column, b
 and readouts have to survive a phone screen; the content sits under one `scale: 1.35` wrapper
 so the composition is identical, just bigger. Run `npm run serve:map` (or `task serve:map`).
 
-**Watch out:** `blueprint`'s `track` token already carries its own alpha (`#0920348c`), so
-`withAlpha(colors.track, …)` produces an 8-digit-plus-alpha string and Motion Canvas throws
-`unknown format`. Use `colors.track` as-is.
+Part `[03_07]ip-header/` — сетевой уровень, заголовок IP и TTL (`src/scenes/ipPacket.tsx`,
+components in `src/ip/`), covers `08:33.0–09:56.2`, `audioOffset: -513.0`. `headerBar` draws
+the classic RFC 791 diagram (5 rows × 4 bytes, all 20 of them) and lights the fields the
+narration names; `hopChain` runs the packet across routers while the header's shared `ttl`
+signal counts down in place, kills it at zero, and then replays the same chain as traceroute's
+answer — one number on screen, two meanings. Markers: `intro`, `twenty`, `version`, `length`,
+`protocol`, `addresses`, `ttl`, `hops`, `dies`, `warning`, `why`, `trace`, `path`, `end`.
+Run `npm run serve:ip`.
+
+Part `[03_12]udp-model/` — UDP, границы сообщений (`src/scenes/boundaries.tsx`, components in
+`src/boxes/`), covers `15:25.7–15:59.9`, `audioOffset: -925.7`. `datagramLane` sends whole
+boxes across a lane — one, then three, then three of which one is lost — so "датаграмма
+приходит целиком или не приходит вовсе" is shown rather than said; `impossibleRow` crosses
+out the two cases UDP cannot produce (полтора сообщения, половина). Markers: `tease`,
+`boundary`, `single`, `three`, `lost`, `glued`, `bookmark`, `whole`, `half`, `end`.
+Run `npm run serve:udp`.
+
+Part `[03_13]udp-header/` — UDP, устройство пакета (`src/scenes/udpPacket.tsx`, components in
+`src/udp/`), covers `15:59.9–16:42.9`, `audioOffset: -959.9`. `udpHeader` starts as one block
+that counts up to 8 байт and splits into its four two-byte fields; it then docks to the top so
+`overheadStack` can put 26 : 20 : 8 on one scale (Ethernet, IP, UDP) and crown UDP, and
+`portsPoint` finishes the thought — IP addresses a machine, the port addresses a process.
+Markers: `how`, `eight`, `four`, `src`, `dst`, `rest`, `all`, `recall`, `eth`, `ip`, `udp`,
+`cheapest`, `ports`, `process`, `only`, `end`. Run `npm run serve:udph`.
+
+Part `[03_15]udp-not/` — UDP, чего он не делает (`src/scenes/notDoing.tsx`, components in
+`src/not/`), covers `18:29.7–20:06.9`, `audioOffset: -1109.7`. `toggleRow` lists the four
+guarantees and strikes each one out as he names it, then collapses the list into a strip along
+the top that keeps saying which one is being explained. Below it a single `overflowPipe` plays
+the same failure twice: first as the OS receive buffer (`СЕТЕВАЯ КАРТА → БУФЕР ОС →
+ПРИЛОЖЕНИЕ`), then — relabelled, without moving — as a router queue (`ТВОЙ СОКЕТ → ОЧЕРЕДЬ
+РОУТЕРА → СЕТЬ`) that a second, muted «ЧУЖОЙ ТРАФИК» stream drowns alongside yours. Refused
+datagrams still make the whole trip and are turned away *at* the buffer, because that's where
+the loss happens. Markers: `list`, `flow`, `cong`, `retry`, `order`, `whatflow`, `none`,
+`drop`, `mech`, `notnet`, `second`, `anyrate`, `queues`, `others`, `anchor`, `end` (97.2 s).
+Run `npm run serve:udpn`.
+
+Slots `[03_02]`, `[03_05]`, `[03_08]`–`[03_11]` and `[03_14]` are unused: part numbers follow
+the storyboard, not the build order, and those beats were scoped and left unanimated.
+
+**Watch out:**
+- `blueprint`'s `track` token already carries its own alpha (`#0920348c`), so
+  `withAlpha(colors.track, …)` produces an 8-digit-plus-alpha string and Motion Canvas throws
+  `unknown format`. Use `colors.track` as-is.
+- A widget mounted early but shown later must start with its **group** hidden, not just its
+  animated parts. Static decoration (dashed lanes, rails) is easy to forget, and since
+  `stage.add` stacks in call order it will draw over whatever was mounted before it.
 
 ## Theming
 

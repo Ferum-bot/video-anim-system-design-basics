@@ -1,0 +1,46 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "tease",
+      "targetTime": 0.2
+    },
+    {
+      "name": "boundary",
+      "targetTime": 6.6
+    },
+    {
+      "name": "single",
+      "targetTime": 9.4
+    },
+    {
+      "name": "three",
+      "targetTime": 14.7
+    },
+    {
+      "name": "lost",
+      "targetTime": 18.5
+    },
+    {
+      "name": "glued",
+      "targetTime": 20.8
+    },
+    {
+      "name": "bookmark",
+      "targetTime": 23.7
+    },
+    {
+      "name": "whole",
+      "targetTime": 28.4
+    },
+    {
+      "name": "half",
+      "targetTime": 31.9
+    },
+    {
+      "name": "end",
+      "targetTime": 34.2
+    }
+  ],
+  "seed": 271849
+}

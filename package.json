@@ -55,7 +55,9 @@
     "serve:udp": "vite '[03_12]udp-model'",
     "build:udp": "vite build '[03_12]udp-model'",
     "serve:udph": "vite '[03_13]udp-header'",
-    "build:udph": "vite build '[03_13]udp-header'"
+    "build:udph": "vite build '[03_13]udp-header'",
+    "serve:udpn": "vite '[03_15]udp-not'",
+    "build:udpn": "vite build '[03_15]udp-not'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",
