@@ -239,6 +239,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "win",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:win"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

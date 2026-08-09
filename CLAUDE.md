@@ -238,6 +238,17 @@ an ACK token leaves the buffer back towards the network while the door never ope
 `wait`, `lost5`, `arrived`, `none`, `buffer`, `ready`, `order`, `blocked`, `name`, `price`,
 `later`, `caveat`, `ack`, `notapp`, `depends`, `end` (73.5 s). Run `npm run serve:hol`.
 
+Part `[03_25]sliding-window/` — TCP, скользящее окно (`src/scenes/slidingWindow.tsx`,
+components in `src/win/`), covers `29:21.0–30:11.0`, `audioOffset: -1761.0`. Deliberately the
+same apparatus as `[03_15]`'s `overflowPipe`, so the contrast lands: it opens as the UDP
+failure (буфер до краёв, отвергнутые пакеты краснеют у самого буфера и сыплются мимо), then
+`calm()` drains it and the receiver starts advertising. Everything hangs off **one** signal —
+`level`, насколько буфер занят: из него считаются высота зелёной полосы «СВОБОДНО», число в
+чипе «ОКНО N КБ» на обратной дорожке и период отправителя, поэтому «окно сжимается и
+раскрывается» — это буквально одно `breathe()` на форкнутом бесконечном цикле, за которым сам
+собой следует темп. Markers: `flow`, `udp`, `drop`, `not`, `tell`, `window`, `limit`, `drown`,
+`resize`, `slowest`, `end` (49.8 s). Run `npm run serve:win`.
+
 TCP part numbers continue the storyboard from `[03_18]`; the agreed set is `[03_20]`, `[03_21]`,
 `[03_24]`, `[03_25]`, `[03_26]`, `[03_27]`, `[03_28]`, `[03_32]`. `runningNote` (the
 scene-level commentary line) is copied per part alongside its widgets.

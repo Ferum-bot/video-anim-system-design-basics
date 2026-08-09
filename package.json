@@ -63,7 +63,9 @@
     "serve:hand": "vite '[03_21]handshake'",
     "build:hand": "vite build '[03_21]handshake'",
     "serve:hol": "vite '[03_24]head-of-line'",
-    "build:hol": "vite build '[03_24]head-of-line'"
+    "build:hol": "vite build '[03_24]head-of-line'",
+    "serve:win": "vite '[03_25]sliding-window'",
+    "build:win": "vite build '[03_25]sliding-window'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",
