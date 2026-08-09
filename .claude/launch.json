@@ -179,6 +179,26 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "udp",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:udp"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "udph",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:udph"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

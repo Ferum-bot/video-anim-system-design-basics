@@ -51,7 +51,11 @@
     "serve:map": "vite '[03_06]europe-map'",
     "build:map": "vite build '[03_06]europe-map'",
     "serve:ip": "vite '[03_07]ip-header'",
-    "build:ip": "vite build '[03_07]ip-header'"
+    "build:ip": "vite build '[03_07]ip-header'",
+    "serve:udp": "vite '[03_12]udp-model'",
+    "build:udp": "vite build '[03_12]udp-model'",
+    "serve:udph": "vite '[03_13]udp-header'",
+    "build:udph": "vite build '[03_13]udp-header'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",
