@@ -49,7 +49,9 @@
     "serve:budget": "vite '[03_04]frame-budget'",
     "build:budget": "vite build '[03_04]frame-budget'",
     "serve:map": "vite '[03_06]europe-map'",
-    "build:map": "vite build '[03_06]europe-map'"
+    "build:map": "vite build '[03_06]europe-map'",
+    "serve:ip": "vite '[03_07]ip-header'",
+    "build:ip": "vite build '[03_07]ip-header'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

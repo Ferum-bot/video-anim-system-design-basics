@@ -169,6 +169,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "ip",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:ip"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }
