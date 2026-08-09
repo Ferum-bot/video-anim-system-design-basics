@@ -59,7 +59,9 @@
     "serve:udpn": "vite '[03_15]udp-not'",
     "build:udpn": "vite build '[03_15]udp-not'",
     "serve:stream": "vite '[03_20]byte-stream'",
-    "build:stream": "vite build '[03_20]byte-stream'"
+    "build:stream": "vite build '[03_20]byte-stream'",
+    "serve:hand": "vite '[03_21]handshake'",
+    "build:hand": "vite build '[03_21]handshake'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

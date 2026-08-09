@@ -219,6 +219,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "hand",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:hand"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

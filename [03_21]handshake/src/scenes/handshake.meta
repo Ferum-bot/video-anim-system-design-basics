@@ -1,0 +1,82 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "why",
+      "targetTime": 0.08
+    },
+    {
+      "name": "memory",
+      "targetTime": 4.94
+    },
+    {
+      "name": "stuck",
+      "targetTime": 6.62
+    },
+    {
+      "name": "later",
+      "targetTime": 9.7
+    },
+    {
+      "name": "tell",
+      "targetTime": 14.78
+    },
+    {
+      "name": "zombie",
+      "targetTime": 20.08
+    },
+    {
+      "name": "solve",
+      "targetTime": 23.42
+    },
+    {
+      "name": "hand",
+      "targetTime": 28.1
+    },
+    {
+      "name": "syn",
+      "targetTime": 32.52
+    },
+    {
+      "name": "synack",
+      "targetTime": 37.18
+    },
+    {
+      "name": "ack",
+      "targetTime": 41.34
+    },
+    {
+      "name": "three",
+      "targetTime": 43.92
+    },
+    {
+      "name": "why3",
+      "targetTime": 46.46
+    },
+    {
+      "name": "two",
+      "targetTime": 56.22
+    },
+    {
+      "name": "four",
+      "targetTime": 58.42
+    },
+    {
+      "name": "isn",
+      "targetTime": 62.84
+    },
+    {
+      "name": "guess",
+      "targetTime": 65.8
+    },
+    {
+      "name": "random",
+      "targetTime": 72.52
+    },
+    {
+      "name": "end",
+      "targetTime": 76
+    }
+  ],
+  "seed": 1180740052
+}

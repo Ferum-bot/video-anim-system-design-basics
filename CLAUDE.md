@@ -213,8 +213,25 @@ exactly under the writes. Markers: `claim`, `nowhere`, `writes`, `four`, `pour`,
 `split4`, `any`, `never`, `noinfo`, `udp`, `tcp`, `poured`, `end` (42.3 s).
 Run `npm run serve:stream`.
 
+Part `[03_21]handshake/` — TCP, память сети и тройное рукопожатие (`src/scenes/handshake.tsx`,
+components in `src/handshake/`), covers `25:16.0–26:32.0`, `audioOffset: -1516.0`. Three
+movements share one frame: `netMemory` drops packet #1 into a router's buffer, lets #2 and #3
+overtake it and shows it arriving last — «ВОССТАЛ ИЗ МЁРТВЫХ», the motif first named at `10:43`;
+`threeWay` draws the SYN / SYN+ACK / ACK sequence diagram and then **steps up** to make room for
+its own 2×2 ledger (each side must announce its count and see it acknowledged), so «двух шагов
+мало» is a cell going red and «четыре избыточно» is a ghost arrow with nothing left to fill;
+`isnPanel` closes with the initial number — a timer-based one the attacker predicts exactly,
+then a pseudo-random one that keeps re-rolling on a forked endless loop. `runningNote` is the
+scene-level commentary line, kept outside the widgets because it outlives all three. Markers:
+`why`, `memory`, `stuck`, `later`, `tell`, `zombie`, `solve`, `hand`, `syn`, `synack`, `ack`,
+`three`, `why3`, `two`, `four`, `isn`, `guess`, `random`, `end` (76 s).
+Run `npm run serve:hand`.
+
 TCP part numbers continue the storyboard from `[03_18]`; the agreed set is `[03_20]`, `[03_21]`,
 `[03_24]`, `[03_25]`, `[03_26]`, `[03_27]`, `[03_28]`, `[03_32]`.
+
+**Watch out:** a nested `map` inside JSX (`rows.map(r => cols.map(c => <Rect/>))`) mounts
+nothing — Motion Canvas does not flatten nested child arrays. Use `flatMap`.
 
 Slots `[03_02]`, `[03_05]`, `[03_08]`–`[03_11]`, `[03_14]` and the unlisted TCP slots are
 unused: part numbers follow the storyboard, not the build order, and those beats were scoped
