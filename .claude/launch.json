@@ -4,104 +4,169 @@
     {
       "name": "scene-01",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:01"],
+      "runtimeArgs": [
+        "run",
+        "serve:01"
+      ],
       "port": 9000
     },
     {
       "name": "takeaways",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:takeaways"],
+      "runtimeArgs": [
+        "run",
+        "serve:takeaways"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "net-preview",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:net"],
+      "runtimeArgs": [
+        "run",
+        "serve:net"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "journey",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:journey"],
+      "runtimeArgs": [
+        "run",
+        "serve:journey"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "osi",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:osi"],
+      "runtimeArgs": [
+        "run",
+        "serve:osi"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "layers",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:layers"],
+      "runtimeArgs": [
+        "run",
+        "serve:layers"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "standards",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:standards"],
+      "runtimeArgs": [
+        "run",
+        "serve:standards"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "committees",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:committees"],
+      "runtimeArgs": [
+        "run",
+        "serve:committees"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "elephants",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:elephants"],
+      "runtimeArgs": [
+        "run",
+        "serve:elephants"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "tcpip",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:tcpip"],
+      "runtimeArgs": [
+        "run",
+        "serve:tcpip"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "collapse",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:collapse"],
+      "runtimeArgs": [
+        "run",
+        "serve:collapse"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "recap",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:recap"],
+      "runtimeArgs": [
+        "run",
+        "serve:recap"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "part1",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:part1"],
+      "runtimeArgs": [
+        "run",
+        "serve:part1"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "common",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:common"],
+      "runtimeArgs": [
+        "run",
+        "serve:common"
+      ],
       "port": 9000,
       "autoPort": true
     },
     {
       "name": "mac",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve:mac"],
+      "runtimeArgs": [
+        "run",
+        "serve:mac"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "budget",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:budget"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "map",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:map"
+      ],
       "port": 9000,
       "autoPort": true
     }

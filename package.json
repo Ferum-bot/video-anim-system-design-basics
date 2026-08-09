@@ -45,7 +45,11 @@
     "serve:part1": "vite '[03_01]part-one-preview'",
     "build:part1": "vite build '[03_01]part-one-preview'",
     "serve:mac": "vite '[03_03]mac-address'",
-    "build:mac": "vite build '[03_03]mac-address'"
+    "build:mac": "vite build '[03_03]mac-address'",
+    "serve:budget": "vite '[03_04]frame-budget'",
+    "build:budget": "vite build '[03_04]frame-budget'",
+    "serve:map": "vite '[03_06]europe-map'",
+    "build:map": "vite build '[03_06]europe-map'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

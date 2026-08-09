@@ -122,6 +122,48 @@ Run `npm run serve:mac` (or `task serve:mac`). `[03_02]` is deliberately unused 
 a link-layer intro scene we scoped and dropped; part numbers follow the storyboard, not the
 build order.
 
+Part `[03_04]frame-budget/` — канальный уровень, бюджет Ethernet-кадра
+(`src/scenes/frameBudget.tsx`, components in `src/frame/`), covers `05:00.5–06:28.5`,
+`audioOffset: -300.5`. `frameBar` is one bar for the whole scene: abstract (полезное vs
+служебное) → named fields (`8·6·6·2 … 4`, the two MAC blocks take the previous scene's cyan)
+→ **redrawn to true proportion**, where 26 bytes against 1500 collapse to a hairline and prove
+the "≈2%" on their own → a payload slider drags 1500 → 50 and the share climbs to 34% (the
+readout tweens cyan → amber). Then `costCompare` prices it: resending the frame vs topping it
+up with redundant bytes, both rows sharing a left edge. Segment widths are signals lerped
+between a readable schematic and the true ratio; byte counts fade themselves out as their
+segment gets too narrow. Markers: `overhead`, `define`, `numbers`, `total`, `fields`,
+`addresses`, `full`, `small`, `varies`, `price`, `cheaper`, `close`, `end`.
+Run `npm run serve:budget` (or `task serve:budget`).
+
+Part `[03_06]europe-map/` — сетевой уровень, планета → Европа (`src/scenes/europeMap.tsx`,
+`src/geo/`), covers `07:35.1–…`, `audioOffset: -455.1`. **A different kind of animation from
+the rest of the series:** an orthographic projection (`geo/projection.ts`) turns real
+lon/lat into scene coordinates every frame, so "globe" and "map of Europe" are the same
+object at different camera settings and the scene flies between them in one continuous move.
+Camera = three signals (`lon`, `lat`, `radius`); every coastline, graticule line, backbone
+arc and city dot binds its geometry to them. Far-side points are pushed past the limb rather
+than dropped, so a `clip` circle cuts each ring exactly at the horizon and every polygon
+stays one `Line` with a fixed point count.
+
+Coastlines are generated data: `tools/build-land.js` turns Natural Earth 1:50m land (public
+domain) into `src/geo/coastlines.ts` — Douglas-Peucker simplified, fine inside the European
+viewport and coarse elsewhere, 103 rings / ~4.5k points. Regenerate rather than hand-edit.
+`src/geo/places.ts` holds the real backbone: the FLAP core plus Moscow as tier-1 exchanges,
+the two diverse Frankfurt→Mediterranean corridors, the Baltic and Scandinavian rings, and the
+three separate ways traffic leaves Moscow (Scandinavia / Poland / Ukraine).
+
+The route beats sit on the same map: `geo/routes.ts` enumerates **real simple paths** over
+that link graph (no faked lines), `geo/routeLayer.tsx` flares 36 of them with a shrinking
+gap so it reads as "and another, and another — too many", then contrasts the geographically
+short route (dashed ghost, Moscow→Minsk→Warsaw→Berlin) with the one traffic actually takes
+(orange, up through Scandinavia) and runs a packet along it. `geo/hud.tsx` holds the readouts
+that sit over the map's empty corners: route counter → route legend, the three reason chips,
+and the p99 latency strip. Markers: `world`, `fly`, `mesh`, `hubs`, `question`, `thousands`,
+`uncountable`, `journey`, `shortest`, `cheapest`, `reason1..3`, `p99`, `end` (58 s total).
+It runs in a **1400×970 panel** — the one scene that breaks the 960 column, because coastlines
+and readouts have to survive a phone screen; the content sits under one `scale: 1.35` wrapper
+so the composition is identical, just bigger. Run `npm run serve:map` (or `task serve:map`).
+
 **Watch out:** `blueprint`'s `track` token already carries its own alpha (`#0920348c`), so
 `withAlpha(colors.track, …)` produces an 8-digit-plus-alpha string and Motion Canvas throws
 `unknown format`. Use `colors.track` as-is.
@@ -191,6 +233,8 @@ Existing markers (every scene also has `end`):
   which composes the card's drift with the panel fade instead of calling `endScene`).
 - `mac-address/macAddress` — `address`, `mac`, `bits`, `split`, `serial`, `vendor`, `brands`,
   `neighbour`, `segment` (+ `end`, which likewise drives the composed exit).
+- `frame-budget/frameBudget` — `overhead`, `define`, `numbers`, `total`, `fields`, `addresses`,
+  `full`, `small`, `varies`, `price`, `cheaper`, `close` (+ `end`).
 
 The full-video narration is wired as the project `audio` in `src/project.ts`
 (`audio/0626.m4a`, converted from the source WAV with `afconvert -f m4af -d aac`, git-ignored),
@@ -259,9 +303,12 @@ small, well-named factories. Keep new code in this shape.
 `ThemePalette` / `ThemeFonts` / `StageStyle` types, and the live `colors` / `fonts` proxies +
 `withAlpha` (see "Theming"). Presets: `@lib/themes/githubDark`, `@lib/themes/blueprint`.
 
-**Framework:** `createStage(view, {height?})` (theme-driven backdrop/scrim + centred panel;
-pass a `height` below the canvas's 1080 when the scene should read as a free-standing card
-with air above and below, instead of a band running to the top and bottom of the frame),
+**Framework:** `createStage(view, {width?, height?})` (theme-driven backdrop/scrim + centred
+panel; pass a `height` below the canvas's 1080 when the scene should read as a free-standing
+card with air above and below, instead of a band running to the top and bottom of the frame,
+and a `width` above the default 960 column for a scene that has to be read in detail — see
+`[03_06]europe-map`, which pairs a 1400×970 panel with a single `scale` wrapper so every
+distance, stroke and font grows together),
 `revealStage(stage, dur?)` (the shared opening fade — compose it with the first content:
 `all(revealStage(stage), heading.appear(), …)` — pairs with `endScene`),
 `endScene(stage)` (the shared `waitUntil('end')` + fade-out every scene closes with), `STAGE`,

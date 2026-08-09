@@ -18,6 +18,12 @@ const GRID_MAJOR = 4;
 
 export interface StageOptions {
   /**
+   * Outer width of the centred column. Defaults to {@link STAGE}'s 960, the column the host
+   * composites a talking head beside. Widen it for a scene that has to be read in detail —
+   * a map, say — and scale its contents to match.
+   */
+  width?: number;
+  /**
    * Outer height of the centred column. Defaults to the full canvas height, where the panel
    * runs edge to edge and its frame only reads down the sides. Pass a smaller value when the
    * scene should read as a free-standing card, with air above and below it.
@@ -53,7 +59,7 @@ export function createStage(view: View2D, options: StageOptions = {}): Rect {
   // Optional explicit frame: inset the panel from the column edges, round it, and stroke it.
   const frame = stage.frame;
   const inset = frame ? frame.inset * 2 : 0;
-  const width = STAGE.width - inset;
+  const width = (options.width ?? STAGE.width) - inset;
   const height = (options.height ?? STAGE.height) - inset;
 
   const panel = createRef<Rect>();

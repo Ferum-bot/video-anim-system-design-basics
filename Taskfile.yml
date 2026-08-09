@@ -332,6 +332,34 @@ tasks:
         vars:
           NAME: '[03_03]mac-address'
 
+  serve:budget:
+    desc: "Запустить редактор для анимации [03_04] Бюджет Ethernet-кадра"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[03_04]frame-budget'
+
+  build:budget:
+    desc: "Собрать анимацию [03_04] Бюджет Ethernet-кадра"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[03_04]frame-budget'
+
+  serve:map:
+    desc: "Запустить редактор для анимации [03_06] Планета → Европа (магистрали)"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[03_06]europe-map'
+
+  build:map:
+    desc: "Собрать анимацию [03_06] Планета → Европа"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[03_06]europe-map'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

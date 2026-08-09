@@ -11,7 +11,7 @@ import {
   range,
   sequence,
 } from '@motion-canvas/core';
-import type {ThreadGenerator} from '@motion-canvas/core';
+import type {PossibleSpacing, ThreadGenerator} from '@motion-canvas/core';
 import {colors, counter, fonts, withAlpha} from '@lib';
 import type {Widget} from '@lib';
 
@@ -40,8 +40,9 @@ const LAST_HEADER_INDEX = 3;
 const OVERHEAD_BYTES = SEGMENTS.reduce((sum, s) => sum + (s.bytes ?? 0), 0); // 26
 const FULL_PAYLOAD = 1500;
 
-// A label only earns its place once its segment is wide enough to hold it.
-const LABEL_FIT = {floor: 46, ramp: 34} as const;
+// A byte count only earns its place once its segment is wide enough to hold it; the field
+// names are coarser and get dropped wholesale when the bar goes to true scale.
+const NUMBER_FIT = {floor: 26, ramp: 14} as const;
 
 // ── Label slots, relative to the bar's centre ─────────────────────────────────
 const TOTAL_Y = -BAR.height / 2 - 34;
@@ -80,10 +81,11 @@ export interface FrameBar extends Widget {
   shrinkPayload(bytes: number): ThreadGenerator;
   /** Swap the line under the share readout. */
   note(text: string): ThreadGenerator;
-  /** Shrink up out of the way so the cost comparison can take the floor. */
+  /**
+   * Move and resize the bar: up and small so the cost comparison can take the floor, then
+   * back down under the closing line.
+   */
   dock(y: number, scale: number): ThreadGenerator;
-  /** Leave, so the closing line stands alone. */
-  dismiss(): ThreadGenerator;
 }
 
 /**
@@ -96,7 +98,7 @@ export function frameBar({y}: FrameBarOptions): FrameBar {
   const group = createRef<Node>();
   const bar = createRef<Node>();
   const segments = range(SEGMENTS.length).map(() => createRef<Rect>());
-  const sizes = range(SEGMENTS.length).map(() => createRef<Txt>());
+  const shown = SEGMENTS.map(() => createSignal(0)); // per-field byte count
   const serviceLabel = createRef<Txt>();
   const payloadLabel = createRef<Txt>();
   const defineLabel = createRef<Node>();
@@ -147,11 +149,11 @@ export function frameBar({y}: FrameBarOptions): FrameBar {
     return -BAR.width / 2 + span / 2;
   };
 
-  /** Fades a label out as its segment gets too narrow to hold it. */
+  /** Fades a byte count out as its segment gets too narrow to hold it. */
   const fitsIn = (index: number) => () =>
-    clamp(0, 1, (widths[index]() - LABEL_FIT.floor) / LABEL_FIT.ramp);
+    clamp(0, 1, (widths[index]() - NUMBER_FIT.floor) / NUMBER_FIT.ramp);
 
-  const cornerOf = (index: number) =>
+  const cornerOf = (index: number): PossibleSpacing =>
     index === 0
       ? [BAR.radius, 0, 0, BAR.radius]
       : index === SEGMENTS.length - 1
@@ -168,13 +170,13 @@ export function frameBar({y}: FrameBarOptions): FrameBar {
             width={widths[index]}
             height={BAR.height}
             radius={cornerOf(index)}
-            fill={fills[segment.kind]}
-            stroke={strokes[segment.kind]}
+            fill={fills[segment.kind === 'address' ? 'overhead' : segment.kind]}
+            stroke={strokes[segment.kind === 'address' ? 'overhead' : segment.kind]}
             lineWidth={1.5}
           >
-            <Txt ref={sizes[index]} text={segment.bytes ? String(segment.bytes) : ''}
-              fill={colors.text} fontSize={30} fontFamily={fonts.mono} fontWeight={500}
-              opacity={0}/>
+            <Txt text={segment.bytes ? String(segment.bytes) : ''} fill={colors.text}
+              fontSize={30} fontFamily={fonts.mono} fontWeight={500}
+              opacity={() => shown[index]() * fitsIn(index)()}/>
           </Rect>
         ))}
 
@@ -189,8 +191,7 @@ export function frameBar({y}: FrameBarOptions): FrameBar {
 
       {SEGMENTS.map((segment, index) => (
         <Txt x={offsets[index]} y={LEGEND_Y} text={segment.label} fill={colors.textMuted}
-          fontSize={17} fontFamily={fonts.mono} letterSpacing={1.2}
-          opacity={() => legendOn() * fitsIn(index)()}/>
+          fontSize={17} fontFamily={fonts.mono} letterSpacing={1.2} opacity={legendOn}/>
       ))}
 
       <Node ref={defineLabel} y={DEFINE_Y} opacity={0}>
@@ -247,17 +248,26 @@ export function frameBar({y}: FrameBarOptions): FrameBar {
   function* revealFields(from: number, to: number): ThreadGenerator {
     const opening = from === 0;
     const indices = range(from, to + 1).filter(index => index !== PAYLOAD_INDEX);
+    // The two addresses take the brighter accent as they're named — the same cyan the
+    // previous scene used for the MAC itself.
+    const addresses = indices.filter(index => SEGMENTS[index].kind === 'address');
     yield* all(
       ...(opening
         ? [spread(1, SPREAD, easeInOutCubic), legendOn(1, SPREAD, easeOutCubic)]
         : []),
-      sequence(0.12, ...indices.map(i => sizes[i]().opacity(1, LABEL_IN, easeOutCubic))),
+      ...addresses.flatMap(index => [
+        segments[index]().fill(fills.address, SPREAD),
+        segments[index]().stroke(strokes.address, SPREAD),
+      ]),
+      sequence(0.12, ...indices.map(i => shown[i](1, LABEL_IN, easeOutCubic))),
     );
   }
 
   function* toScale(): ThreadGenerator {
     yield* all(
       scaled(1, TO_SCALE, easeInOutCubic),
+      // the field names have no room left at true scale — they've done their job
+      legendOn(0, TO_SCALE * 0.5, easeInOutCubic),
       totalLabel().opacity(0, 0.5, easeInOutCubic),
       delay(TO_SCALE * 0.55, all(
         stats().opacity(1, LABEL_IN, easeOutCubic),
@@ -294,13 +304,6 @@ export function frameBar({y}: FrameBarOptions): FrameBar {
     );
   }
 
-  function* dismiss(): ThreadGenerator {
-    yield* all(
-      group().opacity(0, 0.6, easeInOutCubic),
-      group().y(group().y() - 26, 0.6, easeInOutCubic),
-    );
-  }
-
   return {
     node,
     appear,
@@ -312,6 +315,5 @@ export function frameBar({y}: FrameBarOptions): FrameBar {
     shrinkPayload,
     note,
     dock,
-    dismiss,
   };
 }

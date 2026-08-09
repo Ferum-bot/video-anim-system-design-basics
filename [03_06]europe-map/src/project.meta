@@ -10,7 +10,7 @@
       "x": 1920,
       "y": 1080
     },
-    "audioOffset": -300.5
+    "audioOffset": -455.1
   },
   "preview": {
     "fps": 60,
@@ -29,5 +29,5 @@
       }
     }
   },
-  "name": "[03_04]frame-budget"
+  "name": "[03_06]europe-map"
 }

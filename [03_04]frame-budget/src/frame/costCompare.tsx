@@ -18,10 +18,10 @@ const MINI = {width: 240, height: 34, radius: 6, head: 22, tail: 12} as const;
 const GAP = 12;
 const NUB = 36; // the handful of redundant bytes row B pays instead of a second frame
 
-const ROW_A_Y = -40;
-const ROW_B_Y = 46;
-const LABEL_DY = -36;
-const VERDICT_Y = 132;
+const ROW_A_Y = -50;
+const ROW_B_Y = 76;
+const LABEL_DY = -34;
+const VERDICT_Y = 152;
 
 // ── Timing ────────────────────────────────────────────────────────────────────
 const LABEL_IN = 0.45;
@@ -54,7 +54,7 @@ export function costCompare({y}: CostCompareOptions): CostCompare {
   const labelB = createRef<Txt>();
   const framesA = [createRef<Node>(), createRef<Node>()];
   const frameB = createRef<Node>();
-  const nub = createRef<Rect>();
+  const nub = createRef<Node>();
   const verdict = createRef<Txt>();
 
   const accent = colors.cyan;
@@ -102,9 +102,14 @@ export function costCompare({y}: CostCompareOptions): CostCompare {
       {rowLabel(labelB, 'ДОЛОЖИТЬ ИЗБЫТОЧНЫХ БАЙТ', ROW_B_Y)}
       <Node y={ROW_B_Y}>
         {miniFrame(frameB, firstCentre)}
-        <Rect ref={nub} x={nubCentre - 40} width={NUB} height={MINI.height}
-          radius={MINI.radius} fill={withAlpha(colors.orange, 0.26)}
-          stroke={withAlpha(colors.orange, 0.9)} lineWidth={1.5} opacity={0}/>
+        <Node ref={nub} x={nubCentre - 40} opacity={0}>
+          <Rect width={NUB} height={MINI.height} radius={MINI.radius}
+            fill={withAlpha(colors.orange, 0.26)} stroke={withAlpha(colors.orange, 0.9)}
+            lineWidth={1.5}>
+            <Txt text="+" fill={colors.orange} fontSize={22} fontFamily={fonts.mono}
+              fontWeight={600}/>
+          </Rect>
+        </Node>
       </Node>
 
       <Txt ref={verdict} y={VERDICT_Y} text="дешевле доложить, чем передавать второй раз"
