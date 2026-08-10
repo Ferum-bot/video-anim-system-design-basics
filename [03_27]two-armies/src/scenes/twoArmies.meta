@@ -1,0 +1,46 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "close",
+      "targetTime": 0.06
+    },
+    {
+      "name": "cant",
+      "targetTime": 9.96
+    },
+    {
+      "name": "unsolvable",
+      "targetTime": 14.78
+    },
+    {
+      "name": "armies",
+      "targetTime": 18.72
+    },
+    {
+      "name": "messenger",
+      "targetTime": 26.56
+    },
+    {
+      "name": "lost1",
+      "targetTime": 31.68
+    },
+    {
+      "name": "lost2",
+      "targetTime": 34.06
+    },
+    {
+      "name": "forever",
+      "targetTime": 36.2
+    },
+    {
+      "name": "proven",
+      "targetTime": 37.82
+    },
+    {
+      "name": "end",
+      "targetTime": 44.3
+    }
+  ],
+  "seed": 1332794670
+}

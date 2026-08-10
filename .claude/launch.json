@@ -249,6 +249,86 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "cong",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:cong"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "armies",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:armies"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "tcph",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:tcph"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "table",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:table"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "qstreams",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:qstreams"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "qtl",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:qtl"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "qlibs",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:qlibs"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "qnum",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:qnum"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

@@ -249,6 +249,47 @@ failure (буфер до краёв, отвергнутые пакеты кра�
 собой следует темп. Markers: `flow`, `udp`, `drop`, `not`, `tell`, `window`, `limit`, `drown`,
 `resize`, `slowest`, `end` (49.8 s). Run `npm run serve:win`.
 
+Part `[03_26]congestion/` — TCP, контроль перегрузки (`src/scenes/congestion.tsx`, components in
+`src/cong/`), covers `30:11.0–32:12.5`, `audioOffset: -1811.0` — самая длинная часть серии
+(121.5 s), три карточки подряд. `guardRows`: управление потоком бережёт получателя, контроль
+перегрузки — саму сеть (+ чип «1988 · Ван Джекобсон»). `whyLoss`: два способа потерять пакет
+рядом — по проводу помехи его почти не убивают, значит он умер в переполненной очереди.
+`sawGraph`: график **рисует сам себя** — ломаная строится в коде (медленный старт по экспоненте,
+дальше зубья «разгон до потолка → сброс вдвое»), доли длины считаются по `Math.hypot`, и по ним
+же и тянется `Line.end`, и всплывают красные крестики потерь; потом та же пила уходит в сетку
+24 плиток, где точки каждой ломаной пересчитываются от одного сигнала `phase` — один форкнутый
+цикл двигает все чужие соединения сразу. Markers: `cong`, `shared`, `alg`, `signal`, `wire`,
+`queue`, `slow`, `start`, `ramp`, `aimd`, `half`, `saw`, `cycle`, `fair`, `thousand`, `nodisp`,
+`billions`, `stands`, `end`. Run `npm run serve:cong`.
+
+Part `[03_27]two-armies/` — TCP, разрыв соединения и проблема двух армий
+(`src/scenes/twoArmies.tsx`, components in `src/armies/`), covers `32:13.0–32:57.3`,
+`audioOffset: -1933.0`. **Секцию FIN / 2×MSL / TIME_WAIT автор решил не анимировать** — часть
+заканчивается на «доказуемо не существует протокола». `messengerLadder` — лестница
+подтверждений, где каждый следующий ряд мельче и бледнее предыдущего (`rowScale`/`rowAlpha`),
+так что «и так до бесконечности» именно нарисовано; два гонца по дороге получают красный крест.
+Markers: `close`, `cant`, `unsolvable`, `armies`, `messenger`, `lost1`, `lost2`, `forever`,
+`proven`, `end` (44.3 s). Run `npm run serve:armies`.
+
+Part `[03_28]tcp-header/` — TCP, заголовок в 20 байт и ядро (`src/scenes/tcpHeader.tsx`,
+components in `src/hdr/`), covers `33:24.5–34:31.0`, `audioOffset: -2004.5`. `headerBytes`
+кладёт 8 байт UDP и 20 байт TCP на одну линейку (38 px/байт) и подсвечивает группы полей ровно
+на их названиях, а под баром копится список того, что на эти байты куплено — «каждая группа
+полей — это гарантии, отлитые в байты». `kernelStacks` — два одинаковых стека по краям, между
+ними чужая инфраструктура: на «поменять TCP» оба ядра становятся янтарными, на «молиться»
+проступают пять коробок со знаками вопроса. Markers: `how`, `twenty`, `ports`, `seq`, `flags`,
+`window`, `groups`, `kernel`, `waits`, `change`, `pray`, `end` (66.5 s).
+Run `npm run serve:tcph`.
+
+Part `[03_32]udp-vs-tcp/` — сравнительная таблица (`src/scenes/udpVsTcp.tsx`, components in
+`src/table/`), covers `38:12.9–38:46.9`, `audioOffset: -2292.9`. Содержимое строк задал автор
+(9 строк × 2 колонки). Пустой каркас появляется сразу — он обещает форму, — а строки прилетают
+по одной ровно на своих названиях и подсвечиваются; на «эту таблицу ты видишь на экране»
+подсветка снимается и таблица стоит целиком; «характер» подсвечивает последнюю строку, а потом
+её ячейки по очереди. Markers: `table`, `compare`, `model`, `conn`, `deliver`, `order`,
+`flowcong`, `header`, `state`, `spec`, `onscreen`, `char`, `udpchar`, `tcpchar`, `end` (34 s).
+Run `npm run serve:table`.
+
 TCP part numbers continue the storyboard from `[03_18]`; the agreed set is `[03_20]`, `[03_21]`,
 `[03_24]`, `[03_25]`, `[03_26]`, `[03_27]`, `[03_28]`, `[03_32]`. `runningNote` (the
 scene-level commentary line) is copied per part alongside its widgets.
@@ -256,7 +297,50 @@ scene-level commentary line) is copied per part alongside its widgets.
 **Watch out:** a nested `map` inside JSX (`rows.map(r => cols.map(c => <Rect/>))`) mounts
 nothing — Motion Canvas does not flatten nested child arrays. Use `flatMap`.
 
-Slots `[03_02]`, `[03_05]`, `[03_08]`–`[03_11]`, `[03_14]` and the unlisted TCP slots are
+### Секция QUIC
+
+Кандидаты секции пронумерованы в `docs/`-разборе 1–13; номер папки — `[03_(32+N)]`. Собраны
+четыре: 3 → `[03_35]`, 8 → `[03_40]`, 10 → `[03_42]`, 13 → `[03_45]`.
+
+Part `[03_35]quic-streams/` — потоки и закрытие head-of-line (`src/scenes/quicStreams.tsx`,
+components in `src/streams/`), covers `39:34.5–40:32.6`, `audioOffset: -2374.5`. `streamLanes` —
+это тройная лента из `[03_24]`: одна большая труба расходится на три полосы, каждая едет своим
+форкнутым циклом, и на «потерялся пакет из потока 1» сцена просто **`cancel`-ит задачу первой
+полосы** — она встаёт там, где её застала дырка, а ящики за ней аккуратно паркуются в очередь;
+полосы 2 и 3 продолжают ехать. Дальше `pageGrid` показывает практику: 24 объекта страницы,
+через один TCP всё встаёт на восьмом, через QUIC догружается всё, кроме одного. Markers: `how`,
+`streams`, `many`, `each`, `lost`, `others`, `solves`, `page`, `oneTcp`, `mux`, `end` (58.1 s).
+Run `npm run serve:qstreams`.
+
+Part `[03_40]quic-timeline/` — путь протокола наоборот (`src/scenes/quicTimeline.tsx`,
+components in `src/tl/`), covers `42:46.8–43:53.0`, `audioOffset: -2566.8`. Сверху обычный
+порядок «стандарт → код» перечёркивается, снизу остаётся «код → стандарт»; дальше на оси
+появляются четыре вехи, у третьей выезжает гребёнка из 35 засечек (по одной за итерацию, шесть
+секунд — ровно чтобы не было провала до следующей реплики), у четвёртой — свита документов.
+**Года первого эксперимента на экране нет:** в озвучке звучит «2020», но арифметика («6 лет в
+IETF» + «RFC 9000 в 2021») сходится только для 2013 — карточка подписана «ЭКСПЕРИМЕНТ» без
+даты. Markers: `notstd`, `exp`, `code`, `half`, `billions`, `ietf`, `draft35`, `rfc`, `editors`,
+`end` (66.2 s). Run `npm run serve:qtl`.
+
+Part `[03_42]quic-libs/` — QUIC живёт в библиотеке, а не в ядре (`src/scenes/quicLibs.tsx`,
+components in `src/libs/`), covers `44:35.0–44:59.5`, `audioOffset: -2675.0`. Прямое
+продолжение `[03_28]`: там, чтобы поменять TCP, надо было менять оба ядра, здесь в ядре
+«QUIC» просто перечёркивается, а реализация приезжает в твой процесс. Закрывает плашка
+«TCP — ОБНОВИ ЯДРА ПЛАНЕТЫ · QUIC — ОБНОВИ ДЕПЛОЙ». Markers: `where`, `notkernel`, `libs`,
+`names`, `bring`, `flags`, `end` (24.5 s). Run `npm run serve:qlibs`.
+
+Part `[03_45]quic-numbers/` — миф «просто быстрый TCP» против цифр
+(`src/scenes/quicNumbers.tsx`, components in `src/num/`), covers `46:46.5–47:58.5`,
+`audioOffset: -2806.5`. `speedChart` считает обе кривые формулой (`tcpAt`/`quicAt`), поэтому
+точка расхождения на ~600 Мбит/с и «до −45%» на правом краю — не нарисованы на глаз, а следуют
+из констант `SPLIT` / `TOP` / `RATIO`; разрыв заливается многоугольником между кривыми.
+Дальше `userspaceCost` объясняет причину: слева ядро отдаёт наверх крупные пачки, справа —
+лавину мелких пакетов поштучно, обе стороны на форкнутом бесконечном цикле. Цифры совпадают с
+работой «QUIC is not Quick Enough over Fast Internet» (WWW 2024). Markers: `numbers`, `study`,
+`fast`, `lose45`, `six00`, `gap`, `browsers`, `bitrate`, `why`, `flood`, `userspace`, `forty`,
+`end` (72 s). Run `npm run serve:qnum`.
+
+Slots `[03_02]`, `[03_05]`, `[03_08]`–`[03_11]`, `[03_14]` and the unlisted TCP/QUIC slots are
 unused: part numbers follow the storyboard, not the build order, and those beats were scoped
 and left unanimated.
 
