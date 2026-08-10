@@ -1,0 +1,46 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "notstd",
+      "targetTime": 2.26
+    },
+    {
+      "name": "exp",
+      "targetTime": 5.74
+    },
+    {
+      "name": "code",
+      "targetTime": 14.54
+    },
+    {
+      "name": "half",
+      "targetTime": 19.12
+    },
+    {
+      "name": "billions",
+      "targetTime": 25.26
+    },
+    {
+      "name": "ietf",
+      "targetTime": 32.34
+    },
+    {
+      "name": "draft35",
+      "targetTime": 38.28
+    },
+    {
+      "name": "rfc",
+      "targetTime": 48.2
+    },
+    {
+      "name": "editors",
+      "targetTime": 60.08
+    },
+    {
+      "name": "end",
+      "targetTime": 66.2
+    }
+  ],
+  "seed": 612066769
+}
