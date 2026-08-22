@@ -81,7 +81,11 @@
     "serve:qlibs": "vite '[03_42]quic-libs'",
     "build:qlibs": "vite build '[03_42]quic-libs'",
     "serve:qnum": "vite '[03_45]quic-numbers'",
-    "build:qnum": "vite build '[03_45]quic-numbers'"
+    "build:qnum": "vite build '[03_45]quic-numbers'",
+    "serve:prev": "vite '[04_01]previous-parts'",
+    "build:prev": "vite build '[04_01]previous-parts'",
+    "serve:around": "vite '[04_02]protocols-around'",
+    "build:around": "vite build '[04_02]protocols-around'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

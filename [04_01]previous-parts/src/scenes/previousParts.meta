@@ -1,0 +1,26 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "series1",
+      "targetTime": 3.8
+    },
+    {
+      "name": "series2",
+      "targetTime": 10
+    },
+    {
+      "name": "watch",
+      "targetTime": 22.2
+    },
+    {
+      "name": "link",
+      "targetTime": 25.6
+    },
+    {
+      "name": "end",
+      "targetTime": 28
+    }
+  ],
+  "seed": 604122
+}

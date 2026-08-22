@@ -11,6 +11,7 @@ export * from './components/SceneTitle';
 export * from './components/SceneCaption';
 export * from './components/SectionLabel';
 export * from './components/SpecCard';
+export * from './components/ProtocolChip';
 export * from './components/Banner';
 export * from './components/Backdrop';
 export * from './components/LatencyBand';

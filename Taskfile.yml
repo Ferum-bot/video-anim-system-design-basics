@@ -360,6 +360,22 @@ tasks:
         vars:
           NAME: '[03_06]europe-map'
 
+  # ── Видео 04 «Прикладной уровень» ────────────────────────────────────────────
+
+  serve:prev:
+    desc: "Запустить редактор для анимации [04_01] Превью предыдущих частей"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_01]previous-parts'
+
+  build:prev:
+    desc: "Собрать анимацию [04_01] Превью предыдущих частей"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_01]previous-parts'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

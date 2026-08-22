@@ -329,6 +329,26 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "prev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:prev"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "around",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:around"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

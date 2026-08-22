@@ -352,6 +352,38 @@ and left unanimated.
   animated parts. Static decoration (dashed lanes, rails) is easy to forget, and since
   `stage.add` stacks in call order it will draw over whatever was mounted before it.
 
+## Video «Прикладной уровень» (video 04) — parts
+
+Третья часть серии по сетям (HTTP / DNS / gRPC / WebSocket и что такое протокол вообще).
+Keeps the `blueprint` theme. Narration is the **already-edited** mix `~/Movies/CapCut/0822.WAV`
+(17:47), so scene timecodes equal final-video timecodes. Transcript + the animation plan
+reconciled against the pre-production script live in `docs/`
+([video-04-application.md](docs/video-04-application.md),
+[video-04-animation-plan.md](docs/video-04-animation-plan.md); the raw ASR output is
+`docs/video-04-application.srt`). **Нумерация:** в кадре автор называет это «третьим видео
+серии» — счёт по папкам сдвинут превью `[02_00]`, так что серия 3 = video 04.
+
+Part `[04_01]previous-parts/` — интро, превью двух предыдущих частей (`src/scenes/previousParts.tsx`,
+components in `src/series/`), covers `00:00–00:28.9`, `audioOffset: 0`. `seriesCard` — превьюшка
+видео в блюпринт-рамке с угловыми засечками и подписью под ней. **Заголовка у сцены нет,**
+и карточки стоят **стопкой, а не в ряд**: в колонке 960 это единственный способ дать превьюшке
+читаемый размер (620 против 388 бок о бок), а панель в 1010 закрывает кадр почти целиком, без
+пустых полей сверху и снизу. Первая карточка приезжает одна, **геройская, во всю ширину**
+(`enter: {y, scale: 1.35}`), на «во втором видео» `dock()` ужимает её до слотовой ширины и уводит
+в верхний слот; вторая ждёт `SLOT_HANDOVER`, иначе они пересекаются посреди проезда. На
+«обязательно посмотри их» карточки загораются по очереди, и **соседка на это время притухает**
+(`dim`/`undim`) — прожектор читается там, где одиночная вспышка теряется. На «ссылка появится
+здесь» выезжает `hintChip` (скопирован из `[03_01]`), и стопка на `CHIP_LIFT` поднимается ему
+навстречу — без этого кадр без чипа, а он живёт 22 секунды из 29, оказывается нижнетяжёлым.
+Обе карточки с чипом форкают `pulse()` на одном кадре и общем `PULSE_HALF` из
+`src/series/pulse.ts`, поэтому дышат в такт; `idle()` перед этим обязательно `cancel`-ится —
+оба цикла крутят `glow`. **Раскладка считается от габарита с засечками**, а не от края
+картинки: уголок торчит за карточку на 13 единиц, и по краю картинки сверху выходит меньше
+воздуха, чем снизу. Превьюшки лежат в
+`src/assets/*.jpg` (сконвертированы из webp — `env.d.ts` знает `.jpg`, но не `.webp`).
+Markers: `series1`, `series2`, `watch`, `link`, `end`.
+Run `npm run serve:prev` (or `task serve:prev`).
+
 ## Theming
 
 `@lib` is a **framework with no palette**; the style comes from a **theme preset**.
@@ -536,5 +568,11 @@ won't transform. `task new` writes all of this for new videos. Theme presets are
   without a browser. Use it to verify when the preview/browser tools aren't available. Note the
   build does **not** run scene code, so it won't catch a missing `applyTheme` — the editor will
   (a clear "No theme applied" throw); load a part in the editor after theme changes.
+- **Центровка — измерять, а не смотреть.** Снять кадр кнопкой-камерой в редакторе (ложится в
+  `output/still/project/NNNNNN.png`) и прогнать
+  `python3 tools/check-centering.py <кадр.png>`: он найдёт панель по альфе и напечатает поля
+  с четырёх сторон. Гонять на каждом ключевом бите сцены — перекос обычно вылезает там, где
+  часть композиции появляется только на отдельных битах (чип, подпись), и на финальном кадре
+  его не видно.
 - **Scene names** in the editor come from the **filename**. To rename a scene, `git mv` the
   `.tsx` and delete the orphaned `.meta` file.
