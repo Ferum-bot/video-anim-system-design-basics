@@ -376,6 +376,20 @@ tasks:
         vars:
           NAME: '[04_01]previous-parts'
 
+  serve:around:
+    desc: "Запустить редактор для анимации [04_02] Протоколы вокруг тебя"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_02]protocols-around'
+
+  build:around:
+    desc: "Собрать анимацию [04_02] Протоколы вокруг тебя"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_02]protocols-around'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

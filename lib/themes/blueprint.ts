@@ -42,7 +42,7 @@ const stage: StageStyle = {
   scrimAlpha: 0.9,
   // Transparent overlay for compositing over footage in CapCut. Flip to `false` for
   // comfortable editing (a grey footage stand-in shows behind the scrim).
-  transparent: false,
+  transparent: true,
   footageSim: '#4a5058',
   grid: {pitch: 40, minor: withAlpha(palette.cyan, 0.05), major: withAlpha(palette.cyan, 0.1)},
   // Explicit framed card around the content.

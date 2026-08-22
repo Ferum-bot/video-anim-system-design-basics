@@ -384,6 +384,30 @@ components in `src/series/`), covers `00:00–00:28.9`, `audioOffset: 0`. `serie
 Markers: `series1`, `series2`, `watch`, `link`, `end`.
 Run `npm run serve:prev` (or `task serve:prev`).
 
+Part `[04_02]protocols-around/` — «протоколы вокруг тебя» (`src/scenes/protocolsAround.tsx`,
+components in `src/around/`), covers `00:29.6–00:57.9`, `audioOffset: -29.6`. Два виджета делят
+кадр последовательно. `liveMonitor`: четыре имени встают в верхний ряд, а узел «ЭТО ВИДЕО»
+появляется **вместе с ними** вполсилы — пустота между ними не дыра, а обещанное место под
+провода. На «работают как минимум три из них» HTTP и DNS спускаются к узлу и расходятся, TLS
+приезжает третьим, незанятые gRPC и WEBSOCKET остаются наверху и притухают, а по трём
+пунктирным проводам к узлу идут пакеты на форкнутых бесконечных циклах с разными периодами —
+«работают прямо сейчас» едет по экрану, а не написано словами. **TLS в озвучке не назван**
+(сказано только «три из них»): это вставка редактора, зато фактически верная и заранее
+сажающая мысль с `16:59` про три уровня OSI. `layerStack` — зерно лестницы, которую часть 3
+развернёт целиком: пять подписанных плит (`ПРИКЛАДНОЙ · ТРАНСПОРТНЫЙ · СЕТЕВОЙ · КАНАЛЬНЫЙ ·
+ФИЗИЧЕСКИЙ`), верхняя загорается и получает бейдж «ПОЛЕЗНАЯ РАБОТА». **Имена стоят сразу,
+хотя в озвучке этажи здесь не перечисляются** — зритель знает их из первых двух видео, а без
+подписей нижние плиты читаются как незаполненные заготовки; часть 3 на `01:55` добавит к
+именам не название, а работу («физический двигает биты, канальный чинит кадры…»). Четыре
+нижние берутся в одну скобку, которая получает две подписи подряд — «ДВА ПРЕДЫДУЩИХ ВИДЕО» → «ТРАНСПОРТ + ГАРАНТИИ
+ДОСТАВКИ». Скобка висит слева и тянет композицию за собой, поэтому на её появлении стопка
+сдвигается на `SHIFT_X` вправо и поднимается на `LIFT`. Markers: `known`, `names`, `now`,
+`start`, `only`, `useful`, `before`, `delivery`, `end`.
+Run `npm run serve:around` (or `task serve:around`).
+
+**Watch out:** `Line` со скруглённым `lineCap` рисует точку даже при `end={0}` — виджет,
+который «ещё не появился», надо гасить `opacity`, а не только нулевой длиной.
+
 ## Theming
 
 `@lib` is a **framework with no palette**; the style comes from a **theme preset**.
@@ -537,7 +561,9 @@ per beat; **use this instead of hand-rolling a `<Txt>` heading or a local `say()
 (the top muted caption — `appear()` once, then `retitle()` per beat), `specCard()`
 (accepts an `icon` node), `banner()`, `backdrop()` (dark scrim, export-only), `latencyBand()`
 (A↔B with a pulse whose travel time = latency), and tech-logo icons `redisIcon()`,
-`postgresIcon()`, `podIcon()` (Kubernetes), `kafkaIcon()`. See `lib/README.md`.
+`postgresIcon()`, `podIcon()` (Kubernetes), `kafkaIcon()`; `protocolChip()` + the `CHIP`
+size constant (a protocol name as a pill — fixed width whatever the name, so rows lay out
+arithmetically; the season reuses it in every video). See `lib/README.md`.
 
 **Tech icons.** Logos live in `lib/assets/icons/*.svg` (official devicon SVGs, inlined by
 Vite) and are wrapped into card-sized tiles in `lib/components/icons.tsx`. To add one

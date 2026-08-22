@@ -2,10 +2,12 @@
 """Проверка центровки кадра сцены.
 
 Снимаем кадр кнопкой-камерой в редакторе (он ложится в `output/still/project/NNNNNN.png`)
-и прогоняем через этот скрипт: он находит панель по альфе, отступает внутрь от её рамки,
+и прогоняем через этот скрипт. **Тема должна быть в режиме экспорта** (`transparent: true`
+в `lib/themes/<name>.ts`) — панель находится по альфе, а в режиме редактирования фон залит
+и «панелью» окажется весь кадр 3840×2160. он находит панель по альфе, отступает внутрь от её рамки,
 берёт габарит яркого контента и печатает поля с четырёх сторон.
 
-    python3 tools/check-centering.py output/still/project/000360.png
+    python3 tools/check-centering.py output/still/project/000360.png [порог_яркости]
 
 Глазом перекос в 40–80 единиц не всегда виден, особенно когда часть композиции (чип,
 подпись) появляется только на отдельных битах, — а на экране он читается как «съехало».
@@ -16,6 +18,9 @@ import numpy as np
 from PIL import Image
 
 path = sys.argv[1]
+# Порог яркости, отделяющий контент от сетки. Сетка ≈ 20, притушенные элементы ≈ 60,
+# так что 45 ловит и то, что показано вполсилы; поднимать, если в габарит лезет фон.
+THRESHOLD = float(sys.argv[2]) if len(sys.argv) > 2 else 45
 im = np.asarray(Image.open(path).convert('RGBA')).astype(np.int32)
 a = im[..., 3]
 
@@ -28,7 +33,7 @@ pt, pb, pl, pr = rows[0], rows[-1], cols[0], cols[-1]
 INSET = 16
 lum = (im[..., 0] * 0.299 + im[..., 1] * 0.587 + im[..., 2] * 0.114)
 inner = lum[pt + INSET:pb + 1 - INSET, pl + INSET:pr + 1 - INSET]
-bright = inner > 90
+bright = inner > THRESHOLD
 rmask = np.where(bright.sum(axis=1) > 15)[0]
 cmask = np.where(bright.sum(axis=0) > 15)[0]
 ct, cb, cl, cr = rmask[0], rmask[-1], cmask[0], cmask[-1]

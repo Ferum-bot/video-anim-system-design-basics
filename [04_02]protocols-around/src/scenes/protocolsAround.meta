@@ -1,0 +1,42 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "known",
+      "targetTime": 0
+    },
+    {
+      "name": "names",
+      "targetTime": 2.9
+    },
+    {
+      "name": "now",
+      "targetTime": 8.3
+    },
+    {
+      "name": "start",
+      "targetTime": 11.9
+    },
+    {
+      "name": "only",
+      "targetTime": 14.4
+    },
+    {
+      "name": "useful",
+      "targetTime": 17.3
+    },
+    {
+      "name": "before",
+      "targetTime": 22.4
+    },
+    {
+      "name": "delivery",
+      "targetTime": 24.4
+    },
+    {
+      "name": "end",
+      "targetTime": 27.9
+    }
+  ],
+  "seed": 731904
+}
