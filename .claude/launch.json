@@ -379,6 +379,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "peers",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:peers"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

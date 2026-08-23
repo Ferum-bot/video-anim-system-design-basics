@@ -432,6 +432,20 @@ tasks:
         vars:
           NAME: '[04_05]protocol-passport'
 
+  serve:peers:
+    desc: "Запустить редактор для анимации [04_06] Пиры"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_06]peers'
+
+  build:peers:
+    desc: "Собрать анимацию [04_06] Пиры"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_06]peers'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:
