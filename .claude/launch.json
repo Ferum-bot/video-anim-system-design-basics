@@ -389,6 +389,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "lift",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:lift"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

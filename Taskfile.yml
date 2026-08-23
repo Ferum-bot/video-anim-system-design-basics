@@ -446,6 +446,20 @@ tasks:
         vars:
           NAME: '[04_06]peers'
 
+  serve:lift:
+    desc: "Запустить редактор для анимации [04_07] Лифт и матрёшка"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_07]lift-envelope'
+
+  build:lift:
+    desc: "Собрать анимацию [04_07] Лифт и матрёшка"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_07]lift-envelope'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

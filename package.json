@@ -93,7 +93,9 @@
     "serve:passport": "vite '[04_05]protocol-passport'",
     "build:passport": "vite build '[04_05]protocol-passport'",
     "serve:peers": "vite '[04_06]peers'",
-    "build:peers": "vite build '[04_06]peers'"
+    "build:peers": "vite build '[04_06]peers'",
+    "serve:lift": "vite '[04_07]lift-envelope'",
+    "build:lift": "vite build '[04_07]lift-envelope'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",
