@@ -349,6 +349,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "floors",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:floors"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

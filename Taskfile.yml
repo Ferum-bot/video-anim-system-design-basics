@@ -390,6 +390,20 @@ tasks:
         vars:
           NAME: '[04_02]protocols-around'
 
+  serve:floors:
+    desc: "Запустить редактор для анимации [04_03] Всё ниже — только доставка"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_03]delivery-only'
+
+  build:floors:
+    desc: "Собрать анимацию [04_03] Всё ниже — только доставка"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_03]delivery-only'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

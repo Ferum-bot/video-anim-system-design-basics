@@ -1,0 +1,90 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "claim",
+      "targetTime": 0
+    },
+    {
+      "name": "below",
+      "targetTime": 5.8
+    },
+    {
+      "name": "phys",
+      "targetTime": 13
+    },
+    {
+      "name": "link",
+      "targetTime": 16.3
+    },
+    {
+      "name": "net",
+      "targetTime": 19.9
+    },
+    {
+      "name": "transport",
+      "targetTime": 22.8
+    },
+    {
+      "name": "guarantees",
+      "targetTime": 26.1
+    },
+    {
+      "name": "vital",
+      "targetTime": 29.9
+    },
+    {
+      "name": "none",
+      "targetTime": 32.5
+    },
+    {
+      "name": "justmove",
+      "targetTime": 37.2
+    },
+    {
+      "name": "page",
+      "targetTime": 40.2
+    },
+    {
+      "name": "kafka",
+      "targetTime": 41.7
+    },
+    {
+      "name": "payment",
+      "targetTime": 44.8
+    },
+    {
+      "name": "here",
+      "targetTime": 51.4
+    },
+    {
+      "name": "yours",
+      "targetTime": 55.5
+    },
+    {
+      "name": "limits",
+      "targetTime": 60.3
+    },
+    {
+      "name": "three",
+      "targetTime": 63.9
+    },
+    {
+      "name": "otherside",
+      "targetTime": 67.6
+    },
+    {
+      "name": "only",
+      "targetTime": 71.9
+    },
+    {
+      "name": "create",
+      "targetTime": 76.5
+    },
+    {
+      "name": "end",
+      "targetTime": 78
+    }
+  ],
+  "seed": 418205
+}
