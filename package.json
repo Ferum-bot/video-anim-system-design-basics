@@ -97,7 +97,9 @@
     "serve:lift": "vite '[04_07]lift-envelope'",
     "build:lift": "vite build '[04_07]lift-envelope'",
     "serve:socket": "vite '[04_08]socket-door'",
-    "build:socket": "vite build '[04_08]socket-door'"
+    "build:socket": "vite build '[04_08]socket-door'",
+    "serve:berkeley": "vite '[04_09]berkeley'",
+    "build:berkeley": "vite build '[04_09]berkeley'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

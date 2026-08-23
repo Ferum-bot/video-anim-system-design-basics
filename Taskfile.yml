@@ -474,6 +474,20 @@ tasks:
         vars:
           NAME: '[04_08]socket-door'
 
+  serve:berkeley:
+    desc: "Запустить редактор для анимации [04_09] Berkeley"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_09]berkeley'
+
+  build:berkeley:
+    desc: "Собрать анимацию [04_09] Berkeley"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_09]berkeley'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

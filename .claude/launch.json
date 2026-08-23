@@ -409,6 +409,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "berkeley",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:berkeley"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }
