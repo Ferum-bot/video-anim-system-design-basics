@@ -423,6 +423,39 @@ Part `[04_03]delivery-only/` — «всё ниже прикладного тол
 `limits`, `three`, `otherside`, `only`, `create`, `end` (78 s).
 Run `npm run serve:floors` (or `task serve:floors`).
 
+Part `[04_04]how-many/` — служебные протоколы и масштаб (`src/scenes/howMany.tsx`,
+components in `src/many/`), covers `03:00.8–04:26.0`, `audioOffset: -180.8`. `appRoom`
+раскрывает прикладной этаж в комнату с двумя полками — «ДЛЯ ПРИЛОЖЕНИЙ» и «СЛУЖЕБНЫЕ». Весь
+смысл в направлении стрелок: во всём видео они идут вниз по лифту, а здесь HTTP и ПОЧТА
+тянутся к DNS **горизонтально, не покидая этаж**, и только получив ответ уходят вниз. На
+«без него не работает ни веб, ни почта» DNS гаснет — и вместе с ним краснеют обе стрелки и
+оба жильца. `protocolField` даёт масштаб: перечёркнутый «единый список», пустая бирка с
+мигающим курсором (та же, что закрывала `[04_03]`), два счётчика через `counter()` и поле
+из 820 безымянных точек, которое сыплется пачками с **сужающимся зазором** — «их слишком
+много, чтобы считать». Из этого же поля всплывают семь имён, GraphQL и gRPC получают скобку
+«ПОВЕРХ HTTP», и всё становится полкой эпизодов. Холодный переход с «что такое протокол на
+самом деле» **автор решил не анимировать** — часть заканчивается на полке. Markers: `catch`,
+`notonly`, `system`, `dns`, `serves`, `dead`, `howmany`, `nolist`, `own`, `rfc`, `rfcnum`,
+`iana`, `iananum`, `variety`, `handful`, `http`, `graphql`, `grpc`, `dnschip`, `ws`,
+`webrtc`, `each`, `end` (85.2 s). Run `npm run serve:many` (or `task serve:many`).
+
+Part `[04_05]protocol-passport/` — что такое протокол (`src/scenes/protocolDefined.tsx`,
+components in `src/passport/`), covers `04:48.9–06:35.5`, `audioOffset: -288.9`. Определение
+сворачивается в три слова, и слова **не гаснут, а поднимаются наверх и становятся шапкой**
+карточки — определение буквально превращается в форму. `protocolPassport` (в `@lib`, см. ниже)
+раскрывается пустым и подписанным, потом ячейки объясняют, что в них вообще пишут, и только
+затем получают значения HTTP. На «только что мы описали HTTP» ложится штамп, на «в рамках
+этого шаблона» карточка отъезжает и за ней проступает `deck` — шесть таких же пустых. Стопка
+уходит веером вправо-вверх и тянет композицию за собой, поэтому карточка со стопкой сдвигается
+на `DECK_SHIFT` влево. Markers: `agreement`, `word`, `nottech`, `three`, `format`, `order`,
+`actions`, `threewords`, `four`, `useful`, `types`, `syntax`, `semantics`, `rules`, `http`,
+`htypes`, `hsyntax`, `hsemantics`, `hrules`, `stamp`, `template`, `everyvideo`, `recap`, `end`
+(106.6 s). Run `npm run serve:passport` (or `task serve:passport`).
+
+**Watch out:** `Counter.text` из `@lib` — это `SignalValue<string>`: у числового счётчика
+функция, у статического строка. Интерполировать его в шаблон напрямую нельзя — в кадр уедет
+исходник функции; резолвить через `typeof text === 'function' ? text() : text`.
+
 **Watch out:** `Line` со скруглённым `lineCap` рисует точку даже при `end={0}` — виджет,
 который «ещё не появился», надо гасить `opacity`, а не только нулевой длиной.
 
@@ -581,7 +614,11 @@ per beat; **use this instead of hand-rolling a `<Txt>` heading or a local `say()
 (A↔B with a pulse whose travel time = latency), and tech-logo icons `redisIcon()`,
 `postgresIcon()`, `podIcon()` (Kubernetes), `kafkaIcon()`; `protocolChip()` + the `CHIP`
 size constant (a protocol name as a pill — fixed width whatever the name, so rows lay out
-arithmetically; the season reuses it in every video). See `lib/README.md`.
+arithmetically; the season reuses it in every video), `protocolPassport()` + `PASSPORT`
+(четыре ячейки — типы / синтаксис / семантика / правила, — на которые раскладывается любой
+прикладной протокол; ячейка знает два состояния, «что сюда пишут» и «что здесь у этого
+протокола», плюс `name()` и `stamp()`. Форма на весь сезон: её предстоит инстанцировать
+ещё шесть раз). See `lib/README.md`.
 
 **Tech icons.** Logos live in `lib/assets/icons/*.svg` (official devicon SVGs, inlined by
 Vite) and are wrapped into card-sized tiles in `lib/components/icons.tsx`. To add one

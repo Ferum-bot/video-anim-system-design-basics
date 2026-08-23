@@ -359,6 +359,26 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "many",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:many"
+      ],
+      "port": 9000,
+      "autoPort": true
+    },
+    {
+      "name": "passport",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:passport"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

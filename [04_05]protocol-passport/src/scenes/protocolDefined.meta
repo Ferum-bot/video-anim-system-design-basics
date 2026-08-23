@@ -1,0 +1,102 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "agreement",
+      "targetTime": 0
+    },
+    {
+      "name": "word",
+      "targetTime": 5.5
+    },
+    {
+      "name": "nottech",
+      "targetTime": 7
+    },
+    {
+      "name": "three",
+      "targetTime": 11.4
+    },
+    {
+      "name": "format",
+      "targetTime": 13.7
+    },
+    {
+      "name": "order",
+      "targetTime": 16.1
+    },
+    {
+      "name": "actions",
+      "targetTime": 17.2
+    },
+    {
+      "name": "threewords",
+      "targetTime": 21.2
+    },
+    {
+      "name": "four",
+      "targetTime": 27.4
+    },
+    {
+      "name": "useful",
+      "targetTime": 32.8
+    },
+    {
+      "name": "types",
+      "targetTime": 36.5
+    },
+    {
+      "name": "syntax",
+      "targetTime": 42.5
+    },
+    {
+      "name": "semantics",
+      "targetTime": 47.4
+    },
+    {
+      "name": "rules",
+      "targetTime": 51.6
+    },
+    {
+      "name": "http",
+      "targetTime": 58.3
+    },
+    {
+      "name": "htypes",
+      "targetTime": 62
+    },
+    {
+      "name": "hsyntax",
+      "targetTime": 67.3
+    },
+    {
+      "name": "hsemantics",
+      "targetTime": 75.3
+    },
+    {
+      "name": "hrules",
+      "targetTime": 81.2
+    },
+    {
+      "name": "stamp",
+      "targetTime": 86.1
+    },
+    {
+      "name": "template",
+      "targetTime": 89.8
+    },
+    {
+      "name": "everyvideo",
+      "targetTime": 95.7
+    },
+    {
+      "name": "recap",
+      "targetTime": 101.3
+    },
+    {
+      "name": "end",
+      "targetTime": 106.6
+    }
+  ],
+  "seed": 640813
+}

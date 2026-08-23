@@ -87,7 +87,11 @@
     "serve:around": "vite '[04_02]protocols-around'",
     "build:around": "vite build '[04_02]protocols-around'",
     "serve:floors": "vite '[04_03]delivery-only'",
-    "build:floors": "vite build '[04_03]delivery-only'"
+    "build:floors": "vite build '[04_03]delivery-only'",
+    "serve:many": "vite '[04_04]how-many'",
+    "build:many": "vite build '[04_04]how-many'",
+    "serve:passport": "vite '[04_05]protocol-passport'",
+    "build:passport": "vite build '[04_05]protocol-passport'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

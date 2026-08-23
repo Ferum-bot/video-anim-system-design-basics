@@ -404,6 +404,34 @@ tasks:
         vars:
           NAME: '[04_03]delivery-only'
 
+  serve:many:
+    desc: "Запустить редактор для анимации [04_04] Служебные протоколы и масштаб"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_04]how-many'
+
+  build:many:
+    desc: "Собрать анимацию [04_04] Служебные протоколы и масштаб"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_04]how-many'
+
+  serve:passport:
+    desc: "Запустить редактор для анимации [04_05] Паспорт протокола"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_05]protocol-passport'
+
+  build:passport:
+    desc: "Собрать анимацию [04_05] Паспорт протокола"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_05]protocol-passport'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:
