@@ -460,6 +460,20 @@ tasks:
         vars:
           NAME: '[04_07]lift-envelope'
 
+  serve:socket:
+    desc: "Запустить редактор для анимации [04_08] Сокет"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_08]socket-door'
+
+  build:socket:
+    desc: "Собрать анимацию [04_08] Сокет"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_08]socket-door'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

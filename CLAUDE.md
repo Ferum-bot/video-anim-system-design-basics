@@ -488,6 +488,24 @@ FCS`, с байтами из видео 03), режется сетевым ур�
 `app_no`, `exact`, `encaps`, `matryoshka`, `nesting`, `end` (76.2 s).
 Run `npm run serve:lift` (or `task serve:lift`).
 
+Part `[04_08]socket-door/` — сокет (`src/scenes/socketDoor.tsx`, components in
+`src/socket/`), covers `09:53.3–11:42.4`, `audioOffset: -593.3`. **Старт сдвинут на `09:53.3`,
+а не на `09:51.2`** — чтобы не накладываться на выход `[04_07]`. Три движения. `recapRow` —
+триптих из уже показанного (паспорт, пиры, стык); на «отсюда вытекает вопрос» две карточки
+гаснут, третья укрупняется. `interfaceStage` — стык крупным планом: три термина транспорта
+(`НУМЕРАЦИЯ БАЙТОВ · ОКНО ПЕРЕГРУЗКИ · РУКОПОЖАТИЕ`) **всплывают из плиты и утягиваются
+обратно под неё** — приложению их знать не надо, они не исчезли, а спрятались. `socketBox` —
+ящик с двумя щелями `write` / `read`, который рождается в зазоре, переживает подмену
+транспорта не шелохнувшись, обзаводится двойником-файлом и получает имя. На честной оговорке
+он **делится пополам**: левая половина уходит за матовую шторку, за которой продолжают
+шевелиться дышащее окно и ползущая пила из видео 03, правая остаётся открытой. Ось «1983 →
+сегодня» — зеркало таймлайна из `[03_40]quic-timeline`: там частокол из 35 черновиков, здесь
+прямая, на которой ставить нечего. Markers: `agreement`, `lift`, `interface`, `contract`,
+`question`, `howlook`, `suppose`, `noneed`, `window`, `handshake`, `oneThing`, `writeRead`,
+`single`, `norewrite`, `likefile`, `berkeley`, `named`, `everywhere`, `undereach`, `forty`,
+`honest`, `hideswhat`, `onCreate`, `streamOrMsg`, `videotwo`, `mechanics`, `depends`, `end`
+(109.1 s). Run `npm run serve:socket` (or `task serve:socket`).
+
 **Watch out:** `Counter.text` из `@lib` — это `SignalValue<string>`: у числового счётчика
 функция, у статического строка. Интерполировать его в шаблон напрямую нельзя — в кадр уедет
 исходник функции; резолвить через `typeof text === 'function' ? text() : text`.

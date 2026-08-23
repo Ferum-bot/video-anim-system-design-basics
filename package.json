@@ -95,7 +95,9 @@
     "serve:peers": "vite '[04_06]peers'",
     "build:peers": "vite build '[04_06]peers'",
     "serve:lift": "vite '[04_07]lift-envelope'",
-    "build:lift": "vite build '[04_07]lift-envelope'"
+    "build:lift": "vite build '[04_07]lift-envelope'",
+    "serve:socket": "vite '[04_08]socket-door'",
+    "build:socket": "vite build '[04_08]socket-door'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",

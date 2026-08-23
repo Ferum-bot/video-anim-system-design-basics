@@ -399,6 +399,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "socket",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:socket"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }
