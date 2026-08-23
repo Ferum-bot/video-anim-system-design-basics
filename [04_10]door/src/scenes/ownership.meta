@@ -1,0 +1,78 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "iface",
+      "targetTime": 0
+    },
+    {
+      "name": "code",
+      "targetTime": 1.9
+    },
+    {
+      "name": "dozens",
+      "targetTime": 7
+    },
+    {
+      "name": "onlyone",
+      "targetTime": 11.6
+    },
+    {
+      "name": "kernel",
+      "targetTime": 16.6
+    },
+    {
+      "name": "push",
+      "targetTime": 23.9
+    },
+    {
+      "name": "deliver",
+      "targetTime": 30
+    },
+    {
+      "name": "ownership",
+      "targetTime": 37.5
+    },
+    {
+      "name": "yours",
+      "targetTime": 39.9
+    },
+    {
+      "name": "theirs",
+      "targetTime": 46.4
+    },
+    {
+      "name": "os",
+      "targetTime": 52.3
+    },
+    {
+      "name": "looks",
+      "targetTime": 60.2
+    },
+    {
+      "name": "channel",
+      "targetTime": 63.1
+    },
+    {
+      "name": "magic",
+      "targetTime": 67.5
+    },
+    {
+      "name": "hidden",
+      "targetTime": 71.9
+    },
+    {
+      "name": "videos",
+      "targetTime": 75
+    },
+    {
+      "name": "problems",
+      "targetTime": 81.7
+    },
+    {
+      "name": "end",
+      "targetTime": 84.2
+    }
+  ],
+  "seed": 771043298
+}

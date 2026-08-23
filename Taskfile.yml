@@ -488,6 +488,20 @@ tasks:
         vars:
           NAME: '[04_09]berkeley'
 
+  serve:owner:
+    desc: "Запустить редактор для анимации [04_10] Граница владения"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_10]door'
+
+  build:owner:
+    desc: "Собрать анимацию [04_10] Граница владения"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_10]door'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

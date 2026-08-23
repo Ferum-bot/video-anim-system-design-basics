@@ -419,6 +419,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "owner",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:owner"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }
