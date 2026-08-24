@@ -502,6 +502,20 @@ tasks:
         vars:
           NAME: '[04_10]door'
 
+  serve:prim:
+    desc: "Запустить редактор для анимации [04_11] Восемь примитивов"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_11]primitives'
+
+  build:prim:
+    desc: "Собрать анимацию [04_11] Восемь примитивов"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_11]primitives'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

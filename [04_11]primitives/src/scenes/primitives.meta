@@ -1,0 +1,70 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "how",
+      "targetTime": 0
+    },
+    {
+      "name": "many",
+      "targetTime": 1.1
+    },
+    {
+      "name": "eight",
+      "targetTime": 3.3
+    },
+    {
+      "name": "between",
+      "targetTime": 9.5
+    },
+    {
+      "name": "first",
+      "targetTime": 16
+    },
+    {
+      "name": "service",
+      "targetTime": 22.7
+    },
+    {
+      "name": "choice",
+      "targetTime": 31.6
+    },
+    {
+      "name": "standard",
+      "targetTime": 36.6
+    },
+    {
+      "name": "accept",
+      "targetTime": 39.8
+    },
+    {
+      "name": "pretends",
+      "targetTime": 46
+    },
+    {
+      "name": "observation",
+      "targetTime": 49
+    },
+    {
+      "name": "server",
+      "targetTime": 56.6
+    },
+    {
+      "name": "client",
+      "targetTime": 63.5
+    },
+    {
+      "name": "notmagic",
+      "targetTime": 68
+    },
+    {
+      "name": "sameprogram",
+      "targetTime": 74.6
+    },
+    {
+      "name": "end",
+      "targetTime": 78
+    }
+  ],
+  "seed": 418772095
+}

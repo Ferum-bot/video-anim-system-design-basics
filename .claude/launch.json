@@ -429,6 +429,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "prim",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:prim"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }

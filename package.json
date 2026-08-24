@@ -101,7 +101,9 @@
     "serve:berkeley": "vite '[04_09]berkeley'",
     "build:berkeley": "vite build '[04_09]berkeley'",
     "serve:owner": "vite '[04_10]door'",
-    "build:owner": "vite build '[04_10]door'"
+    "build:owner": "vite build '[04_10]door'",
+    "serve:prim": "vite '[04_11]primitives'",
+    "build:prim": "vite build '[04_11]primitives'"
   },
   "devDependencies": {
     "@motion-canvas/2d": "^3.17.2",
