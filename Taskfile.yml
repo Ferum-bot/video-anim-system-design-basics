@@ -516,6 +516,20 @@ tasks:
         vars:
           NAME: '[04_11]primitives'
 
+  serve:sum:
+    desc: "Запустить редактор для анимации [04_12] Итог"
+    cmds:
+      - task: serve
+        vars:
+          NAME: '[04_12]summary'
+
+  build:sum:
+    desc: "Собрать анимацию [04_12] Итог"
+    cmds:
+      - task: build
+        vars:
+          NAME: '[04_12]summary'
+
   # ── Common (reusable CTA / base overlays) ────────────────────────────────────
 
   serve:common:

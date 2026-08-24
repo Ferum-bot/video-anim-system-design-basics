@@ -1,0 +1,122 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "recap",
+      "targetTime": 0
+    },
+    {
+      "name": "agreement",
+      "targetTime": 1.1
+    },
+    {
+      "name": "lifts",
+      "targetTime": 2.9
+    },
+    {
+      "name": "door",
+      "targetTime": 4.5
+    },
+    {
+      "name": "full",
+      "targetTime": 6.7
+    },
+    {
+      "name": "via",
+      "targetTime": 11
+    },
+    {
+      "name": "orabove",
+      "targetTime": 14
+    },
+    {
+      "name": "useful",
+      "targetTime": 16
+    },
+    {
+      "name": "below",
+      "targetTime": 19.8
+    },
+    {
+      "name": "yours",
+      "targetTime": 23.2
+    },
+    {
+      "name": "nottech",
+      "targetTime": 26.9
+    },
+    {
+      "name": "four",
+      "targetTime": 30.3
+    },
+    {
+      "name": "p1",
+      "targetTime": 32.3
+    },
+    {
+      "name": "p2",
+      "targetTime": 33.5
+    },
+    {
+      "name": "p3",
+      "targetTime": 34.6
+    },
+    {
+      "name": "p4",
+      "targetTime": 35.1
+    },
+    {
+      "name": "peers",
+      "targetTime": 38.1
+    },
+    {
+      "name": "lift2",
+      "targetTime": 41
+    },
+    {
+      "name": "headers",
+      "targetTime": 43.7
+    },
+    {
+      "name": "onedoor",
+      "targetTime": 47.3
+    },
+    {
+      "name": "socket",
+      "targetTime": 50.9
+    },
+    {
+      "name": "forty",
+      "targetTime": 52.1
+    },
+    {
+      "name": "hides",
+      "targetTime": 53.7
+    },
+    {
+      "name": "promises",
+      "targetTime": 55.7
+    },
+    {
+      "name": "more",
+      "targetTime": 58.1
+    },
+    {
+      "name": "three",
+      "targetTime": 61.5
+    },
+    {
+      "name": "firstvideo",
+      "targetTime": 65.8
+    },
+    {
+      "name": "why",
+      "targetTime": 68
+    },
+    {
+      "name": "end",
+      "targetTime": 71.6
+    }
+  ],
+  "seed": 316854027
+}

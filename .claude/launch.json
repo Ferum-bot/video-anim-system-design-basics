@@ -439,6 +439,16 @@
       ],
       "port": 9000,
       "autoPort": true
+    },
+    {
+      "name": "sum",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve:sum"
+      ],
+      "port": 9000,
+      "autoPort": true
     }
   ]
 }
