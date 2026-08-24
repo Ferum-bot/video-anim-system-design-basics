@@ -70,57 +70,26 @@ export default makeScene2D(function* (view) {
     yield* note().opacity(1, 0.35, easeOutCubic);
   }
 
-  // ── Три вещи, которые рассмотрели ──────────────────────────────────────────
-  // «Итак, что мы рассмотрели»
-  yield* waitUntil('recap');
+  // ── Единственный уровень ───────────────────────────────────────────────────
+  // «Прикладной уровень единственный, где происходит полезная работа». Всё, что было
+  // сказано до этой реплики, автор оставил без анимации — часть входит прямо отсюда.
+  yield* waitUntil('useful');
   yield* all(
     revealStage(stage),
     stack.appear(),
     caption().opacity(1, 0.6, easeOutCubic),
-    remark('ЧТО МЫ РАССМОТРЕЛИ'),
-  );
-
-  // «Договорённость есть между пирами»
-  yield* waitUntil('agreement');
-  yield* all(
     side().opacity(1, 0.6, easeOutCubic),
-    notes.line(0, 'ДОГОВОРЁННОСТЬ МЕЖДУ ПИРАМИ'),
-    stack.peerStub(),
-  );
-
-  // «Лифты едут вниз и вверх»
-  yield* waitUntil('lifts');
-  yield* all(notes.line(1, 'ЛИФТЫ ВНИЗ И ВВЕРХ'), stack.pulse());
-
-  // «Дверь существует в границе ядра»
-  yield* waitUntil('door');
-  yield* all(notes.line(2, 'ДВЕРЬ В ГРАНИЦЕ ЯДРА'), stack.openDoor());
-
-  // «Это полная картина того, как твоё приложение выходит в сеть»
-  yield* waitUntil('full');
-  yield* notes.rail('ПОЛНАЯ КАРТИНА');
-
-  // «…используя протоколы прикладного уровня»
-  yield* waitUntil('via');
-  yield* notes.chip('ЧЕРЕЗ ПРОТОКОЛЫ ПРИКЛАДНОГО УРОВНЯ');
-
-  // «…либо же абстрагируясь над ними»
-  yield* waitUntil('orabove');
-  yield* notes.chip('ИЛИ АБСТРАГИРУЯСЬ НАД НИМИ');
-
-  // ── Единственный уровень ───────────────────────────────────────────────────
-  // «Прикладной уровень единственный, где происходит полезная работа»
-  yield* waitUntil('useful');
-  yield* notes.clear();
-  yield* all(
     remark('ПРИКЛАДНОЙ УРОВЕНЬ'),
-    stack.light(0, 1),
-    notes.line(0, 'ПОЛЕЗНАЯ РАБОТА — ТОЛЬКО ЗДЕСЬ'),
   );
+  yield* all(stack.light(0, 1), notes.line(0, 'ПОЛЕЗНАЯ РАБОТА — ТОЛЬКО ЗДЕСЬ'));
 
   // «Всё ниже — это просто доставка байтов»
   yield* waitUntil('below');
-  yield* all(stack.dimBelow(), notes.line(1, 'ВСЁ НИЖЕ — ДОСТАВКА БАЙТОВ'));
+  yield* all(
+    stack.dimBelow(),
+    stack.pulse(),
+    notes.line(1, 'ВСЁ НИЖЕ — ДОСТАВКА БАЙТОВ'),
+  );
 
   // «Это единственный уровень, который полностью принадлежит тебе»
   yield* waitUntil('yours');
@@ -174,6 +143,7 @@ export default makeScene2D(function* (view) {
     link.dismiss(),
     ghost.dismiss(),
     side().opacity(1, 0.5, easeOutCubic),
+    stack.openDoor(),
     remark('СОКЕТ'),
     notes.line(0, 'ВНИЗ ВЕДЁТ ОДНА ДВЕРЬ'),
   );

@@ -36,7 +36,6 @@ export const STACK_BOTTOM = plateY(COUNT - 1) + PLATE.height / 2;
 
 const DOOR_W = 96;
 const JAMB = 18;
-const STUB = 56; // намёк на собеседника справа от верхней плиты
 
 const IN = 0.6;
 const STAGGER = 0.07;
@@ -44,8 +43,6 @@ const TONE = 0.45;
 const SWAP = {out: 0.22, in: 0.32} as const;
 
 export interface RecapStack extends Widget {
-  /** Пунктирный обрубок вправо: у этого этажа есть собеседник. */
-  peerStub(): ThreadGenerator;
   /** Импульс проезжает лифтом вниз и обратно вверх. */
   pulse(): ThreadGenerator;
   /** Проём в нижней кромке верхней плиты. */
@@ -81,7 +78,6 @@ export function recapStack({x, ghost = false}: RecapStackOptions): RecapStack {
   const group = createRef<Node>();
   const plates = range(COUNT).map(() => createRef<Rect>());
   const titles = range(COUNT).map(() => createRef<Txt>());
-  const stub = createRef<Line>();
   const rider = createRef<Circle>();
   const namePill = createRef<Rect>();
   const nameText = createRef<Txt>();
@@ -172,9 +168,6 @@ export function recapStack({x, ghost = false}: RecapStackOptions): RecapStack {
               stroke={edgeTone} lineWidth={2} opacity={() => door()}/>
           ))}
 
-          <Line ref={stub} points={[[half, plateY(0)], [half + STUB, plateY(0)]]}
-            stroke={withAlpha(accent, 0.45)} lineWidth={1.6} lineDash={[7, 7]} end={0}/>
-
           <Circle ref={rider} width={14} height={14} fill={accent}
             shadowColor={withAlpha(accent, 0.85)} shadowBlur={14}
             x={-half + 46} y={riderY} opacity={() => (ride() < 0 ? 0 : 1)}/>
@@ -204,10 +197,6 @@ export function recapStack({x, ghost = false}: RecapStackOptions): RecapStack {
       ...plates.map((item, index) =>
         delay(index * STAGGER, item().opacity(ghost ? 0.5 : 1, IN, easeOutCubic))),
     );
-  }
-
-  function* peerStub(): ThreadGenerator {
-    yield* stub().end(1, 0.5, easeOutCubic);
   }
 
   function* pulse(): ThreadGenerator {
@@ -287,7 +276,7 @@ export function recapStack({x, ghost = false}: RecapStackOptions): RecapStack {
   }
 
   return {
-    node, appear, peerStub, pulse, openDoor, light, dimBelow, nameDoor, machinery, gears,
+    node, appear, pulse, openDoor, light, dimBelow, nameDoor, machinery, gears,
     guarantee, clearMarks, split, merge, dismiss,
   };
 }
